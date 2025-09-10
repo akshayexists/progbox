@@ -1,12 +1,12 @@
 from runsim import runsim
 from exportcleaner import exportcleaner
-import secrets
 
-teams = ['DAL']
+#look at all available teams
+teams = None    #change to list of teams if specific teams are to be tested eg. ['GSW', 'BOS', 'NOL']
 
 seed = 69420
 print("Master seed:", seed)
-runs = 10000
+runs = 200
 
 data = exportcleaner(export_file='data/export.json', teaminfo_file='data/teaminfo.json', teams = teams)
 print(data)
