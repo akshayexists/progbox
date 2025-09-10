@@ -114,8 +114,7 @@ class ProgressionCalculator:
 					mn = -14
 				if age <= 30:
 					# Faithful to original JS: use Utils.randomInt(-2,0) < 0.02
-					# which is intentionally quirky in the source. Use the provided
-					# RNG to reproduce that behavior deterministically.
+					# seems to be quirky, KIV
 					if Utils.randomInt(-2, 0, rng) < 0.02:
 						mn = -2
 				if mn > mx:
@@ -160,6 +159,7 @@ class GodProgSystem:
 		rp = Utils.randomInt(Config.PROGRESSION_LIMITS['MIN_GOD_PROG'],
 					 Config.PROGRESSION_LIMITS['MAX_GOD_PROG'], rng)
 		GodProgSystem.godProgCount += 1
+		#print("GODPROG!")
 		return (rp, rp)
 
 
@@ -294,5 +294,4 @@ class progsandbox:
 			for k in keys:
 				out.at[idx, k] = ratings[k]
 			out.at[idx, 'Ovr'] = self.calcovr(r)
-
 		return out
