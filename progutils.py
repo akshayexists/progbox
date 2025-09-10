@@ -225,14 +225,16 @@ class progsandbox:
 
 		# old player physical caps
 		if age >= 30 and k in self.oldKeys and mx > 0:
-			if (rng.random() if rng is not None else random.random()) < (
-				0.01 + (rng.random() if rng is not None else random.random()) * 0.05
-			):
-				if mx > 3:
-					prog = min(prog, 3)
-				else:
-					# skip progression entirely for this attribute
-					return ratings[k]
+			# oldProgPhys = Math.random() * 0.05 + 0.01 in JS
+			r1 = rng.random() if rng is not None else random.random()
+			oldProgPhys = r1 * 0.05 + 0.01
+			# JS: if (Math.random() >= oldProgPhys) return true (skip)
+			if (rng.random() if rng is not None else random.random()) >= oldProgPhys:
+				# skip progression entirely for this attribute
+				return ratings[k]
+			# otherwise allow progression but cap it if necessary
+			if mx > 3:
+				prog = min(prog, 3)
 
 		# mid-age (25..29) slowdown for physical attributes
 		if 25 <= age < 30 and k in self.midKeys and prog > 0:
