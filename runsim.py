@@ -19,13 +19,14 @@ class runsim(progsandbox):
 
         # numpy generator tied to the master seed (not using global np RNG)
         self.np_rng = np.random.default_rng(self.SEED)
-
+        self.totalsimcounts = 0
         self._sim = None
         self._delta = None
         self._attrs = None
         self._meta = None
         self._baseline = None
         self.export_ = pd.DataFrame()
+        self.gpc = 0
 
     def _set_seed(self):
         """Reinitialize master RNGs when seed changes. Do NOT mutate global RNGs."""
@@ -79,16 +80,19 @@ class runsim(progsandbox):
             self._run_seeds.append(run_seed)
 
             run_rng = random.Random(run_seed)
-
+            
             after = self.runoneprog(initial_df, rng=run_rng).reindex(players)
             if (r+1) % 1000 == 0: print(f"Run {r} complete (seed={run_seed})")
             for i,pid in enumerate(players):
+                self.totalsimcounts += 1
                 for j,a in enumerate(attrs):
                     val = int(after.at[pid,a]) if a in after.columns and pd.notna(after.at[pid,a]) else int(baseline[i,j])
                     sim[r,i,j] = val
+        print("Total Sims:", self.totalsimcounts)
         self._sim = sim
         self._delta = sim - baseline[np.newaxis,:,:]
-
+        from progutils import GodProgSystem
+        print(f'GODPROG!! Count:{GodProgSystem.godProgCount}')
         # ---------------- Build tidy CSV ----------------
         rows=[]
         # Baseline row (Run=-1)
