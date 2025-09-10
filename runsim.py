@@ -1,151 +1,298 @@
-from progutils import progsandbox
-import numpy as np, pandas as pd, random
+import math
+import random
+import copy
 
-class runsim(progsandbox):
-    """Monte Carlo wrapper producing a single analysis-ready CSV with cumulative Ovr stats.
+#  port of NoEyeTest / BBGM progression logic for players 25+
+# RNG clarity: this version uses an object-local RNG (random.Random) so
+# - re-running the whole simulation with the same master seed is reproducible
+# - each Monte Carlo run can be made independent by deriving a per-run seed
+#   from the master RNG and passing a dedicated RNG into runoneprog
+# LLM was used for code cleaning and slight refactoring.
 
-    Behavior changes:
-    - Uses self.master_rng (created by progsandbox) to derive per-run seeds.
-    - Does NOT call random.seed() or np.random.seed() on the global RNGs.
-    - Each run is independent (its own random.Random instance) while the whole
-      experiment is reproducible given the same master seed.
-    """
+class Config:
+	AGE_RANGES = {
+		"YOUNG": '25-30',
+		"MID": '31-34',
+		"OLD": '35+',
+	}
 
-    def __init__(self, seed):
-        if seed is None:
-            raise ValueError("runsim requires a seed")
-        self.SEED = seed
-        super().__init__(seed=self.SEED)
+	PROGRESSION_LIMITS = {
+		"MAX_OVR": 80,
+		"MIN_RATING": 30,
+		"MAX_RATING": 61,
+		"MAX_GOD_PROG_CHANCE": 0.09,
+		"MIN_GOD_PROG": 7,
+		"MAX_GOD_PROG": 13,
+	}
 
-        # numpy generator tied to the master seed (not using global np RNG)
-        self.np_rng = np.random.default_rng(self.SEED)
+	SKILL_KEYS = {
+		"ALL": [
+			'dIQ', 'Dnk', 'Drb', 'End', '2Pt', 'FT', 'Ins', 'Jmp', 'oIQ', 'Pss',
+			'Reb', 'Spd', 'Str', '3Pt',
+		],
+		"PHYSICAL_OLD": ['Spd', 'Str', 'Jmp', 'End'],
+		"PHYSICAL_MID": ['Spd', 'Str', 'Jmp'],
+	}
 
-        self._sim = None
-        self._delta = None
-        self._attrs = None
-        self._meta = None
-        self._baseline = None
-        self.export_ = pd.DataFrame()
+	PROG_RANGES = {
+		'25-30': {
+			'min1': 5,
+			'min2': 7,
+			'max1': 4,
+			'max2': 2,
+			'hardMax': 4,
+		},
+		'31-34': {
+			'min1': 6,
+			'min2': 7,
+			'max1': 4,
+			'max2': 3,
+			'hardMax': 2,
+		},
+		'35+': {
+			'min1': 6,
+			'min2': 9,
+			'max1': None,
+			'max2': None,
+			'hardMax': 0,
+		},
+	}
 
-    def _set_seed(self):
-        """Reinitialize master RNGs when seed changes. Do NOT mutate global RNGs."""
-        self.master_rng = random.Random(self.SEED)
-        self.np_rng = np.random.default_rng(self.SEED)
 
-    def PROGEMUP(self, initial_df, runs=100, seed=None):
-        """Run Monte Carlo sims and produce a single tidy CSV with flattened attributes and cumulative Ovr stats.
+class Utils:
+	@staticmethod
+	def randomInt(minv, maxv, rng=None):
+		"""Return a deterministic integer in [minv,maxv] using the provided
+		rng (random.Random) or the global random as fallback.
+		"""
+		if rng is None:
+			return random.randint(minv, maxv)
+		return rng.randint(minv, maxv)
 
-        This version records the per-run seed and the number of god progs produced
-        in each run. It resets GodProgSystem.godProgCount before every run so the
-        count is per-run (not cumulative across the entire experiment).
-        """
-        if seed is not None:
-            self.SEED = seed
-        self._set_seed()
 
-        players = list(initial_df.index)
-        attrs = ["Ovr"] + list(self.ATTRS)
+class ProgressionCalculator:
+	@staticmethod
+	def getProgRange(per, progOptions, rng=None):
+		# Accept an rng (random.Random) to avoid global RNG usage. If rng is None
+		# the code falls back to the global random module to remain backward compatible.
+		min1 = progOptions.get('min1')
+		min2 = progOptions.get('min2')
+		max1 = progOptions.get('max1')
+		max2 = progOptions.get('max2')
+		hardMin = progOptions.get('hardMin')
+		hardMax = progOptions.get('hardMax')
+		ovr = progOptions.get('ovr')
+		age = progOptions.get('age')
 
-        # ---------------- Metadata ----------------
-        meta = initial_df.reindex(players).copy()
-        for c in ("Name","Pos","Team","Age"):
-            if c not in meta.columns:
-                meta[c] = ""
-        self._meta = meta[["Name","Pos","Team","Age"]]
+		if min1 is None or min2 is None:
+			raise ValueError('progOptions must include min1 and min2')
 
-        # ---------------- Baseline ----------------
-        baseline = np.zeros((len(players), len(attrs)), dtype=int)
-        df_players = initial_df.reindex(players)
-        for j,a in enumerate(attrs):
-            if a=="Ovr":
-                vals=[]
-                for _, row in df_players.iterrows():
-                    d = {k:int(row.get(k,0) or 0) for k in self.ATTRS}
-                    vals.append(int(self.calcovr(d)))
-                baseline[:,j] = vals
-            else:
-                col = df_players.get(a,pd.Series(0,index=players)).fillna(0)
-                baseline[:,j] = col.astype(int).values
-        self._baseline = baseline
-        self._attrs = attrs
+		if per <= 20 and age < 31:
+			mn = math.ceil(per / 5) - 6
+			mx = math.ceil(per / 4) - 1
+		else:
+			mn = math.ceil(per / min1) - min2
+			if max1 is not None and max2 is not None:
+				if max1 == 0:
+					mx = 2
+				else:
+					mx = math.ceil(per / max1) - max2
+			else:
+				mx = 2
 
-        # ---------------- Simulations ----------------
-        sim = np.empty((runs, len(players), len(attrs)), dtype=int)
+		if hardMin is not None:
+			mn = hardMin
+		if hardMax is not None and mx > hardMax:
+			mx = hardMax
 
-        # For reproducibility we also record the per-run seeds and god-prog counts
-        self._run_seeds = []
+		if mx + ovr >= Config.PROGRESSION_LIMITS['MAX_OVR']:
+			if ovr >= Config.PROGRESSION_LIMITS['MAX_OVR']:
+				mx = 0
+				if age > 30 and age < 35:
+					mn = -10
+				if age >= 35:
+					mn = -14
+				if age <= 30:
+					# Faithful to original JS: use Utils.randomInt(-2,0) < 0.02
+					# seems to be quirky, KIV
+					if Utils.randomInt(-2, 0, rng) < 0.02:
+						mn = -2
+				if mn > mx:
+					mn = 0
+			else:
+				mx = Config.PROGRESSION_LIMITS['MAX_OVR'] - ovr
+				if mn + ovr >= Config.PROGRESSION_LIMITS['MAX_OVR']:
+					mn = 0
 
-        for r in range(runs):
-            # derive a fresh, independent seed from the master RNG
-            run_seed = self.master_rng.randint(0, 2**63 - 1)
-            self._run_seeds.append(run_seed)
+		return int(mn), int(mx)
 
-            run_rng = random.Random(run_seed)
 
-            after = self.runoneprog(initial_df, rng=run_rng).reindex(players)
-            if (r+1) % 1000 == 0: print(f"Run {r} complete (seed={run_seed})")
-            for i,pid in enumerate(players):
-                for j,a in enumerate(attrs):
-                    val = int(after.at[pid,a]) if a in after.columns and pd.notna(after.at[pid,a]) else int(baseline[i,j])
-                    sim[r,i,j] = val
-        self._sim = sim
-        self._delta = sim - baseline[np.newaxis,:,:]
+class GodProgSystem:
+	godProgCount = 0
 
-        # ---------------- Build tidy CSV ----------------
-        rows=[]
-        # Baseline row (Run=-1)
-        for i,pid in enumerate(players):
-            meta_row = self._meta.loc[pid].to_dict()
-            row = {
-                "Run": -1,
-                "RunSeed": None,
-                "PlayerID": pid,
-                "Baseline": int(baseline[i,0]),
-                "Value": int(baseline[i,0]),
-                "Delta": 0,
-                "PctChange": 0.0,
-                "AboveBaseline": False,
-                "CumulativeMean": int(baseline[i,0]),
-                "CumulativeStd": 0.0,
-                "CumulativeMin": int(baseline[i,0]),
-                "CumulativeMax": int(baseline[i,0]),
-                **meta_row
-            }
-            for j,a in enumerate(attrs):
-                row[a] = int(baseline[i,j])
-            rows.append(row)
+	@staticmethod
+	def calculateGodProgChance(ovr):
+		MIN_RATING = Config.PROGRESSION_LIMITS['MIN_RATING']
+		MAX_RATING = Config.PROGRESSION_LIMITS['MAX_RATING']
+		MAX_C = Config.PROGRESSION_LIMITS['MAX_GOD_PROG_CHANCE']
 
-        # Simulation runs
-        cumulative = {pid:[] for pid in players}  # store Ovr values for cumulative stats
-        for r in range(runs):
-            run_seed = self._run_seeds[r]
-            for i,pid in enumerate(players):
-                meta_row = self._meta.loc[pid].to_dict()
-                ovr_val = int(sim[r,i,0])
-                cumulative[pid].append(ovr_val)
-                row = {
-                    "Run": r,
-                    "RunSeed": run_seed,
-                    "PlayerID": pid,
-                    "Baseline": int(baseline[i,0]),
-                    "Value": ovr_val,
-                    "Delta": ovr_val - int(baseline[i,0]),
-                    "PctChange": (ovr_val - int(baseline[i,0]))/int(baseline[i,0]) if baseline[i,0]!=0 else 0.0,
-                    "AboveBaseline": ovr_val > int(baseline[i,0]),
-                    "CumulativeMean": float(np.mean(cumulative[pid])),
-                    "CumulativeStd": float(np.std(cumulative[pid], ddof=0)),
-                    "CumulativeMin": int(np.min(cumulative[pid])),
-                    "CumulativeMax": int(np.max(cumulative[pid])),
-                    **meta_row
-                }
-                for j,a in enumerate(attrs):
-                    row[a] = int(sim[r,i,j])
-                rows.append(row)
+		if ovr < MIN_RATING:
+			scale = 1.0
+		elif ovr > MAX_RATING:
+			scale = 0.01
+		else:
+			scale = 1.0 - (ovr - MIN_RATING) / (MAX_RATING - MIN_RATING)
 
-        self.export_ = pd.DataFrame(rows)
-        cols = ["Run","RunSeed","Name","Pos","Team","Age","PlayerID",
-                "Baseline","Value","Delta","PctChange","AboveBaseline",
-                "CumulativeMean","CumulativeStd","CumulativeMin","CumulativeMax"] + attrs
-        self.export_ = self.export_[cols]
-        print("Exported.")
-        return self.export_
+		return scale * MAX_C
+
+	@staticmethod
+	def godProg(age, ovr, rng=None):
+		# Only < 30 players considered, same as JS
+		if age >= 30:
+			return None
+
+		chance = GodProgSystem.calculateGodProgChance(ovr)
+		_rnd = rng.random() if rng is not None else random.random()
+		if _rnd >= chance:
+			return None
+
+		rp = Utils.randomInt(Config.PROGRESSION_LIMITS['MIN_GOD_PROG'],
+					 Config.PROGRESSION_LIMITS['MAX_GOD_PROG'], rng)
+		GodProgSystem.godProgCount += 1
+		print("GODPROG!")
+		return (rp, rp)
+
+
+class progsandbox:
+	def __init__(self, seed=0):
+		self.ATTRS = [
+			'dIQ', 'Dnk', 'Drb', 'End', '2Pt', 'FT', 'Ins', 'Jmp',
+			'oIQ', 'Pss', 'Reb', 'Spd', 'Str', '3Pt', 'Hgt',
+		]
+
+		# master RNG controls reproducibility for the whole object. Do NOT
+		# call random.seed() on the global RNG here.
+		self.master_seed = seed
+		self.master_rng = random.Random(seed)
+		self.SEED = seed
+		self.oldKeys = set(Config.SKILL_KEYS['PHYSICAL_OLD'])
+		self.midKeys = set(Config.SKILL_KEYS['PHYSICAL_MID'])
+
+	def _bound(self, v, lo, hi):
+		return min(max(v, lo), hi)
+
+	def limit_rating(self, v):
+		return max(0, min(100, int(v)))
+
+	def calcovr(self, r):
+		s = (
+			0.159 * (r['Hgt'] - 47.5) + 0.0777 * (r['Str'] - 50.2) + 0.123 * (r['Spd'] - 50.8)
+			+ 0.051 * (r['Jmp'] - 48.7) + 0.0632 * (r['End'] - 39.9) + 0.0126 * (r['Ins'] - 42.4)
+			+ 0.0286 * (r['Dnk'] - 49.5) + 0.0202 * (r['FT'] - 47.0) + 0.0726 * (r['3Pt'] - 47.1)
+			+ 0.133 * (r['oIQ'] - 46.8) + 0.159 * (r['dIQ'] - 46.7) + 0.059 * (r['Drb'] - 54.8)
+			+ 0.062 * (r['Pss'] - 51.3) + 0.01 * (r['2Pt'] - 47.0) + 0.01 * (r['Reb'] - 51.4) + 48.5
+		)
+
+		if s >= 68:
+			fudge = 8
+		elif s >= 50:
+			fudge = 4 + (s - 50) * (4 / 18)
+		elif s >= 42:
+			fudge = -5 + (s - 42) * (9 / 8)
+		elif s >= 31:
+			fudge = -5 - (42 - s) * (5 / 11)
+		else:
+			fudge = -10
+
+		return self.limit_rating(int(round(s + fudge)))
+
+	def _params_for_age(self, age):
+		if 25 <= age <= 30:
+			return copy.deepcopy(Config.PROG_RANGES['25-30'])
+		elif 31 <= age <= 34:
+			return copy.deepcopy(Config.PROG_RANGES['31-34'])
+		else:
+			return copy.deepcopy(Config.PROG_RANGES['35+'])
+
+	def _apply_attribute_progress(self, k, age, mn, mx, ratings, rng=None):
+		"""Encapsulate the per-attribute progression logic and use the
+		provided rng for deterministic draws when present.
+
+		Returns the (possibly updated) rating for attribute k.
+		"""
+		# choose progression value for this key; if mn>mx this yields 0
+		prog = Utils.randomInt(mn, mx, rng) if mn <= mx else 0
+
+		# old player physical caps
+		if age >= 30 and k in self.oldKeys and mx > 0:
+			# oldProgPhys = Math.random() * 0.05 + 0.01 in JS
+			r1 = rng.random() if rng is not None else random.random()
+			oldProgPhys = r1 * 0.05 + 0.01
+			# JS: if (Math.random() >= oldProgPhys) return true (skip)
+			if (rng.random() if rng is not None else random.random()) >= oldProgPhys:
+				# skip progression entirely for this attribute
+				return ratings[k]
+			# otherwise allow progression but cap it if necessary
+			if mx > 3:
+				prog = min(prog, 3)
+
+		# mid-age (25..29) slowdown for physical attributes
+		if 25 <= age < 30 and k in self.midKeys and prog > 0:
+			ageFactor = 0.7 - (age - 25) * 0.1
+			probProgression = max(ageFactor, 0)
+			if (rng.random() if rng is not None else random.random()) > probProgression:
+				prog = 0
+
+		return self.limit_rating(ratings[k] + prog)
+
+	def runoneprog(self, roster_df, rng=None):
+		"""Apply PER-based progression to each player row in roster_df.
+
+		If an rng (random.Random) is provided it will be used for all randomness
+		inside this single invocation. If not provided, the object's master_rng
+		is used. This keeps backward compatibility while enabling per-run
+		independence when the caller explicitly provides a dedicated RNG.
+		"""
+
+		if rng is None:
+			rng = self.master_rng
+
+		out = roster_df.copy(deep=True)
+		keys = [k for k in self.ATTRS if k != 'Hgt']
+
+		for idx, row in out.iterrows():
+			age = int(row.get('Age', 0))
+
+			if age <= 24:
+				continue
+
+			per = float(row.get('PER', 0))
+			if per == 0:
+				continue
+
+			ratings = {k: (float(row[k]) if k == 'Hgt' else int(round(row.get(k, 0) or 0))) for k in self.ATTRS}
+			ovr = self.calcovr(ratings)
+
+			params = self._params_for_age(age)
+			params['hardMin'] = None
+			params['ovr'] = int(ovr)
+			params['age'] = int(age)
+
+			mn, mx = ProgressionCalculator.getProgRange(per, params, rng)
+
+			# Use centralized god-prog system with the same rng
+			gp = GodProgSystem.godProg(age, int(ovr), rng)
+			if gp is not None:
+				mn, mx = gp
+
+			# Apply per-key progression using the helper
+			for k in keys:
+				ratings[k] = self._apply_attribute_progress(k, age, mn, mx, ratings, rng)
+
+			# write ratings back into frame and recalc OVR
+			r = {k: (out.at[idx, k] if k == 'Hgt' else ratings[k]) for k in self.ATTRS}
+			for k in keys:
+				out.at[idx, k] = ratings[k]
+			out.at[idx, 'Ovr'] = self.calcovr(r)
+
+		return out
