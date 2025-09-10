@@ -74,7 +74,6 @@ class runsim(progsandbox):
 
         # For reproducibility we also record the per-run seeds and god-prog counts
         self._run_seeds = []
-        self._run_godprog_counts = []
 
         for r in range(runs):
             # derive a fresh, independent seed from the master RNG
@@ -84,7 +83,7 @@ class runsim(progsandbox):
             run_rng = random.Random(run_seed)
 
             after = self.runoneprog(initial_df, rng=run_rng).reindex(players)
-            if r % 1000 == 0: print(f"Run {r} complete (seed={run_seed})")
+            if (r+1) % 1000 == 0: print(f"Run {r} complete (seed={run_seed})")
             for i,pid in enumerate(players):
                 for j,a in enumerate(attrs):
                     val = int(after.at[pid,a]) if a in after.columns and pd.notna(after.at[pid,a]) else int(baseline[i,j])
@@ -100,7 +99,6 @@ class runsim(progsandbox):
             row = {
                 "Run": -1,
                 "RunSeed": None,
-                "RunGodProgs": 0,
                 "PlayerID": pid,
                 "Baseline": int(baseline[i,0]),
                 "Value": int(baseline[i,0]),
@@ -121,7 +119,6 @@ class runsim(progsandbox):
         cumulative = {pid:[] for pid in players}  # store Ovr values for cumulative stats
         for r in range(runs):
             run_seed = self._run_seeds[r]
-            run_godprogs = self._run_godprog_counts[r]
             for i,pid in enumerate(players):
                 meta_row = self._meta.loc[pid].to_dict()
                 ovr_val = int(sim[r,i,0])
@@ -129,7 +126,6 @@ class runsim(progsandbox):
                 row = {
                     "Run": r,
                     "RunSeed": run_seed,
-                    "RunGodProgs": run_godprogs,
                     "PlayerID": pid,
                     "Baseline": int(baseline[i,0]),
                     "Value": ovr_val,
@@ -147,7 +143,7 @@ class runsim(progsandbox):
                 rows.append(row)
 
         self.export_ = pd.DataFrame(rows)
-        cols = ["Run","RunSeed","RunGodProgs","Name","Pos","Team","Age","PlayerID",
+        cols = ["Run","RunSeed","Name","Pos","Team","Age","PlayerID",
                 "Baseline","Value","Delta","PctChange","AboveBaseline",
                 "CumulativeMean","CumulativeStd","CumulativeMin","CumulativeMax"] + attrs
         self.export_ = self.export_[cols]
