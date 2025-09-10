@@ -35,12 +35,16 @@ def exportcleaner(export_file, teams, teaminfo_file, isdict=False) -> pd.DataFra
             continue
 
         player_team = team_lookup.get(str(p["tid"]))
-        if player_team not in teams:
-            continue
+        if teams != None:
+            if player_team not in teams:
+                continue
 
+
+        """
         if int(YEAR - p["born"]["year"]) < 25:
             print(f"{p["firstName"]} {p['lastName']} skipped")
             continue
+        """
 
         name = f"{p['firstName']} {p['lastName']}"
         value_lookup = {k.lower(): v for k, v in p["ratings"][-1].items()}
