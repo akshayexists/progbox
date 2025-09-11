@@ -1,13 +1,12 @@
 import math
 import random
 import copy
+import numpy as np
 
 #  port of NoEyeTest / BBGM progression logic for players 25+
-# RNG clarity: this version uses an object-local RNG (random.Random) so
-# - re-running the whole simulation with the same master seed is reproducible
-# - each Monte Carlo run can be made independent by deriving a per-run seed
-#   from the master RNG and passing a dedicated RNG into runoneprog
 # LLM was used for code cleaning and slight refactoring.
+
+# latest edit: speeeeeeeeeeeed & bugfixes
 
 class Config:
 	AGE_RANGES = {
@@ -113,9 +112,9 @@ class ProgressionCalculator:
 				if age >= 35:
 					mn = -14
 				if age <= 30:
-					# Faithful to original JS: use Utils.randomInt(-2,0) < 0.02
-					# seems to be quirky, KIV
-					if Utils.randomInt(-2, 0, rng) < 0.02:
+					# original JS: use Utils.randomInt(-2,0) < 0.02 seemed to be quirky
+					# suggestion for JS: use if (Math.random() < 0.02) {adjustedMin = -2;}
+					if (rng.random() if rng else random.random()) < 0.02:
 						mn = -2
 				if mn > mx:
 					mn = 0
@@ -129,6 +128,8 @@ class ProgressionCalculator:
 
 class GodProgSystem:
 	godProgCount = 0
+	godprogs = []
+	maxagegp = 0
 
 	@staticmethod
 	def calculateGodProgChance(ovr):
@@ -158,7 +159,10 @@ class GodProgSystem:
 
 		rp = Utils.randomInt(Config.PROGRESSION_LIMITS['MIN_GOD_PROG'],
 					 Config.PROGRESSION_LIMITS['MAX_GOD_PROG'], rng)
+		
 		GodProgSystem.godProgCount += 1
+		GodProgSystem.godprogs.append(rp)
+		if age > GodProgSystem.maxagegp: GodProgSystem.maxagegp = age
 		#print("GODPROG!")
 		return (rp, rp)
 
@@ -246,33 +250,45 @@ class progsandbox:
 		return self.limit_rating(ratings[k] + prog)
 
 	def runoneprog(self, roster_df, rng=None):
-		"""Apply PER-based progression to each player row in roster_df.
-
-		If an rng (random.Random) is provided it will be used for all randomness
-		inside this single invocation. If not provided, the object's master_rng
-		is used. This keeps backward compatibility while enabling per-run
-		independence when the caller explicitly provides a dedicated RNG.
 		"""
-
+		Apply PER-based progression to each player row in roster_df.
+		Optimized to avoid iterrows/at overhead while preserving exact logic.
+		"""
 		if rng is None:
 			rng = self.master_rng
 
+		# Work on a copy of the roster
 		out = roster_df.copy(deep=True)
+
+		# Extract arrays for speed
+		ages = out["Age"].to_numpy(dtype=int, copy=False)
+		pers = out["PER"].to_numpy(dtype=float, copy=False)
+
+		# We’ll update all attributes in place
+		attr_arrays = {k: out[k].to_numpy(copy=True) if k in out.columns else np.zeros(len(out), dtype=int)
+					for k in self.ATTRS}
+		# Ensure Ovr column exists (will be recalculated)
+		if "Ovr" not in out.columns:
+			out["Ovr"] = 0
+		ovr_array = out["Ovr"].to_numpy(copy=True)
+
 		keys = [k for k in self.ATTRS if k != 'Hgt']
 
-		for idx, row in out.iterrows():
-			age = int(row.get('Age', 0))
-
-			if age <= 24:
+		for i in range(len(out)):
+			age = ages[i]
+			if age <= 25:
 				continue
-
-			per = float(row.get('PER', 0))
+			per = pers[i]
 			if per == 0:
 				continue
 
-			ratings = {k: (float(row[k]) if k == 'Hgt' else int(round(row.get(k, 0) or 0))) for k in self.ATTRS}
+			# Build ratings dict once for this player from arrays
+			ratings = {k: int(round(attr_arrays[k][i])) for k in self.ATTRS if k != 'Hgt'}
+			ratings['Hgt'] = int(attr_arrays['Hgt'][i])
+
 			ovr = self.calcovr(ratings)
 
+			# Params for age and PER
 			params = self._params_for_age(age)
 			params['hardMin'] = None
 			params['ovr'] = int(ovr)
@@ -280,18 +296,23 @@ class progsandbox:
 
 			mn, mx = ProgressionCalculator.getProgRange(per, params, rng)
 
-			# Use centralized god-prog system with the same rng
+			# God progression
 			gp = GodProgSystem.godProg(age, int(ovr), rng)
 			if gp is not None:
 				mn, mx = gp
 
-			# Apply per-key progression using the helper
+			# Apply per-key progression
 			for k in keys:
-				ratings[k] = self._apply_attribute_progress(k, age, mn, mx, ratings, rng)
+				new_val = self._apply_attribute_progress(k, age, mn, mx, ratings, rng)
+				ratings[k] = new_val
+				attr_arrays[k][i] = new_val
 
-			# write ratings back into frame and recalc OVR
-			r = {k: (out.at[idx, k] if k == 'Hgt' else ratings[k]) for k in self.ATTRS}
-			for k in keys:
-				out.at[idx, k] = ratings[k]
-			out.at[idx, 'Ovr'] = self.calcovr(r)
+			# Recalculate Ovr with updated ratings
+			ovr_array[i] = self.calcovr(ratings)
+
+		# Write updated arrays back into DataFrame
+		for k, arr in attr_arrays.items():
+			out[k] = arr
+		out["Ovr"] = ovr_array
+
 		return out

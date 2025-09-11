@@ -23,7 +23,7 @@ def exportcleaner(export_file, teams, teaminfo_file, isdict=False) -> pd.DataFra
     with open(teaminfo_file, "rb") as f:
         team_lookup = json.load(f)
 
-    # Normalize teams argument to a list
+    # Normalize teams argument to a list if single string is passed
     if isinstance(teams, str):
         teams = [teams]
 
@@ -35,25 +35,28 @@ def exportcleaner(export_file, teams, teaminfo_file, isdict=False) -> pd.DataFra
             continue
 
         player_team = team_lookup.get(str(p["tid"]))
+        if player_team == "Retired": #skip retired players
+            continue
+
         if teams != None:
             if player_team not in teams:
                 continue
-
-
-        """
-        if int(YEAR - p["born"]["year"]) < 25:
-            print(f"{p["firstName"]} {p['lastName']} skipped")
-            continue
-        """
-
+            
         name = f"{p['firstName']} {p['lastName']}"
+
+        age = int(YEAR - p["born"]["year"])
+        #automatically exclude those under 25 as they are irrelevant anyway
+        if age < 25:
+            print(f'{name} skipped')
+            continue
+
         value_lookup = {k.lower(): v for k, v in p["ratings"][-1].items()}
 
         # Core info
         row = {
             "Team": player_team,
             "Name": name,
-            "Age": YEAR - p["born"]["year"],
+            "Age": age,
             "PER": (
                 p["stats"][-2 if p["stats"] and p["stats"][-1].get("playoffs") else -1]["per"]
                 if p["stats"] else 0
