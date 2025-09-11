@@ -1,13 +1,12 @@
 import math
 import random
 import copy
+import numpy as np
 
 #  port of NoEyeTest / BBGM progression logic for players 25+
-# RNG clarity: this version uses an object-local RNG (random.Random) so
-# - re-running the whole simulation with the same master seed is reproducible
-# - each Monte Carlo run can be made independent by deriving a per-run seed
-#   from the master RNG and passing a dedicated RNG into runoneprog
 # LLM was used for code cleaning and slight refactoring.
+
+# latest edit: speeeeeeeeeeeed & bugfixes
 
 class Config:
 	AGE_RANGES = {
@@ -253,7 +252,7 @@ class progsandbox:
 	def runoneprog(self, roster_df, rng=None):
 		"""
 		Apply PER-based progression to each player row in roster_df.
-		slow iterrows/at overhead REPLACED!!
+		Optimized to avoid iterrows/at overhead while preserving exact logic.
 		"""
 		if rng is None:
 			rng = self.master_rng
