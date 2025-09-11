@@ -2,15 +2,7 @@ from progutils import progsandbox
 import numpy as np, pandas as pd, random
 
 class runsim(progsandbox):
-	"""Monte Carlo wrapper producing a single analysis-ready CSV with cumulative Ovr stats.
-
-	Behavior changes:
-	- Uses self.master_rng (created by progsandbox) to derive per-run seeds.
-	- Does NOT call random.seed() or np.random.seed() on the global RNGs.
-	- Each run is independent (its own random.Random instance) while the whole
-	  experiment is reproducible given the same master seed.
-    New change 11/9: vectorize PROGEMUP using numpy instead of native python loops
-	"""
+	"""Monte Carlo wrapper producing a single analysis-ready CSV with cumulative Ovr stats.	"""
 
 	def __init__(self, seed):
 		if seed is None:
@@ -36,7 +28,7 @@ class runsim(progsandbox):
 
 	def PROGEMUP(self, initial_df, runs=100, seed=None):
 		"""
-		Vectorized PROGEMUP (sequential runs, no parallelization).
+		Vectorized PROGEMUP (sequential runs).
 		- Eliminates per-player/per-attribute loops when recording run outputs.
 		- Produces the same tidy CSV as before but built from vectorized arrays.
 		- Keeps reproducibility: per-run seeds derived from self.master_rng.
@@ -123,15 +115,14 @@ class runsim(progsandbox):
 		self._sim = sim
 		self._delta = sim - baseline[np.newaxis, :, :]
 
-		# Optional diagnostics (keeps original GodProgSystem reporting if present)
+		
+		from progutils import GodProgSystem
 		try:
-			from progutils import GodProgSystem
 			print(f'GODPROG!! Count:{GodProgSystem.godProgCount}, Average God Prog: {np.mean(GodProgSystem.godprogs)}, '
 				f'Max God Prog: {np.max(GodProgSystem.godprogs)}, Min God Prog: {np.min(GodProgSystem.godprogs)}')
 			print(f'Max Age GODPROGGED: {GodProgSystem.maxagegp}')
-		except Exception:
-			# If GodProgSystem is not present or has different interface, ignore diagnostics
-			pass
+		except:
+			print('No GODPROGS :(')
 
 		# ---------------- Build tidy CSV (vectorized) ----------------
 		# We will create:
@@ -233,7 +224,7 @@ class runsim(progsandbox):
 			sim_data[a] = sim[:, :, j].reshape(-1).astype(int)
 
 		sim_df_export = pd.DataFrame(sim_data)
-
+		print(f'Total Sims: {self.totalsimcounts}')
 		# final column ordering to match original
 		cols = ["Run", "RunSeed", "Name", "Pos", "Team", "Age", "PlayerID",
 				"Baseline", "Value", "Delta", "PctChange", "AboveBaseline",
@@ -242,5 +233,5 @@ class runsim(progsandbox):
 		# concat baseline and sim blocks, baseline first
 		self.export_ = pd.concat([baseline_df_export[cols], sim_df_export[cols]], ignore_index=True)
 
-		print("Exported.")
+		print("Beginning write to excel.")
 		return self.export_
