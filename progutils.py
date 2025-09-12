@@ -50,23 +50,21 @@ class Config:
 	
 	# Progression parameters by age range
 	PROG_PARAMS = {
-		(25, 30): {'min1': 5, 'min2': 7, 'max1': 4, 'max2': 2, 'hardMax': 4, 'decline': None},
-		(31, 34): {'min1': 6, 'min2': 7, 'max1': 4, 'max2': 3, 'hardMax': 2, 'decline': -10},
-		(35, 99): {'min1': 6, 'min2': 9, 'max1': None, 'max2': None, 'hardMax': 0, 'decline': -14},
+		(25, 30): {'min1': 5, 'min2': 7, 'max1': 4, 'max2': 2, 'hardMax': 4, 'hardMin': None},
+		(31, 34): {'min1': 6, 'min2': 7, 'max1': 4, 'max2': 3, 'hardMax': 2, 'hardMin': -10},
+		(35, 99): {'min1': 6, 'min2': 9, 'max1': None, 'max2': None, 'hardMax': 0, 'hardMin': -14},
 	}
 	
 	# Special progression rules
 	EARLY_PROG_PER_THRESHOLD = 20
 	EARLY_PROG_AGE_THRESHOLD = 31
-	EARLY_PROG_MN_DIVISOR = 5
-	EARLY_PROG_MN_OFFSET = -6
-	EARLY_PROG_MX_DIVISOR = 4
-	EARLY_PROG_MX_OFFSET = -1
+	EARLY_PROG_PER_DIVISOR = 5
+	EARLY_PROG_PER_OFFSET = -6
+	EARLY_PROG_PER_DIVISOR = 4
+	EARLY_PROG_PER_OFFSET = -1
 	
 	DEFAULT_MAX_PROG = 2
 	
-
-
 
 class GodProgSystem:
 	"""Tracks and manages 'god progression' events for young players."""
@@ -75,6 +73,7 @@ class GodProgSystem:
 	godprogs = []
 	maxagegp = 0
 	playersgodprogged = []
+	superlucky = {}
 	
 	@staticmethod
 	def calculate_god_prog_chance(ovr):
@@ -103,7 +102,8 @@ class GodProgSystem:
 		# Track statistics
 		cls.godProgCount += 1
 		cls.godprogs.append(prog_amount)
-		cls.playersgodprogged.append({"Name": name, "amount": prog_amount, "seed": seed})
+		cls.playersgodprogged.append({"Name": name, "Initial OVR": ovr, "amount": prog_amount, "seed": seed})
+		if ovr > Config.MAX_RATING: cls.superlucky[name] = (ovr, prog_amount, seed)
 		if age > cls.maxagegp:
 			cls.maxagegp = age
 		
@@ -136,8 +136,8 @@ class ProgressionCalculator:
 		# Early progression rule for young, low-PER players
 		if (per <= Config.EARLY_PROG_PER_THRESHOLD and 
 			age < Config.EARLY_PROG_AGE_THRESHOLD):
-			mn = math.ceil(per / Config.EARLY_PROG_MN_DIVISOR) + Config.EARLY_PROG_MN_OFFSET
-			mx = math.ceil(per / Config.EARLY_PROG_MX_DIVISOR) + Config.EARLY_PROG_MX_OFFSET
+			mn = math.ceil(per / Config.EARLY_PROG_PER_DIVISOR) + Config.EARLY_PROG_PER_OFFSET
+			mx = math.ceil(per / Config.EARLY_PROG_PER_DIVISOR) + Config.EARLY_PROG_PER_OFFSET
 		else:
 			# Standard progression calculation
 			mn = math.ceil(per / min1) - min2
@@ -168,10 +168,10 @@ class ProgressionCalculator:
 			if ovr >= Config.MAX_OVR:
 				# Already at cap
 				mx = 0
-				if 30 < age < 35:
-					mn = Config.PROG_PARAMS[(31, 34)]['decline']
+				if 31 <= age <= 34:
+					mn = Config.PROG_PARAMS[(31, 34)]['hardMin']
 				elif age >= 35:
-					mn = Config.PROG_PARAMS[(35, 99)]['decline']
+					mn = Config.PROG_PARAMS[(35, 99)]['hardMin']
 				elif age <= 30:
 					# Young player quirk
 					# original JS: use Utils.randomInt(-2,0) < 0.02 seemed to be quirky
@@ -247,7 +247,7 @@ class AttributeProgression:
 		prog = cls.apply_mid_age_slowdown(attr, age, prog, rng)
 		
 		# Return bounded result
-		return max(0, min(100, rating + prog))
+		return max(0, min(Config.MAX_OVR, rating + prog))	#modified for minimum between MAXRATING and rating+prog
 
 
 class progsandbox:
