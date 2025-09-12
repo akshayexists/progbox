@@ -55,8 +55,6 @@ class Config:
 	EARLY_PROG_MX_DIVISOR = 4
 	EARLY_PROG_MX_OFFSET = -1
 	
-	OVR_CAP_QUIRK_CHANCE = 0.02
-	OVR_CAP_QUIRK_ADJUSTMENT = -2
 	DEFAULT_MAX_PROG = 2
 	
 
@@ -68,15 +66,7 @@ class GodProgSystem:
 	godProgCount = 0
 	godprogs = []
 	maxagegp = 0
-	playersgodprogged = {}
-	
-	@classmethod
-	def reset_stats(cls):
-		"""Reset all tracking statistics."""
-		cls.godProgCount = 0
-		cls.godprogs.clear()
-		cls.maxagegp = 0
-		cls.playersgodprogged.clear()
+	playersgodprogged = []
 	
 	@staticmethod
 	def calculate_god_prog_chance(ovr):
@@ -90,7 +80,7 @@ class GodProgSystem:
 		return scale * Config.MAX_GOD_PROG_CHANCE
 	
 	@classmethod
-	def attempt_god_prog(cls, age, ovr, rng, name):
+	def attempt_god_prog(cls, age, ovr, rng, name, seed):
 		"""Attempt god progression for a player. Returns (min, max) tuple or None."""
 		if age >= Config.YOUNG_MAX:
 			return None
@@ -105,7 +95,7 @@ class GodProgSystem:
 		# Track statistics
 		cls.godProgCount += 1
 		cls.godprogs.append(prog_amount)
-		cls.playersgodprogged[name] = {"amount": prog_amount}
+		cls.playersgodprogged.append({"Name": name, "amount": prog_amount, "seed": seed})
 		if age > cls.maxagegp:
 			cls.maxagegp = age
 		
@@ -264,7 +254,7 @@ class progsandbox:
 	def calcovr(self, attrs_dict):
 		"""
 		Calculate overall rating from attributes dictionary.
-		CRITICAL: Maintains exact same logic and coefficients as original.
+		CRITICAL: Maintains exact same logic and coefficients as bbgm ovr calculation script: https://github.com/zengm-games/zengm/blob/master/src/worker/core/player/ovr.basketball.ts.
 		"""
 		# Extract values in the exact order required
 		vals = np.array([float(attrs_dict.get(col, 0)) for col in Config.OVR_CALC_ORDER], dtype=float)
@@ -286,7 +276,7 @@ class progsandbox:
 		
 		return max(0, min(100, int(round(s + fudge))))
 	
-	def runoneprog(self, roster_df, rng=None):
+	def runoneprog(self, roster_df, rng, seed):
 		"""
 		Apply PER-based progression to each player in the roster.
 		Maintains exact same progression logic as original.
@@ -348,7 +338,7 @@ class progsandbox:
 				mn = mx
 			
 			# Check for god progression
-			god_prog = GodProgSystem.attempt_god_prog(age, ovr, rng, name)
+			god_prog = GodProgSystem.attempt_god_prog(age, ovr, rng, name, seed)
 			if god_prog is not None:
 				mn, mx = god_prog
 			
