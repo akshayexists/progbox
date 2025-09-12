@@ -1,4 +1,4 @@
-from progutils import *
+from progutils2 import *
 import numpy as np
 import pandas as pd
 import random
@@ -6,7 +6,6 @@ import json
 
 class runsim(progsandbox):
 	"""Monte Carlo wrapper for NOEYETEST simulation."""
-
 	def __init__(self, seed):
 		if seed is None:
 			raise ValueError("runsim requires a seed")
@@ -33,18 +32,18 @@ class runsim(progsandbox):
 		
 		# Prepare baseline values for all attributes at once
 		attrs = ['Ovr', 'PER'] + self.ATTRS
-		baseline_data = np.zeros((len(players), len(attrs)), dtype=int)
+		baseline_data = np.zeros((len(players), len(attrs)), dtype=float)
 		
 		for i, player_idx in enumerate(players):
 			row = df.loc[player_idx]
 			
 			# Calculate OVR from core attributes
-			attr_dict = {k: int(row.get(k, 0) or 0) for k in self.CORE_ATTRS}
-			baseline_data[i, 0] = int(self.calcovr(attr_dict))  # OVR
+			attr_dict = {k: float(row.get(k, 0) or 0) for k in self.CORE_ATTRS}
+			baseline_data[i, 0] = float(self.calcovr(attr_dict))  # OVR
 			
 			# Add other attributes
 			for j, attr in enumerate(attrs[1:], 1):
-				baseline_data[i, j] = int(row.get(attr, 0) or 0)
+				baseline_data[i, j] = float(row.get(attr, 0) or 0)
 		
 		return players, attrs, baseline_data, meta
 
@@ -53,7 +52,7 @@ class runsim(progsandbox):
 		run_rng = random.Random(run_seed)
 		
 		# Run progression
-		after_df = self.runoneprog(df, rng=run_rng)
+		after_df = self.runoneprog(df, rng=run_rng, seed = run_seed)
 		
 		# Align and fill missing data
 		after_aligned = after_df.reindex(index=players, columns=attrs).fillna(
@@ -65,11 +64,11 @@ class runsim(progsandbox):
 		for player_idx in players:
 			self.totalsimulationcounts +=1
 			row = after_aligned.loc[player_idx]
-			attr_dict = {k: int(row.get(k, 0) or 0) for k in self.ATTRS}
-			ovr_values.append(int(self.calcovr(attr_dict)))
+			attr_dict = {k: float(row.get(k, 0) or 0) for k in self.ATTRS}
+			ovr_values.append(float(self.calcovr(attr_dict)))
 		
 		after_aligned['Ovr'] = ovr_values
-		return after_aligned.to_numpy(dtype=int)
+		return after_aligned.to_numpy(dtype=float)
 
 	def _build_export_dataframe(self, baseline_data, sim_results, players, attrs, meta, run_seeds):
 		"""Build the final export DataFrame efficiently."""
@@ -186,10 +185,11 @@ class runsim(progsandbox):
 		self.export_ = export_df[final_cols]
 		
 		# Log results
-		import json
-		with open('godprogs.json', 'w', encoding='utf-8') as f:
-			json.dump(GodProgSystem.playersgodprogged, f, ensure_ascii=False, indent=4)
-		print(f'God Progs: {GodProgSystem.godProgCount}, Exported god prog logs.')
+		with open('outputs/godprogs.json', 'w', encoding='utf-8') as f:
+			json.dump(sorted(GodProgSystem.playersgodprogged, key = lambda x: x['Name']), f, ensure_ascii=False, indent=4)
+		with open('outputs/superlucky.json', 'w', encoding='utf-8') as f:
+			json.dump(GodProgSystem.superlucky, f, ensure_ascii=False, indent=4)
+		print(f'God Progs: {GodProgSystem.godProgCount}, Max Age God Progged: {GodProgSystem.maxagegp}. Exported god prog logs.')
 		print(f"Total Sims: {self.totalsimulationcounts}")
 		
 		return self.export_
