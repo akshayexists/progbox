@@ -58,10 +58,10 @@ class Config:
 	# Special progression rules
 	EARLY_PROG_PER_THRESHOLD = 20
 	EARLY_PROG_AGE_THRESHOLD = 31
-	EARLY_PROG_PER_DIVISOR = 5
-	EARLY_PROG_PER_OFFSET = -6
-	EARLY_PROG_PER_DIVISOR = 4
-	EARLY_PROG_PER_OFFSET = -1
+	EARLY_PROG_PER_DIVISOR_MN = 5
+	EARLY_PROG_PER_OFFSET_MN = -6
+	EARLY_PROG_PER_DIVISOR_MX = 4
+	EARLY_PROG_PER_OFFSE_MXT = -1
 	
 	DEFAULT_MAX_PROG = 2
 	
@@ -136,8 +136,8 @@ class ProgressionCalculator:
 		# Early progression rule for young, low-PER players
 		if (per <= Config.EARLY_PROG_PER_THRESHOLD and 
 			age < Config.EARLY_PROG_AGE_THRESHOLD):
-			mn = math.ceil(per / Config.EARLY_PROG_PER_DIVISOR) + Config.EARLY_PROG_PER_OFFSET
-			mx = math.ceil(per / Config.EARLY_PROG_PER_DIVISOR) + Config.EARLY_PROG_PER_OFFSET
+			mn = math.ceil(per / Config.EARLY_PROG_PER_DIVISOR_MN) + Config.EARLY_PROG_PER_OFFSET_MN
+			mx = math.ceil(per / Config.EARLY_PROG_PER_DIVISOR_MN) + Config.EARLY_PROG_PER_OFFSET_MN
 		else:
 			# Standard progression calculation
 			mn = math.ceil(per / min1) - min2
