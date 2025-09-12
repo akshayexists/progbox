@@ -2,6 +2,14 @@ import math
 import random
 import copy
 import numpy as np
+
+"""
+references: https://github.com/fearandesire/NoEyeTest/blob/dev/tiers.md
+			https://github.com/zengm-games/zengm/blob/master/src/worker/core/player/ovr.basketball.ts
+			noeyetest.js (https://github.com/fearandesire/NoEyeTest/blob/dev)
+"""
+
+
 class Config:
 	"""Centralized configuration for all progression constants."""
 	
@@ -31,7 +39,7 @@ class Config:
 					  'Dnk', 'FT', '3Pt', 'oIQ', 'dIQ', 'Drb',
 					  'Pss', '2Pt', 'Reb']
 	
-	# OVR coefficients and centers (CRITICAL - do not change)
+	# OVR coefficients and centers for vectorized ovr calc (CRITICAL - do not change)
 	OVR_COEFFS = np.array([0.159, 0.0777, 0.123, 0.051, 0.0632, 0.0126,
 						   0.0286, 0.0202, 0.0726, 0.133, 0.159, 0.059,
 						   0.062, 0.01, 0.01], dtype=float)
@@ -318,7 +326,7 @@ class progsandbox:
 			name = names[i]
 			
 			# Skip conditions (unchanged from original)
-			if age <= 25 or per <= 0 or not np.isfinite(per):
+			if age < 25 or per <= 0 or not np.isfinite(per):
 				continue
 			
 			# Build current ratings dict
