@@ -50,10 +50,12 @@ class Config:
 	
 	# Progression parameters by age range
 	PROG_PARAMS = {
-		(25, 30): {'min1': 5, 'min2': 7, 'max1': 4, 'max2': 2, 'hardMax': 4, 'hardMin': None},
-		(31, 34): {'min1': 6, 'min2': 7, 'max1': 4, 'max2': 3, 'hardMax': 2, 'hardMin': -10},
-		(35, 99): {'min1': 6, 'min2': 9, 'max1': None, 'max2': None, 'hardMax': 0, 'hardMin': -14},
-	}
+        (25, 27): {'min1': 5, 'min2': 6, 'max1': 4, 'max2': 2, 'hardMax': 5, 'hardMin': None},
+        (28, 30): {'min1': 4, 'min2': 7, 'max1': 4, 'max2': 2, 'hardMax': 4, 'hardMin': None},  # Prime
+        (31, 33): {'min1': 6, 'min2': 7, 'max1': 4, 'max2': 3, 'hardMax': 3, 'hardMin': -8},
+        (34, 36): {'min1': 7, 'min2': 8, 'max1': 5, 'max2': 4, 'hardMax': 2, 'hardMin': -12},
+        (37, 99): {'min1': 8, 'min2': 10, 'max1': None, 'max2': None, 'hardMax': 0, 'hardMin': -18},
+    }
 	
 	# Special progression rules
 	EARLY_PROG_PER_THRESHOLD = 20
@@ -122,7 +124,7 @@ class ProgressionCalculator:
 				result['age'] = age
 				return result
 		# Fallback to oldest bracket
-		result = copy.deepcopy(Config.PROG_PARAMS[(35, 99)])
+		result = copy.deepcopy(Config.PROG_PARAMS[(37, 99)])
 		result['age'] = age
 		return result
 	
@@ -168,16 +170,18 @@ class ProgressionCalculator:
 			if ovr >= Config.MAX_OVR:
 				# Already at cap
 				mx = 0
-				if 31 <= age <= 34:
-					mn = Config.PROG_PARAMS[(31, 34)]['hardMin']
-				elif age >= 35:
-					mn = Config.PROG_PARAMS[(35, 99)]['hardMin']
-				elif age <= 30:
+				params = ProgressionCalculator.get_age_params(age)
+				if age <= 30:
 					# Young player quirk
 					# original JS: use Utils.randomInt(-2,0) < 0.02 seemed to be quirky
 					# suggestion for JS: use if (Math.random() < 0.02) {adjustedMin = -2;}
-					if (rng.random() if rng else random.random()) < 0.02:
+					prob = rng.random()
+					if prob < 0.01:
 						mn = -2
+					if prob < 0.01:
+						mn = -1
+				else:
+					mn = params['hardMin']
 				
 				if mn > mx:
 					mn = 0
