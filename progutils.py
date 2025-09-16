@@ -21,47 +21,48 @@ class Config:
     ATTR_TO_CAT = {attr: cat for cat, attrs in ATTRIBUTE_CATEGORIES.items() for attr in attrs}
     
     # Performance scaling
-    PER_SCALING_FACTOR = 80.0  # Reduced impact for more balanced progression
+    PER_SCALING_FACTOR = 50.0  # Increased to reduce PER impact and limit power creep
     
     # God Progression - refined parameters
     GOD_PROG_AGE_LIMIT = 30
     GOD_PROG_JUMP_MIN = 6
     GOD_PROG_JUMP_MAX = 12
     GOD_PROG_CHANCE_SCALE = {
-        'MIN_RATING': 0.0, 'MAX_CHANCE': 0.004,  # Slightly higher base chance
-        'MAX_RATING': 65.0, 'MIN_CHANCE': 0.0000001  # Steeper decay
+        'MIN_RATING': 0.0, 'MAX_CHANCE': 0.09,  # Slightly higher base chance
+        'MAX_RATING': 61.0, 'MIN_CHANCE': 0.0001  # Steeper decay
     }
     
-    # Refined progression parameters with smoother curves
-    PROGRESSION_PARAMS = {
+    # Beta distribution parameters for progression
+    # Format: alpha, beta, scale (multiplier for final result), shift (offset)
+    BETA_PROGRESSION_PARAMS = {
         '25-29': {
-            'Physical':  {'dist': 'normal', 'mean': 0.1, 'sd': 0.9},
-            'Technical': {'dist': 'normal', 'mean': 0.6, 'sd': 1.1},
-            'Mental':    {'dist': 'normal', 'mean': 0.8, 'sd': 0.6},
+            'Physical':  {'alpha': 2.0, 'beta': 4.0, 'scale': 4.0, 'shift': -1.5},  # Slight decline bias
+            'Technical': {'alpha': 3.0, 'beta': 2.5, 'scale': 4.5, 'shift': -1.0},  # Growth bias
+            'Mental':    {'alpha': 4.0, 'beta': 2.0, 'scale': 3.0, 'shift': -0.5},  # Strong growth bias
         },
         '30-33': {
-            'Physical':  {'dist': 'triangular', 'left': -1.5, 'mode': -0.2, 'right': 1.2},
-            'Technical': {'dist': 'triangular', 'left': -0.8, 'mode': 0.2, 'right': 1.5},
-            'Mental':    {'dist': 'triangular', 'left': -0.3, 'mode': 0.3, 'right': 1.0},
+            'Physical':  {'alpha': 1.5, 'beta': 3.5, 'scale': 3.5, 'shift': -2.0},  # Decline starts
+            'Technical': {'alpha': 2.5, 'beta': 3.0, 'scale': 3.5, 'shift': -1.2},  # Neutral to slight decline
+            'Mental':    {'alpha': 3.0, 'beta': 2.5, 'scale': 2.5, 'shift': -0.5},  # Still growing but slower
         },
         '34-36': {
-            'Physical':  {'dist': 'triangular', 'left': -2.5, 'mode': -0.8, 'right': 0.5},
-            'Technical': {'dist': 'triangular', 'left': -1.2, 'mode': -0.1, 'right': 0.8},
-            'Mental':    {'dist': 'triangular', 'left': -0.4, 'mode': 0.1, 'right': 0.6},
+            'Physical':  {'alpha': 1.0, 'beta': 4.0, 'scale': 3.0, 'shift': -2.5},  # Clear decline
+            'Technical': {'alpha': 2.0, 'beta': 3.5, 'scale': 2.8, 'shift': -1.5},  # Decline sets in
+            'Mental':    {'alpha': 2.5, 'beta': 3.0, 'scale': 2.0, 'shift': -0.8},  # Slower growth
         },
         '37+': {
-            'Physical':  {'dist': 'triangular', 'left': -3.5, 'mode': -1.2, 'right': 0.0},
-            'Technical': {'dist': 'triangular', 'left': -1.8, 'mode': -0.4, 'right': 0.3},
-            'Mental':    {'dist': 'triangular', 'left': -0.8, 'mode': -0.1, 'right': 0.4},
+            'Physical':  {'alpha': 0.8, 'beta': 5.0, 'scale': 2.5, 'shift': -3.0},  # Strong decline
+            'Technical': {'alpha': 1.5, 'beta': 4.0, 'scale': 2.2, 'shift': -2.0},  # Noticeable decline
+            'Mental':    {'alpha': 2.0, 'beta': 3.5, 'scale': 1.5, 'shift': -1.0},  # Minimal change
         }
     }
     
-    # Refined hard caps
+    # Refined hard caps - slightly tighter to limit power creep
     HARD_CAPS = {
-        '25-29': {'Physical': {'min': -2, 'max': 3}, 'Technical': {'min': -1, 'max': 4}, 'Mental': {'min': 0, 'max': 3}},
-        '30-33': {'Physical': {'min': -3, 'max': 2}, 'Technical': {'min': -2, 'max': 3}, 'Mental': {'min': -1, 'max': 2}},
-        '34-36': {'Physical': {'min': -4, 'max': 1}, 'Technical': {'min': -3, 'max': 1}, 'Mental': {'min': -1, 'max': 1}},
-        '37+':   {'Physical': {'min': -6, 'max': 0}, 'Technical': {'min': -4, 'max': 0}, 'Mental': {'min': -2, 'max': 0}},
+        '25-29': {'Physical': {'min': -2, 'max': 2}, 'Technical': {'min': -1, 'max': 3}, 'Mental': {'min': 0, 'max': 2}},
+        '30-33': {'Physical': {'min': -3, 'max': 1}, 'Technical': {'min': -2, 'max': 2}, 'Mental': {'min': -1, 'max': 2}},
+        '34-36': {'Physical': {'min': -4, 'max': 0}, 'Technical': {'min': -3, 'max': 1}, 'Mental': {'min': -1, 'max': 1}},
+        '37+':   {'Physical': {'min': -5, 'max': 0}, 'Technical': {'min': -4, 'max': 0}, 'Mental': {'min': -2, 'max': 0}},
     }
 
 class GodProgSystem:
@@ -85,7 +86,7 @@ class GodProgSystem:
         max_r, min_c = scale['MAX_RATING'], scale['MIN_CHANCE']
 
         if rating <= min_r: return max_c
-        if rating >= max_r: return min_c
+        if rating >= max_r: return min_c * max_c
 
         # Smoother exponential decay
         fraction = (max_r - rating) / (max_r - min_r)
@@ -120,7 +121,7 @@ class GodProgSystem:
         return None
 
 class NormalProgressionEngine:
-    """Enhanced normal progression with synergy effects."""
+    """Beta distribution-based progression engine."""
     
     def _get_age_bracket(self, age):
         if 25 <= age <= 29: return '25-29'
@@ -129,22 +130,6 @@ class NormalProgressionEngine:
         if age >= 37: return '37+'
         return None
 
-    def _get_synergy_modifier(self, player, attr):
-        """Simple synergy bonus based on related attributes."""
-        category = Config.ATTR_TO_CAT.get(attr)
-        if not category:
-            return 0
-            
-        related_attrs = Config.ATTRIBUTE_CATEGORIES[category]
-        avg_rating = np.mean([float(player.get(a, 50)) for a in related_attrs])
-        
-        # Small bonus/penalty based on related skill levels
-        if avg_rating > 65:
-            return 0.2
-        elif avg_rating < 40:
-            return -0.1
-        return 0
-
     def process(self, player, attr, np_rng):
         age_bracket = self._get_age_bracket(int(player.get('Age', 0)))
         category = Config.ATTR_TO_CAT.get(attr)
@@ -152,30 +137,29 @@ class NormalProgressionEngine:
         if not age_bracket or not category:
             return 0
             
-        params = Config.PROGRESSION_PARAMS[age_bracket][category]
+        params = Config.BETA_PROGRESSION_PARAMS[age_bracket][category]
         caps = Config.HARD_CAPS[age_bracket][category]
-        per = float(player.get('PER', 15.0))  # Default PER baseline
-        per_adj = (per - 15.0) / Config.PER_SCALING_FACTOR  # Normalized PER impact
         
-        # Base roll with PER adjustment
-        if params['dist'] == 'normal':
-            roll = np_rng.normal(loc=params['mean'] + per_adj, scale=params['sd'])
-        elif params['dist'] == 'triangular':
-            roll = np_rng.triangular(left=params['left'], mode=params['mode'] + per_adj, right=params['right'])
-        else:
-            roll = 0
+        # Get PER adjustment (reduced impact to limit power creep)
+        per = float(player.get('PER', 15.0))
+        per_adj = (per - 15.0) / Config.PER_SCALING_FACTOR
         
-        # Add synergy modifier
-        synergy_mod = self._get_synergy_modifier(player, attr)
-        roll += synergy_mod
+        # Generate beta distribution sample
+        beta_sample = np_rng.beta(params['alpha'], params['beta'])
         
-        # Apply regression to mean for extreme values
+        # Transform to progression value
+        roll = (beta_sample * params['scale']) + params['shift'] + per_adj
+        
+        # Apply regression to mean for extreme ratings (anti-power creep)
         current_val = float(player.get(attr, 50))
         if current_val > 70:
-            roll -= 0.3  # High ratings regress slightly
+            roll -= 0.4  # Stronger regression for high ratings
+        elif current_val > 60:
+            roll -= 0.2  # Moderate regression for above-average ratings
         elif current_val < 35:
-            roll += 0.2  # Low ratings get small boost
+            roll += 0.15  # Small boost for very low ratings
             
+        # Apply hard caps
         clamped_roll = max(caps['min'], min(roll, caps['max']))
         return round(clamped_roll)
 
