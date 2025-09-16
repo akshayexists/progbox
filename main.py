@@ -6,10 +6,10 @@ teams = []    #change to list of teams if specific teams are to be tested eg. ['
 
 seed = 69
 print("Master seed:", seed)
-runs = 500
-path = 'output.csv'
+runs = 1000
+path = 'outputs/output.csv'
 data = exportcleaner(export_file='data/export.json', teaminfo_file='data/teaminfo.json', teams = teams)
-data.to_csv('inputs.csv')
+data.to_csv('outputs/inputs.csv')
 #print(data)
 
 sim = runsim(seed=seed)
