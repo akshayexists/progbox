@@ -21,7 +21,7 @@ class Config:
     ATTR_TO_CAT = {attr: cat for cat, attrs in ATTRIBUTE_CATEGORIES.items() for attr in attrs}
     
     # Performance scaling
-    PER_SCALING_FACTOR = 50.0  # Increased to reduce PER impact and limit power creep
+    PER_SCALING_FACTOR = 40.0  # Increased to reduce PER impact and limit power creep
     
     # God Progression - refined parameters
     GOD_PROG_AGE_LIMIT = 30
@@ -29,7 +29,7 @@ class Config:
     GOD_PROG_JUMP_MAX = 12
     GOD_PROG_CHANCE_SCALE = {
         'MIN_RATING': 0.0, 'MAX_CHANCE': 0.09,  # Slightly higher base chance
-        'MAX_RATING': 61.0, 'MIN_CHANCE': 0.0001  # Steeper decay
+        'MAX_RATING': 61.0, 'MIN_CHANCE': 0.01  # Steeper decay
     }
     
     # Beta distribution parameters for progression
@@ -90,17 +90,15 @@ class GodProgSystem:
 
         # Smoother exponential decay
         fraction = (max_r - rating) / (max_r - min_r)
-        chance = max_c * (fraction ** 1.8)  # Slightly less steep
+        chance = max_c * (fraction ** 3.5)  # Slightly less steep
         return max(chance, min_c)
 
     @classmethod
-    def process(cls, player, player_id, rng, seed):
+    def process(cls, player, player_id, ovr, rng, seed):
         age = int(player.get('Age', 0))
         if age >= Config.GOD_PROG_AGE_LIMIT:
             return None
-
-        current_OVR = float(player.get('OVR', 0.0))
-        chance = cls._calculate_chance(current_OVR)
+        chance = cls._calculate_chance(ovr)
 
         if rng.random() < chance:
             jump = rng.randint(Config.GOD_PROG_JUMP_MIN, Config.GOD_PROG_JUMP_MAX)
@@ -111,7 +109,7 @@ class GodProgSystem:
             cls.superlucky[player.get('Name', 'N/A')] += 1
             cls.playersgodprogged.append({
                 'RunSeed': seed, 'PlayerID': player_id, 'Name': player.get('Name', 'N/A'),
-                'Age': age, 'Jump': jump, 'OVR': current_OVR, 'Chance': chance
+                'Age': age, 'Jump': jump, 'OVR': ovr, 'Chance': chance
             })
 
             # Return jump for all relevant attributes
@@ -141,8 +139,8 @@ class NormalProgressionEngine:
         caps = Config.HARD_CAPS[age_bracket][category]
         
         # Get PER adjustment (reduced impact to limit power creep)
-        per = float(player.get('PER', 15.0))
-        per_adj = (per - 15.0) / Config.PER_SCALING_FACTOR
+        per = float(player.get('PER', 0.0))
+        per_adj = per / Config.PER_SCALING_FACTOR
         
         # Generate beta distribution sample
         beta_sample = np_rng.beta(params['alpha'], params['beta'])
@@ -151,7 +149,7 @@ class NormalProgressionEngine:
         roll = (beta_sample * params['scale']) + params['shift'] + per_adj
         
         # Apply regression to mean for extreme ratings (anti-power creep)
-        current_val = float(player.get(attr, 50))
+        current_val = float(player.get(attr, 40))
         if current_val > 70:
             roll -= 0.4  # Stronger regression for high ratings
         elif current_val > 60:
@@ -194,7 +192,7 @@ class progsandbox:
                 continue
 
             # Check for god progression
-            god_jump = GodProgSystem.process(player, player_id, rng, seed)
+            god_jump = GodProgSystem.process(player, player_id, player.get('Ovr'), rng, seed)
 
             for attr in self.ATTRS:
                 if attr == 'Hgt' or attr not in Config.ATTR_TO_CAT:
