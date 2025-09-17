@@ -101,9 +101,13 @@ class GodProgSystem:
 		
 		# Track statistics
 		cls.godProgCount += 1
-		cls.godprogs.append(prog_amount)
-		cls.playersgodprogged.append({"Name": name, "Initial OVR": ovr, "amount": prog_amount, "seed": seed})
-		if ovr > Config.MAX_RATING: cls.superlucky[name] = (ovr, prog_amount, seed)
+		cls.maxagegp = max(cls.maxagegp, age)
+		try:cls.superlucky[str(name)] += 1
+		except KeyError:cls.superlucky[str(name)] = 1
+		cls.playersgodprogged.append({
+			'RunSeed': str(seed), 'Name': name,
+			'Age': str(age), 'Jump': str(prog_amount), 'OVR': str(ovr), 'Chance': str(chance)
+		})
 		if age > cls.maxagegp:
 			cls.maxagegp = age
 		
@@ -268,7 +272,7 @@ class progsandbox:
 		# Weighted sum
 		s = float((vals - Config.OVR_CENTERS) @ Config.OVR_COEFFS + 48.5)
 		
-		# Piecewise fudge factor
+		# Piecewise fudge factor (unchanged from original)
 		if s >= 68:
 			fudge = 8.0
 		elif s >= 50:
