@@ -48,11 +48,11 @@ class Config:
 							49.5, 47.0, 47.1, 46.8, 46.7, 54.8,
 							51.3, 47.0, 51.4], dtype=float)
 	
-	# Progression parameters by age range
+	# Progression parameters by age range - FIXED to match tierlist
 	PROG_PARAMS = {
 		(25, 30): {'min1': 5, 'min2': 7, 'max1': 4, 'max2': 2, 'hardMax': 4, 'hardMin': None},
 		(31, 34): {'min1': 6, 'min2': 7, 'max1': 4, 'max2': 3, 'hardMax': 2, 'hardMin': -10},
-		(35, 99): {'min1': 6, 'min2': 9, 'max1': None, 'max2': None, 'hardMax': 0, 'hardMin': -14},
+		(35, 99): {'min1': 6, 'min2': 9, 'max1': 999, 'max2': 0, 'hardMax': 0, 'hardMin': -14},  # FIXED: max calculation should give 0 now
 	}
 	
 	# Special progression rules
@@ -142,7 +142,8 @@ class ProgressionCalculator:
 			# Standard progression calculation
 			mn = math.ceil(per / min1) - min2
 			if max1 is not None and max2 is not None:
-				mx = Config.DEFAULT_MAX_PROG if max1 == 0 else math.ceil(per / max1) - max2
+				# FIXED: Use actual formula instead of DEFAULT_MAX_PROG for 35+
+				mx = math.ceil(per / max1) - max2
 			else:
 				mx = Config.DEFAULT_MAX_PROG
 		
@@ -155,7 +156,7 @@ class ProgressionCalculator:
 		hardMax = params.get('hardMax')
 		
 		if hardMin is not None:
-			mn = hardMin
+			mn = max(mn, hardMin)
 		if hardMax is not None and mx > hardMax:
 			mx = hardMax
 		
@@ -164,28 +165,25 @@ class ProgressionCalculator:
 	@staticmethod
 	def apply_ovr_cap_logic(mn, mx, ovr, age, rng):
 		"""Apply OVR cap logic and age-based adjustments."""
-		if mx + ovr >= Config.MAX_OVR:
-			if ovr >= Config.MAX_OVR:
-				# Already at cap
-				mx = 0
-				if 31 <= age <= 34:
-					mn = Config.PROG_PARAMS[(31, 34)]['hardMin']
-				elif age >= 35:
-					mn = Config.PROG_PARAMS[(35, 99)]['hardMin']
-				elif age <= 30:
-					# Young player quirk
-					# original JS: use Utils.randomInt(-2,0) < 0.02 seemed to be quirky
-					# suggestion for JS: use if (Math.random() < 0.02) {adjustedMin = -2;}
-					if (rng.random() if rng else random.random()) < 0.02:
-						mn = -2
-				
-				if mn > mx:
+		# FIXED: Changed condition to match tierlist (>= instead of +ovr >=)
+		if ovr >= Config.MAX_OVR:
+			# Already at cap - enforce Hard Max: 0
+			mx = 0
+			if age <= 30:
+				# FIXED: Young player at cap gets random between 0 and -2
+				if rng.random() < 0.02:
+					mn = rng.randint(-2, 0)  # FIXED: proper random range
+				else:
 					mn = 0
-			else:
-				# Approaching cap
-				mx = Config.MAX_OVR - ovr
-				if mn + ovr >= Config.MAX_OVR:
-					mn = 0
+			elif 31 <= age <= 34:
+				mn = -10  # Hard Min from tierlist
+			elif age >= 35:
+				mn = -14  # Hard Min from tierlist
+		elif mx + ovr >= Config.MAX_OVR:
+			# Approaching cap
+			mx = Config.MAX_OVR - ovr
+			if mn + ovr >= Config.MAX_OVR:
+				mn = 0
 		
 		return int(mn), int(mx)
 	
@@ -270,7 +268,7 @@ class progsandbox:
 		# Weighted sum
 		s = float((vals - Config.OVR_CENTERS) @ Config.OVR_COEFFS + 48.5)
 		
-		# Piecewise fudge factor (unchanged from original)
+		# Piecewise fudge factor
 		if s >= 68:
 			fudge = 8.0
 		elif s >= 50:
@@ -287,7 +285,6 @@ class progsandbox:
 	def runoneprog(self, roster_df, rng, seed):
 		"""
 		Apply PER-based progression to each player in the roster.
-		Maintains exact same progression logic as original.
 		"""
 		if rng is None:
 			rng = self.master_rng
@@ -325,7 +322,7 @@ class progsandbox:
 			per = pers[i]
 			name = names[i]
 			
-			# Skip conditions (unchanged from original)
+			# Skip conditions
 			if age < 25 or per <= 0 or not np.isfinite(per):
 				continue
 			
@@ -338,10 +335,7 @@ class progsandbox:
 			# Get progression range
 			mn, mx = ProgressionCalculator.get_progression_range(per, age, ovr, rng)
 			
-			# Safety clamp (unchanged from original)
-			max_jump = 4
-			mn = min(mn, max_jump)
-			mx = min(mx, max_jump)
+			# Safety clamp #critical bugfix, forgot to remove the testing code i wrote here
 			if mn > mx:
 				mn = mx
 			
