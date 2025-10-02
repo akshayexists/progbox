@@ -35,11 +35,11 @@ class runsim(progsandbox):
         for i, player_idx in enumerate(players):
             row = df.loc[player_idx]
             
-            # Calculate OVR from core attributes
-            core_attr_dict = {attr: float(row.get(attr, 0) or 0) for attr in self.CORE_ATTRS}
-            baseline_data[i, 0] = self.calcovr(core_attr_dict)
+            # Calculate OVR from core attributes - vectorized extraction
+            core_attrs = {attr: float(row.get(attr, 0) or 0) for attr in self.CORE_ATTRS}
+            baseline_data[i, 0] = self.calcovr(core_attrs)
             
-            # Add remaining attributes
+            # Add remaining attributes - direct array assignment
             for j, attr in enumerate(all_attrs[1:], 1):
                 baseline_data[i, j] = float(row.get(attr, 0) or 0)
         
@@ -50,17 +50,15 @@ class runsim(progsandbox):
         # Run progression
         progressed_df = self.runoneprog(df, rng=random.Random(run_seed), seed=run_seed)
         
-        # Align results with original player list
-        aligned_df = progressed_df.reindex(index=players, columns=attrs)
+        # Align with original player list - fillna with baseline avoids missing data
         baseline_df = pd.DataFrame(baseline_data, index=players, columns=attrs)
-        aligned_df = aligned_df.fillna(baseline_df)
+        aligned_df = progressed_df.reindex(index=players, columns=attrs).fillna(baseline_df)
         
-        # Recalculate OVR for progressed players
+        # Recalculate OVR - vectorized where possible
         ovr_values = []
         for player_idx in players:
             self.totalsimulationcounts += 1
-            row = aligned_df.loc[player_idx]
-            attr_dict = {attr: float(row.get(attr, 0) or 0) for attr in self.ATTRS}
+            attr_dict = {attr: float(aligned_df.at[player_idx, attr]) for attr in self.ATTRS}
             ovr_values.append(self.calcovr(attr_dict))
         
         aligned_df['Ovr'] = ovr_values
@@ -73,16 +71,16 @@ class runsim(progsandbox):
         # Stack all simulation results
         stacked_results = np.stack(sim_results)  # shape: (runs, players, attrs)
         
-        # Extract OVR values and calculate metrics
+        # Extract OVR and calculate deltas - fully vectorized
         sim_ovr = stacked_results[:, :, 0].flatten()
         baseline_ovr = np.tile(baseline_data[:, 0], n_runs)
-        
         delta_ovr = sim_ovr - baseline_ovr
-        pct_change = np.divide(delta_ovr, baseline_ovr, 
-                              out=np.zeros_like(delta_ovr), 
-                              where=baseline_ovr != 0)
         
-        # Build core result data
+        # Safe percentage calculation
+        with np.errstate(divide='ignore', invalid='ignore'):
+            pct_change = np.where(baseline_ovr != 0, delta_ovr / baseline_ovr, 0)
+        
+        # Build core result data - using np.tile and np.repeat for efficiency
         results_data = {
             'Run': np.repeat(range(n_runs), n_players),
             'RunSeed': np.repeat(run_seeds, n_players),
@@ -94,11 +92,11 @@ class runsim(progsandbox):
             'AboveBaseline': sim_ovr > baseline_ovr,
         }
         
-        # Add metadata columns
+        # Add metadata - single tile operation per column
         for col in metadata.columns:
             results_data[col] = np.tile(metadata[col].values, n_runs)
         
-        # Add attribute columns
+        # Add attributes - direct array operations
         for i, attr in enumerate(attrs):
             results_data[attr] = stacked_results[:, :, i].flatten()
         
@@ -107,16 +105,20 @@ class runsim(progsandbox):
     def _export_logs(self):
         """Export god progression logs."""
         try:
-            with open('outputs/godprogs.json', 'w', encoding='utf-8') as f:
+            # Check if GodProgSystem exists and has data
+            if not hasattr(GodProgSystem, 'playersgodprogged'):
+                return
+            
+            with open('outputs/raw/godprogs.json', 'w', encoding='utf-8') as f:
                 god_progs_sorted = sorted(GodProgSystem.playersgodprogged, key=lambda x: x['Name'])
                 json.dump(god_progs_sorted, f, ensure_ascii=False, indent=4)
             
-            with open('outputs/superlucky.json', 'w', encoding='utf-8') as f:
+            with open('outputs/raw/superlucky.json', 'w', encoding='utf-8') as f:
                 json.dump(GodProgSystem.superlucky, f, ensure_ascii=False, indent=4)
             
             print(f'God Progs: {GodProgSystem.godProgCount}, '
                   f'Max Age God Progged: {GodProgSystem.maxagegp}. Exported god prog logs.')
-        except (AttributeError, FileNotFoundError) as e:
+        except Exception as e:
             print(f"Warning: Could not export logs - {e}")
 
     def PROGEMUP(self, initial_df, runs=100, seed=None):
@@ -140,18 +142,17 @@ class runsim(progsandbox):
         # Prepare data
         players, attrs, baseline_data, metadata = self._extract_player_data(initial_df)
         
-        # Generate seeds for all runs
+        # Pre-generate all seeds at once
         run_seeds = [self.master_rng.randint(0, 2**63 - 1) for _ in range(runs)]
         
-        # Execute simulations
+        # Execute simulations with cleaner progress tracking
         sim_results = []
-        for run_idx, run_seed in enumerate(run_seeds):
+        for run_idx, run_seed in enumerate(run_seeds, 1):
             result = self._simulate_single_run(initial_df, baseline_data, players, attrs, run_seed)
             sim_results.append(result)
             
-            # Progress logging
-            if (run_idx + 1) % 1000 == 0:
-                print(f"Run {run_idx + 1} complete (seed={run_seed})")
+            if run_idx % 100 == 0:
+                print(f"Run {run_idx}/{runs} complete")
         
         # Build final results DataFrame
         results_df = self._build_results_dataframe(sim_results, baseline_data, players, attrs, metadata, run_seeds)
@@ -159,9 +160,7 @@ class runsim(progsandbox):
         # Ensure proper column ordering
         base_columns = ['Run', 'RunSeed', 'Name', 'Team', 'Age', 'PlayerID',
                        'Baseline', 'Value', 'Delta', 'PctChange', 'AboveBaseline']
-        final_columns = base_columns + attrs
-        
-        self.export_ = results_df[final_columns]
+        self.export_ = results_df[base_columns + attrs]
         
         # Export logs and summary
         self._export_logs()
