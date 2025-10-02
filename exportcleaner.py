@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 
-YEAR = 2020
+YEAR = 2021
 ATTRS = ["dIQ", "Dnk", "Drb", "End", "2Pt", "FT",
          "Ins", "Jmp", "oIQ", "Pss", "Reb", "Spd", "Str", "3Pt", "Hgt", "Ovr"]
 FAILSAFE = {'end': 'endu', '2pt': 'fg', '3pt': 'tp', 'str': 'stre'}
