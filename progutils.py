@@ -2,6 +2,7 @@ import math
 import random
 import copy
 import numpy as np
+import pandas as pd
 
 """
 references: https://github.com/fearandesire/NoEyeTest/blob/dev/tiers.md
@@ -48,11 +49,11 @@ class Config:
 							49.5, 47.0, 47.1, 46.8, 46.7, 54.8,
 							51.3, 47.0, 51.4], dtype=float)
 	
-	# Progression parameters by age range - FIXED to match tierlist
+	# Progression parameters by age range
 	PROG_PARAMS = {
 		(25, 30): {'min1': 5, 'min2': 7, 'max1': 4, 'max2': 2, 'hardMax': 4, 'hardMin': None},
-		(31, 34): {'min1': 6, 'min2': 7, 'max1': 4, 'max2': 3, 'hardMax': 2, 'hardMin': -10},
-		(35, 99): {'min1': 6, 'min2': 9, 'max1': 999, 'max2': 0, 'hardMax': 0, 'hardMin': -14},  # FIXED: max calculation should give 0 now
+		(31, 34): {'min1': 6, 'min2': 7, 'max1': 4, 'max2': 3, 'hardMax': 2, 'hardMin': None},
+		(35, 99): {'min1': 6, 'min2': 9, 'max1': None, 'max2': None, 'hardMax': 0, 'hardMin': None},
 	}
 	
 	# Special progression rules
@@ -89,11 +90,7 @@ class GodProgSystem:
 	@classmethod
 	def attempt_god_prog(cls, age, ovr, rng, name, seed):
 		"""Attempt god progression for a player. Returns (min, max) tuple or None."""
-		if age >= Config.YOUNG_MAX:
-			return None
-		
-		chance = cls.calculate_god_prog_chance(ovr)
-		if rng.random() >= chance:
+		if age >= Config.YOUNG_MAX or rng.random() >= cls.calculate_god_prog_chance(ovr):
 			return None
 		
 		# God progression activated
@@ -102,14 +99,12 @@ class GodProgSystem:
 		# Track statistics
 		cls.godProgCount += 1
 		cls.maxagegp = max(cls.maxagegp, age)
-		try:cls.superlucky[str(name)] += 1
-		except KeyError:cls.superlucky[str(name)] = 1
+		cls.superlucky[str(name)] = cls.superlucky.get(str(name), 0) + 1
 		cls.playersgodprogged.append({
-			'RunSeed': str(seed), 'Name': name,
-			'Age': str(age), 'Jump': str(prog_amount), 'OVR': str(ovr), 'Chance': str(chance)
+			'RunSeed': str(seed), 'Name': name, 'Age': str(age), 
+			'Jump': str(prog_amount), 'OVR': str(ovr), 
+			'Chance': str(cls.calculate_god_prog_chance(ovr))
 		})
-		if age > cls.maxagegp:
-			cls.maxagegp = age
 		
 		return (prog_amount, prog_amount)
 
@@ -133,21 +128,18 @@ class ProgressionCalculator:
 	@staticmethod
 	def calculate_base_range(per, params):
 		"""Calculate base min/max progression range from PER and age params."""
-		min1, min2 = params['min1'], params['min2']
-		max1, max2 = params.get('max1'), params.get('max2')
 		age = params['age']
 		
 		# Early progression rule for young, low-PER players
-		if (per <= Config.EARLY_PROG_PER_THRESHOLD and 
-			age < Config.EARLY_PROG_AGE_THRESHOLD):
+		if per <= Config.EARLY_PROG_PER_THRESHOLD and age < Config.EARLY_PROG_AGE_THRESHOLD:
 			mn = math.ceil(per / Config.EARLY_PROG_PER_DIVISOR_MN) + Config.EARLY_PROG_PER_OFFSET_MN
 			mx = math.ceil(per / Config.EARLY_PROG_PER_DIVISOR_MX) + Config.EARLY_PROG_PER_OFFSET_MX
 		else:
 			# Standard progression calculation
-			mn = math.ceil(per / min1) - min2
-			if max1 is not None and max2 is not None:
-				# FIXED: Use actual formula instead of DEFAULT_MAX_PROG for 35+
-				mx = math.ceil(per / max1) - max2
+			mn = math.ceil(per / params['min1']) - params['min2']
+
+			if params.get('max1') is not None and params.get('max2') is not None:
+				mx = math.ceil(per / params['max1']) - params['max2']
 			else:
 				mx = Config.DEFAULT_MAX_PROG
 		
@@ -159,8 +151,12 @@ class ProgressionCalculator:
 		hardMin = params.get('hardMin')
 		hardMax = params.get('hardMax')
 		
+		# Direct assignment if hardMin is set (only for specific cases)
 		if hardMin is not None:
-			mn = max(mn, hardMin)
+			mn = hardMin
+		
+		# JS: if ((hardMax && max > hardMax) || max > hardMax) max = hardMax;
+		# The OR condition is redundant, simplifies to: if (hardMax && max > hardMax)
 		if hardMax is not None and mx > hardMax:
 			mx = hardMax
 		
@@ -169,25 +165,34 @@ class ProgressionCalculator:
 	@staticmethod
 	def apply_ovr_cap_logic(mn, mx, ovr, age, rng):
 		"""Apply OVR cap logic and age-based adjustments."""
-		# FIXED: Changed condition to match tierlist (>= instead of +ovr >=)
-		if ovr >= Config.MAX_OVR:
-			# Already at cap - enforce Hard Max: 0
-			mx = 0
-			if age <= 30:
-				# FIXED: Young player at cap gets random between 0 and -2
-				if rng.random() < 0.02:
-					mn = rng.randint(-2, 0)  # FIXED: proper random range
-				else:
+		ovrProgression = mx + ovr
+		flagLower = mn + ovr
+		
+		# Check if progression would exceed cap
+		if ovrProgression >= Config.MAX_OVR:
+			if ovr >= Config.MAX_OVR:
+				# Already at cap - enforce Hard Max: 0
+				mx = 0
+				if age > 30 and age < 35:
+					mn = -10
+				if age >= 35:
+					mn = -14
+				if age <= 30:
+					# JS: const randomMin = Utils.randomInt(-2, 0);
+					# JS: if (randomMin < 0.02) adjustedMin = -2;
+					# This generates a value in [-2, 0], checks if it's < 0.02
+					# Since randInt(-2, 0) gives {-2, -1, 0}, only -2 satisfies < 0.02, suspect this is a bug in JS
+					randomMin = rng.randint(-2, 0)
+					if randomMin < 0.02:
+						mn = -2
+				# Prevent inverted range
+				if mn > mx:
 					mn = 0
-			elif 31 <= age <= 34:
-				mn = -10  # Hard Min from tierlist
-			elif age >= 35:
-				mn = -14  # Hard Min from tierlist
-		elif mx + ovr >= Config.MAX_OVR:
-			# Approaching cap
-			mx = Config.MAX_OVR - ovr
-			if mn + ovr >= Config.MAX_OVR:
-				mn = 0
+			else:
+				# Approaching cap
+				mx = Config.MAX_OVR - ovr
+				if flagLower >= Config.MAX_OVR:
+					mn = 0
 		
 		return int(mn), int(mx)
 	
@@ -195,35 +200,31 @@ class ProgressionCalculator:
 	def get_progression_range(cls, per, age, ovr, rng):
 		"""Main entry point for calculating progression range."""
 		params = cls.get_age_params(age)
-		params['ovr'] = ovr
-		
 		mn, mx = cls.calculate_base_range(per, params)
 		mn, mx = cls.apply_hard_limits(mn, mx, params)
-		mn, mx = cls.apply_ovr_cap_logic(mn, mx, ovr, age, rng)
-		
-		return mn, mx
+		return cls.apply_ovr_cap_logic(mn, mx, ovr, age, rng)
 
 
 class AttributeProgression:
 	"""Handles individual attribute progression logic."""
 	
 	@staticmethod
-	def apply_physical_caps(attr, age, mn, mx, current_rating, rng):
-		"""Apply physical attribute caps for older players."""
+	def apply_physical_caps(attr, age, mn, mx, rng):
+		"""Apply physical attribute caps for older players. Returns (mn, mx, skip_prog)."""
+		# CRITICAL FIX: Check age >= 30, not age < 30
 		if age < 30 or attr not in Config.PHYSICAL_OLD or mx <= 0:
-			return mn, mx, current_rating
+			return mn, mx, False
 		
 		# Old player physical progression chance
-		old_prog_phys = rng.random() * 0.05 + 0.01
-		if rng.random() >= old_prog_phys:
-			# Skip progression entirely
-			return 0, 0, current_rating
+		oldProgPhys = rng.random() * 0.05 + 0.01
+		if rng.random() >= oldProgPhys:
+			return 0, 0, True  # Skip progression entirely
 		
 		# Cap progression for old physical attributes
 		if mx > 3:
-			mx = min(mx, 3)
+			mx = 3
 		
-		return mn, mx, current_rating
+		return mn, mx, False
 	
 	@staticmethod
 	def apply_mid_age_slowdown(attr, age, prog, rng):
@@ -234,22 +235,24 @@ class AttributeProgression:
 		age_factor = 0.7 - (age - 25) * 0.1
 		prob_progression = max(age_factor, 0)
 		
+		# JS: return Math.random() > probProgression;
+		# Returns true to SKIP, so we invert: keep prog if random() <= prob
 		return prog if rng.random() <= prob_progression else 0
 	
 	@classmethod
 	def progress_attribute(cls, attr, age, mn, mx, current_rating, rng):
 		"""Progress a single attribute with all applicable rules."""
 		# Apply physical caps first
-		mn, mx, rating = cls.apply_physical_caps(attr, age, mn, mx, current_rating, rng)
+		mn, mx, skip = cls.apply_physical_caps(attr, age, mn, mx, rng)
+		if skip:
+			return current_rating
 		
 		# Calculate base progression
 		prog = rng.randint(mn, mx) if mn <= mx else 0
 		
-		# Apply mid-age slowdown
+		# Apply mid-age slowdown and return bounded result
 		prog = cls.apply_mid_age_slowdown(attr, age, prog, rng)
-		
-		# Return bounded result
-		return max(0, min(Config.MAX_OVR, rating + prog))	#modified for minimum between MAXRATING and rating+prog
+		return max(0, min(Config.MAX_OVR, current_rating + prog))
 
 
 class progsandbox:
@@ -290,62 +293,42 @@ class progsandbox:
 		"""
 		Apply PER-based progression to each player in the roster.
 		"""
-		if rng is None:
-			rng = self.master_rng
-		
-		# Work on copy
+		rng = rng or self.master_rng
 		out = roster_df.copy(deep=True)
 		
 		# Extract data arrays for vectorized operations
 		ages = out["Age"].to_numpy(dtype=int)
-		pers = out["PER"].to_numpy(dtype=float)
-		names = out["Name"].to_numpy(dtype=str) if "Name" in out.columns else np.arange(len(out)).astype(str)
-		
-		# Clean PER values
-		pers = np.where(np.isfinite(pers), pers, 0.0)
+		pers = np.where(np.isfinite(out["PER"].to_numpy(dtype=float)), 
+						out["PER"].to_numpy(dtype=float), 0.0)
+		names = out.get("Name", pd.Series(range(len(out)))).to_numpy(dtype=str)
 		
 		# Prepare attribute arrays
-		attr_arrays = {}
-		for attr in self.ATTRS:
-			if attr in out.columns:
-				attr_arrays[attr] = out[attr].to_numpy(copy=True, dtype=float)
-			else:
-				attr_arrays[attr] = np.zeros(len(out), dtype=float)
+		attr_arrays = {attr: out.get(attr, 0).to_numpy(copy=True, dtype=float) 
+					   for attr in self.ATTRS}
 		
 		# Initialize OVR if not present
-		if "Ovr" not in out.columns:
-			out["Ovr"] = 0
-		ovr_array = out["Ovr"].to_numpy(copy=True, dtype=float)
+		ovr_array = out.get("Ovr", 0).to_numpy(copy=True, dtype=float)
 		
 		# Progressive attributes (excluding height)
 		prog_attrs = [k for k in self.ATTRS if k != 'Hgt']
 		
 		# Process each player
 		for i in range(len(out)):
-			age = ages[i]
-			per = pers[i]
-			name = names[i]
+			age, per, name = ages[i], pers[i], names[i]
 			
 			# Skip conditions
-			if age < 25 or per <= 0 or not np.isfinite(per):
+			if age < 25 or per <= 0:
 				continue
 			
 			# Build current ratings dict
 			ratings = {attr: int(round(attr_arrays[attr][i])) for attr in self.ATTRS}
-			
-			# Calculate current OVR
 			ovr = self.calcovr(ratings)
 			
 			# Get progression range
 			mn, mx = ProgressionCalculator.get_progression_range(per, age, ovr, rng)
 			
-			# Safety clamp #critical bugfix, forgot to remove the testing code i wrote here
-			if mn > mx:
-				mn = mx
-			
 			# Check for god progression
-			god_prog = GodProgSystem.attempt_god_prog(age, ovr, rng, name, seed)
-			if god_prog is not None:
+			if (god_prog := GodProgSystem.attempt_god_prog(age, ovr, rng, name, seed)):
 				mn, mx = god_prog
 			
 			# Apply progression to each attribute
@@ -353,8 +336,8 @@ class progsandbox:
 				new_rating = AttributeProgression.progress_attribute(
 					attr, age, mn, mx, ratings[attr], rng
 				)
-				ratings[attr] = new_rating
 				attr_arrays[attr][i] = new_rating
+				ratings[attr] = new_rating
 			
 			# Recalculate OVR with updated ratings
 			ovr_array[i] = self.calcovr(ratings)
