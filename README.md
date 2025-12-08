@@ -21,9 +21,10 @@ Monte Carlo simulation tool for projecting player progression in Basketball GM l
 3. **Results**: Check `outputs/run_*/` for:
    - `analysis.xlsx`: Aggregated player statistics
    - `outputs.csv`: Full simulation results
-   - `metadata.json`: League info and simulation parameters (includes master seed)
-   - `plots/`: 4 visualization PNGs
-   - `raw/`: Input data and special logs
+   - `metadata.json`: Structured run metadata (`game_export_data`, `progbox`)
+   - `net_summary.json` + `net_summary.txt`: NET compliance/extremes summary
+   - `plots/`: Core visuals + NET add-ons (up to 6 PNGs)
+   - `raw/`: Inputs (`inputs.csv`) + logs (`godprogs.json`, `superlucky.json`)
 
 ## Configuration
 
@@ -68,7 +69,9 @@ progbox/
 │   │   ├── analysis.xlsx
 │   │   ├── outputs.csv
 │   │   ├── metadata.json
-│   │   ├── plots/           # 4 PNG visualizations
+│   │   ├── net_summary.json
+│   │   ├── net_summary.txt
+│   │   ├── plots/           # Core PNGs + NET add-ons
 │   │   └── raw/             # Input data + special logs
 │   └── raw/                 # Fixed output (main.py only)
 ├── benchmark.py              # Primary entry (timestamped outputs)
@@ -83,17 +86,40 @@ progbox/
 
 ### Metadata (`metadata.json`)
 
-| Field | Description |
-|-------|-------------|
+Structured JSON with two sections:
+
+```json
+{
+  "game_export_data": { ... },
+  "progbox": { ... }
+}
+```
+
+| `game_export_data.*` | Description |
+|----------------------|-------------|
 | league_name | BBGM league name |
-| season | Season year |
-| starting_season | Starting season ID |
-| phase | League phase number |
-| phase_text | Phase description |
-| export_date | Export file date |
+| season | Season year from export |
+| phase | League phase number from export |
+
+| `progbox.*` | Description |
+|-------------|-------------|
 | master_seed | Simulation seed (reproducibility) |
 | runs | Monte Carlo iterations per player |
-| timestamp | Run timestamp (YYYYMMDD_HHMMSS) |
+| timestamp | Run timestamp (`YYYYMMDD_HHMMSS`) |
+
+### NET Summary (`net_summary.json` and `net_summary.txt`)
+
+Single-run NET compliance snapshot:
+
+| Section | Contents |
+|---------|----------|
+| run_info | runs, master_seed, timestamp, league_name, total_records |
+| population | total_players, total_teams, age_tiers counts, ovr_80_plus |
+| delta_stats | overall mean/median/std/min/max + by_age_tier ranges |
+| extremes | largest_positive_delta, largest_negative_delta (player detail) |
+| outliers | overall_count + per-age-tier lists of notable deltas |
+| god_progression | total_count, max_age, superlucky players with counts |
+| tier_compliance | summary + per-tier violation counts and samples |
 
 ### Analysis (`analysis.xlsx`)
 
@@ -121,11 +147,13 @@ Every simulation run:
 |--------|-------------|
 | Run | Simulation iteration (0 to runs-1) |
 | RunSeed | Seed for this run |
-| Name, PlayerID | Player identifiers |
+| Name, PlayerID, Team, Age | Player identifiers and context |
 | Baseline | Starting Overall |
-| Value | Simulated Overall |
+| Value, Ovr | Simulated Overall (numeric + rounded) |
 | Delta | Change (Value - Baseline) |
+| PctChange | Percentage change vs. baseline |
 | AboveBaseline | Boolean (improved?) |
+| PER | Baseline PER from export |
 | [Attributes] | Simulated attribute values |
 
 ### Benchmark Summary (`benchmark_summary.csv`)
@@ -144,10 +172,14 @@ Aggregated by age groups and talent tiers:
 
 ### Visualizations (`plots/`)
 
-- **`dist_ovr_change_by_age.png`**: Box plot of OVR change distribution by age (median, quartiles, outliers).
-- **`avg_progression_trend.png`**: Line plot with 95% CI showing progression trend by age.
-- **`scatter_talent_vs_progression.png`**: Baseline OVR vs. OVR change, colored by age.
-- **`box_talent_tier_progression.png`**: Progression by talent tier (Low/Avg/Good/Star/God) and age.
+- Core:
+  - **`dist_ovr_change_by_age.png`**: Box plot of OVR change distribution by age.
+  - **`avg_progression_trend.png`**: Line plot with 95% CI showing progression trend by age.
+  - **`scatter_talent_vs_progression.png`**: Baseline OVR vs. OVR change, colored by age.
+  - **`box_talent_tier_progression.png`**: Progression by talent tier (Low/Avg/Good/Star/God) and age.
+- NET add-ons (if NET analysis available):
+  - **`net_age_tier_progression.png`**: NET age-tier progression distribution.
+  - **`net_talent_tier_progression.png`**: NET talent-tier progression distribution.
 
 ### Special Logs
 
