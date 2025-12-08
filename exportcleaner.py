@@ -14,10 +14,7 @@ def extract_metadata(export_data):
     return {
         "league_name": meta.get("name", "Unknown League"),
         "season": export_data.get("season", game_attributes.get("season", "Unknown Season")),
-        "starting_season": export_data.get("startingSeason", "Unknown"),
         "phase": game_attributes.get("phase", "Unknown"),
-        "phase_text": game_attributes.get("phaseText", ""),
-        "export_date": meta.get("date", "")
     }
 
 def exportcleaner(export_file, teams:list, teaminfo_file) -> tuple[pd.DataFrame, dict]:
