@@ -17,22 +17,17 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from progutils import ProgressionCalculator, Config
 
 warnings.filterwarnings('ignore', category=FutureWarning, module='seaborn')
 
 
 # NET Tier Configuration (from tiers.md)
+# Used for plotting reference lines
 NET_AGE_TIERS = {
     '25-30': {'min_age': 25, 'max_age': 30, 'hard_max': 4},
     '31-34': {'min_age': 31, 'max_age': 34, 'hard_max': 2},
     '35+': {'min_age': 35, 'max_age': 99, 'hard_max': 0},
-}
-
-# 80+ OVR Hard Mins by age tier
-NET_80_PLUS_HARD_MINS = {
-    '25-30': (-2, 0),  # Random between -2 and 0
-    '31-34': -10,
-    '35+': -14,
 }
 
 OVR_CAP = 80
@@ -52,15 +47,14 @@ def get_age_tier(age):
 
 def calculate_tier_expected_range(per, age, baseline_ovr):
     """
-    Calculate fixed expected min/max progression range for a player.
+    Calculate expected min/max progression range for a player using shared logic.
     
-    Validation uses hard bounds from tiers.md and ignores PER. Applies 80+ OVR
-    caps per tier (hard max = 0; tier-specific hard mins).
+    Uses progutils.ProgressionCalculator to ensure validation matches simulation logic,
+    accounting for PER-based ranges and correct OVR caps.
     """
     if age < 25:
         return (0, 0)
 
-    tier = get_age_tier(age)
     try:
         baseline_ovr = float(baseline_ovr)
     except (TypeError, ValueError):
@@ -68,33 +62,39 @@ def calculate_tier_expected_range(per, age, baseline_ovr):
     if math.isnan(baseline_ovr):
         baseline_ovr = 0
 
-    # Fixed hard bounds per tier (PER-independent)
-    fixed_bounds = {
-        '25-30': (-2, 4),
-        '31-34': (-10, 2),
-        '35+': (-14, 0),
-    }
+    # 1. Get base parameters and range from ProgressionCalculator
+    params = ProgressionCalculator.get_age_params(age)
+    mn, mx = ProgressionCalculator.calculate_base_range(per, params)
+    mn, mx = ProgressionCalculator.apply_hard_limits(mn, mx, params)
 
-    # 80+ OVR caps per tiers.md
-    hard_cap_bounds = {
-        '25-30': (-2, 0),
-        '31-34': (-10, 0),
-        '35+': (-14, 0),
-    }
-
-    if baseline_ovr >= OVR_CAP:
-        mn, mx = hard_cap_bounds.get(tier, (0, 0))
-        return (int(mn), int(mx))
-
-    mn, mx = fixed_bounds.get(tier, (0, 0))
-
-    # Prevent overshooting OVR cap when approaching 80
+    # 2. Apply OVR cap logic (Permissive version for validation)
+    # We implement a "theoretical widest" version of apply_ovr_cap_logic
+    # to avoid flagging valid random outcomes (like the 2% chance for -2 at 80+ OVR) as violations.
+    
     ovr_progression = mx + baseline_ovr
     flag_lower = mn + baseline_ovr
-    if ovr_progression >= OVR_CAP:
-        mx = max(0, OVR_CAP - baseline_ovr)
-        if flag_lower >= OVR_CAP:
-            mn = 0
+
+    if ovr_progression >= Config.MAX_OVR:
+        if baseline_ovr >= Config.MAX_OVR:
+            # Already at/above cap
+            mx = 0
+            if age > 30 and age < 35:
+                mn = -10
+            elif age >= 35:
+                mn = -14
+            elif age <= 30:
+                # In sim, this is random between -2 and 0. 
+                # For validation, we accept the full possible range.
+                mn = -2 
+            
+            # Prevent inverted range
+            if mn > mx:
+                mn = 0
+        else:
+            # Approaching cap
+            mx = max(0, Config.MAX_OVR - baseline_ovr)
+            if flag_lower >= Config.MAX_OVR:
+                mn = 0
 
     return (int(mn), int(mx))
 
@@ -171,6 +171,57 @@ def create_net_age_tier_plot(df_path, output_dir):
     plt.close()
     
     print(f"NET age tier plot saved to {plots_dir}/net_age_tier_progression.png")
+
+
+def create_net_talent_tier_plot(df_path, output_dir):
+    """
+    Generate NET-specific talent tier progression boxplot grouped by age tiers.
+    
+    Mirrors the benchmark talent-tier plot but segments by NET age tiers
+    (25-30, 31-34, 35+) to highlight progression patterns against NET logic.
+    """
+    print("Generating NET talent tier plot...")
+    
+    try:
+        df = pd.read_csv(df_path)
+    except Exception as e:
+        print(f"Error loading CSV for NET talent plot: {e}")
+        return
+    
+    plots_dir = os.path.join(output_dir, "plots")
+    os.makedirs(plots_dir, exist_ok=True)
+    
+    df_plot = df.copy()
+    df_plot["AgeTier"] = df_plot["Age"].apply(get_age_tier)
+    df_plot = df_plot[df_plot["AgeTier"].isin(["25-30", "31-34", "35+"])]
+    df_plot["AgeTier"] = pd.Categorical(df_plot["AgeTier"], categories=["25-30", "31-34", "35+"], ordered=True)
+    
+    bins = [0, 40, 50, 60, 70, 100]
+    labels = ["<40 (Low)", "40-50 (Avg)", "50-60 (Good)", "60-70 (Star)", "70+ (God)"]
+    df_plot["TalentTier"] = pd.cut(df_plot["Baseline"], bins=bins, labels=labels)
+    
+    sns.set_theme(style="whitegrid", context="notebook")
+    plt.figure(figsize=(14, 8))
+    
+    sns.boxplot(
+        x="TalentTier",
+        y="Delta",
+        hue="AgeTier",
+        data=df_plot,
+        palette="coolwarm",
+        showfliers=False
+    )
+    
+    plt.axhline(0, color="black", linestyle="--", alpha=0.3)
+    plt.title("Progression Distribution by Talent Tier (NET Age Tiers)", fontsize=16)
+    plt.xlabel("Talent Tier (Starting OVR)", fontsize=12)
+    plt.ylabel("OVR Change", fontsize=12)
+    plt.legend(bbox_to_anchor=(1.01, 1), loc=2, borderaxespad=0.0, title="Age Tier")
+    plt.tight_layout()
+    plt.savefig(f"{plots_dir}/net_talent_tier_progression.png", dpi=300)
+    plt.close()
+    
+    print(f"NET talent tier plot saved to {plots_dir}/net_talent_tier_progression.png")
 
 
 def validate_tier_compliance(df):
@@ -527,7 +578,7 @@ def generate_net_summary(outputs_csv_path, raw_dir, metadata):
         f.write("-" * 40 + "\n")
         f.write("TIER COMPLIANCE\n")
         f.write("-" * 40 + "\n")
-        f.write("Validation: fixed hard bounds per tiers.md (PER-independent)\n")
+        f.write("Validation: PER-based ranges per NET logic (matches simulation)\n")
         f.write(f"Total Violations: {compliance['summary']['total_violations']}\n")
         f.write("By Tier:\n")
         for tier in ['25-30', '31-34', '35+']:
