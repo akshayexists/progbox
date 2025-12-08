@@ -136,6 +136,13 @@ progbox/
 └── progutils.py            # Progression logic/sandbox
 ```
 
+### NET Tier Compliance (validation)
+- Uses fixed hard bounds from `NoEyeTest/tiers.md`, independent of PER:
+  - 25-30: [-2, 4]
+  - 31-34: [-10, 2]
+  - 35+: [-14, 0]
+- 80+ OVR: hard max 0 with tier-specific hard mins (25-30: -2, 31-34: -10, 35+: -14).
+
 ---
 
 ## 📊 Data Formats

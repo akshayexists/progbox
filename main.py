@@ -12,7 +12,8 @@ data, metadata = exportcleaner(export_file='data/export.json', teaminfo_file='da
 # Optionally save metadata
 # import json
 # with open(path + 'metadata.json', 'w') as f:
-#     json.dump(metadata, f, indent=4)data.to_csv(path+'inputs.csv')
+#     json.dump(metadata, f, indent=4)
+# data.to_csv(path+'inputs.csv')
 #print(data)
 
 sim = runsim(seed=seed)

@@ -107,8 +107,8 @@ class runsim(progsandbox):
     def _export_logs(self, output_dir='outputs/raw'):
         """Export god progression logs."""
         try:
-            # Check if GodProgSystem exists and has data
-            if not hasattr(GodProgSystem, 'playersgodprogged'):
+            # Check if god_prog_system has data
+            if not self.god_prog_system.playersgodprogged:
                 return
             
             # Resolve to absolute path relative to workspace
@@ -134,15 +134,15 @@ class runsim(progsandbox):
             # Write files using resolved path
             godprogs_file = output_path / 'godprogs.json'
             with open(godprogs_file, 'w', encoding='utf-8') as f:
-                god_progs_sorted = sorted(GodProgSystem.playersgodprogged, key=lambda x: x['Name'])
+                god_progs_sorted = sorted(self.god_prog_system.playersgodprogged, key=lambda x: x['Name'])
                 json.dump(god_progs_sorted, f, ensure_ascii=False, indent=4)
             
             superlucky_file = output_path / 'superlucky.json'
             with open(superlucky_file, 'w', encoding='utf-8') as f:
-                json.dump(GodProgSystem.superlucky, f, ensure_ascii=False, indent=4)
+                json.dump(self.god_prog_system.superlucky, f, ensure_ascii=False, indent=4)
             
-            print(f'God Progs: {GodProgSystem.godProgCount}, '
-                  f'Max Age God Progged: {GodProgSystem.maxagegp}. Exported god prog logs to {output_path}.')
+            print(f'God Progs: {self.god_prog_system.godProgCount}, '
+                  f'Max Age God Progged: {self.god_prog_system.maxagegp}. Exported god prog logs to {output_path}.')
         except (OSError, ValueError) as e:
             print(f"Error: Could not export logs - {e}")
         except Exception as e:
@@ -160,8 +160,8 @@ class runsim(progsandbox):
         Returns:
             DataFrame with simulation results
         """
-        # Reset GodProgSystem state for clean run
-        GodProgSystem.reset()
+        # Reset god progression state for clean run
+        self.god_prog_system.reset()
         
         # Update seed if provided
         if seed is not None:

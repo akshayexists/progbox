@@ -52,56 +52,50 @@ def get_age_tier(age):
 
 def calculate_tier_expected_range(per, age, baseline_ovr):
     """
-    Calculate the deterministic expected min/max progression range for a player.
+    Calculate fixed expected min/max progression range for a player.
     
-    Based on NET tiers.md formulas. Returns (expected_min, expected_max) tuple.
-    This is the deterministic calculation without randomness.
+    Validation uses hard bounds from tiers.md and ignores PER. Applies 80+ OVR
+    caps per tier (hard max = 0; tier-specific hard mins).
     """
-    if age < 25 or per <= 0:
+    if age < 25:
         return (0, 0)
-    
-    # Calculate base range based on age tier
-    if 25 <= age <= 30:
-        hard_max = 4
-        if per <= 20 and age < 31:
-            mn = math.ceil(per / 5) - 6
-            mx = math.ceil(per / 4) - 1
-        else:
-            mn = math.ceil(per / 5) - 7
-            mx = math.ceil(per / 4) - 2
-    elif 31 <= age <= 34:
-        hard_max = 2
-        mn = math.ceil(per / 6) - 7
-        mx = math.ceil(per / 4) - 3
-    else:  # 35+
-        hard_max = 0
-        mn = math.ceil(per / 6) - 9
-        mx = 0
-    
-    # Apply hard max cap
-    if mx > hard_max:
-        mx = hard_max
-    
-    # Apply 80+ OVR logic
+
+    tier = get_age_tier(age)
+    try:
+        baseline_ovr = float(baseline_ovr)
+    except (TypeError, ValueError):
+        baseline_ovr = 0
+    if math.isnan(baseline_ovr):
+        baseline_ovr = 0
+
+    # Fixed hard bounds per tier (PER-independent)
+    fixed_bounds = {
+        '25-30': (-2, 4),
+        '31-34': (-10, 2),
+        '35+': (-14, 0),
+    }
+
+    # 80+ OVR caps per tiers.md
+    hard_cap_bounds = {
+        '25-30': (-2, 0),
+        '31-34': (-10, 0),
+        '35+': (-14, 0),
+    }
+
+    if baseline_ovr >= OVR_CAP:
+        mn, mx = hard_cap_bounds.get(tier, (0, 0))
+        return (int(mn), int(mx))
+
+    mn, mx = fixed_bounds.get(tier, (0, 0))
+
+    # Prevent overshooting OVR cap when approaching 80
     ovr_progression = mx + baseline_ovr
     flag_lower = mn + baseline_ovr
-    
     if ovr_progression >= OVR_CAP:
-        if baseline_ovr >= OVR_CAP:
-            mx = 0
-            if 31 <= age < 35:
-                mn = -10
-            elif age >= 35:
-                mn = -14
-            elif age <= 30:
-                mn = -2  # Worst case for range validation
-            if mn > mx:
-                mn = 0
-        else:
-            mx = OVR_CAP - baseline_ovr
-            if flag_lower >= OVR_CAP:
-                mn = 0
-    
+        mx = max(0, OVR_CAP - baseline_ovr)
+        if flag_lower >= OVR_CAP:
+            mn = 0
+
     return (int(mn), int(mx))
 
 
@@ -435,7 +429,7 @@ def generate_net_summary(outputs_csv_path, raw_dir, metadata):
         superlucky_path = os.path.join(raw_dir, 'superlucky.json')
         
         if os.path.exists(godprogs_path):
-            with open(godprogs_path, 'r') as f:
+            with open(godprogs_path, 'r', encoding='utf-8') as f:
                 godprogs = json.load(f)
                 god_prog_summary['total_count'] = len(godprogs)
                 if godprogs:
@@ -443,7 +437,7 @@ def generate_net_summary(outputs_csv_path, raw_dir, metadata):
                     god_prog_summary['max_age'] = max_age
         
         if os.path.exists(superlucky_path):
-            with open(superlucky_path, 'r') as f:
+            with open(superlucky_path, 'r', encoding='utf-8') as f:
                 superlucky = json.load(f)
                 god_prog_summary['superlucky_players'] = superlucky
     except Exception as e:
@@ -533,6 +527,7 @@ def generate_net_summary(outputs_csv_path, raw_dir, metadata):
         f.write("-" * 40 + "\n")
         f.write("TIER COMPLIANCE\n")
         f.write("-" * 40 + "\n")
+        f.write("Validation: fixed hard bounds per tiers.md (PER-independent)\n")
         f.write(f"Total Violations: {compliance['summary']['total_violations']}\n")
         f.write("By Tier:\n")
         for tier in ['25-30', '31-34', '35+']:

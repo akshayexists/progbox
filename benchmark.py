@@ -173,7 +173,7 @@ def run_benchmark(export_file='data/export.json', teaminfo_file='data/teaminfo.j
     with open(f"{output_dir}/metadata.json", "w") as f:
         json.dump(metadata, f, indent=4)
         
-    print(f"Loaded {len(data)} players from {metadata.get('league_name', 'Unknown League')}")
+    print(f"Loaded {len(data)} players from export file '{metadata.get('league_name', 'Unknown League')}'")
     
     # Run simulation
     sim = runsim(seed=seed)
