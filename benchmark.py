@@ -162,18 +162,30 @@ def run_benchmark(export_file='data/export.json', teaminfo_file='data/teaminfo.j
     print(f"Master seed: {seed}")
     
     # Load data and extract metadata
-    data, metadata = exportcleaner(export_file=export_file, teaminfo_file=teaminfo_file, teams=teams or [])
+    data, export_metadata = exportcleaner(export_file=export_file, teaminfo_file=teaminfo_file, teams=teams or [])
     
+    # Build structured metadata for outputs
+    game_export_data = {
+        "league_name": export_metadata.get("league_name", "Unknown League"),
+        "season": export_metadata.get("season", "Unknown Season"),
+        "phase": export_metadata.get("phase", "Unknown"),
+    }
+    progbox_metadata = {
+        "master_seed": seed,
+        "runs": runs,
+        "timestamp": timestamp,
+    }
+    metadata_output = {
+        "game_export_data": game_export_data,
+        "progbox": progbox_metadata,
+    }
+
     # Save inputs and metadata
     data.to_csv(f"{raw_dir}/inputs.csv")
-    # Add simulation parameters to metadata
-    metadata['master_seed'] = seed
-    metadata['runs'] = runs
-    metadata['timestamp'] = timestamp
     with open(f"{output_dir}/metadata.json", "w") as f:
-        json.dump(metadata, f, indent=4)
+        json.dump(metadata_output, f, indent=4)
         
-    print(f"Loaded {len(data)} players from export file '{metadata.get('league_name', 'Unknown League')}'")
+    print(f"Loaded {len(data)} players from export file '{game_export_data.get('league_name', 'Unknown League')}'")
     
     # Run simulation
     sim = runsim(seed=seed)
@@ -208,15 +220,17 @@ def run_benchmark(export_file='data/export.json', teaminfo_file='data/teaminfo.j
     
     # Generate NET-specific analysis (add-on)
     try:
-        from net_analysis import create_net_age_tier_plot, generate_net_summary
+        from net_analysis import create_net_age_tier_plot, create_net_talent_tier_plot, generate_net_summary
         
         # Enrich metadata for NET summary
         net_metadata = {
-            **metadata,
-            'master_seed': seed,
-            'timestamp': timestamp
+            "league_name": game_export_data.get("league_name", "Unknown League"),
+            "master_seed": progbox_metadata["master_seed"],
+            "timestamp": progbox_metadata["timestamp"],
+            "runs": progbox_metadata["runs"],
         }
         create_net_age_tier_plot(f"{output_dir}/outputs.csv", output_dir)
+        create_net_talent_tier_plot(f"{output_dir}/outputs.csv", output_dir)
         generate_net_summary(f"{output_dir}/outputs.csv", raw_dir, net_metadata)
     except ImportError as e:
         print(f"Info: NET analysis module not available, skipping: {e}")
