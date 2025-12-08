@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import random
 import json
+import os
+from pathlib import Path
 
 class runsim(progsandbox):
     """Monte Carlo wrapper for NOEYETEST simulation."""
@@ -102,26 +104,51 @@ class runsim(progsandbox):
         
         return pd.DataFrame(results_data)
 
-    def _export_logs(self):
+    def _export_logs(self, output_dir='outputs/raw'):
         """Export god progression logs."""
         try:
             # Check if GodProgSystem exists and has data
             if not hasattr(GodProgSystem, 'playersgodprogged'):
                 return
             
-            with open('outputs/raw/godprogs.json', 'w', encoding='utf-8') as f:
+            # Resolve to absolute path relative to workspace
+            workspace_base = Path(__file__).parent.resolve()
+            
+            # Build path relative to workspace, then resolve to absolute
+            if os.path.isabs(output_dir):
+                output_path = Path(output_dir).resolve()
+            else:
+                output_path = (workspace_base / output_dir).resolve()
+            
+            # Validate path: ensure resolved path is within workspace
+            try:
+                output_path.relative_to(workspace_base)
+            except ValueError:
+                safe_default = workspace_base / 'outputs' / 'raw'
+                print(f"Warning: Invalid output directory '{output_dir}' is outside workspace. Using safe default: {safe_default}")
+                output_path = safe_default
+            
+            # Ensure directory exists
+            output_path.mkdir(parents=True, exist_ok=True)
+            
+            # Write files using resolved path
+            godprogs_file = output_path / 'godprogs.json'
+            with open(godprogs_file, 'w', encoding='utf-8') as f:
                 god_progs_sorted = sorted(GodProgSystem.playersgodprogged, key=lambda x: x['Name'])
                 json.dump(god_progs_sorted, f, ensure_ascii=False, indent=4)
             
-            with open('outputs/raw/superlucky.json', 'w', encoding='utf-8') as f:
+            superlucky_file = output_path / 'superlucky.json'
+            with open(superlucky_file, 'w', encoding='utf-8') as f:
                 json.dump(GodProgSystem.superlucky, f, ensure_ascii=False, indent=4)
             
             print(f'God Progs: {GodProgSystem.godProgCount}, '
-                  f'Max Age God Progged: {GodProgSystem.maxagegp}. Exported god prog logs.')
+                  f'Max Age God Progged: {GodProgSystem.maxagegp}. Exported god prog logs to {output_path}.')
+        except (OSError, ValueError) as e:
+            print(f"Error: Could not export logs - {e}")
         except Exception as e:
-            print(f"Warning: Could not export logs - {e}")
+            print(f"Warning: Unexpected error during log export - {e}")
 
-    def PROGEMUP(self, initial_df, runs=100, seed=None):
+    def PROGEMUP(self, initial_df, runs=100, seed=None, output_dir='outputs/raw'):
         """
         Execute Monte Carlo simulation with simplified, vectorized processing.
         
@@ -133,6 +160,9 @@ class runsim(progsandbox):
         Returns:
             DataFrame with simulation results
         """
+        # Reset GodProgSystem state for clean run
+        GodProgSystem.reset()
+        
         # Update seed if provided
         if seed is not None:
             self.SEED = seed
@@ -163,7 +193,7 @@ class runsim(progsandbox):
         self.export_ = results_df[base_columns + attrs]
         
         # Export logs and summary
-        self._export_logs()
+        self._export_logs(output_dir)
         print(f"Total Simulations: {self.totalsimulationcounts}")
         
         return self.export_

@@ -88,6 +88,14 @@ class GodProgSystem:
 		return scale * Config.MAX_GOD_PROG_CHANCE
 	
 	@classmethod
+	def reset(cls):
+		"""Reset all god progression tracking state to initial values."""
+		cls.godProgCount = 0
+		cls.playersgodprogged = []
+		cls.superlucky = {}
+		cls.maxagegp = 0
+	
+	@classmethod
 	def attempt_god_prog(cls, age, ovr, rng, name, seed):
 		"""Attempt god progression for a player. Returns (min, max) tuple or None."""
 		if age >= Config.YOUNG_MAX or rng.random() >= cls.calculate_god_prog_chance(ovr):
