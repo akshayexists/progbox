@@ -8,12 +8,16 @@ seed = 69
 print("Master seed:", seed)
 runs = 1000
 path = 'outputs/raw/'
-data = exportcleaner(export_file='data/export.json', teaminfo_file='data/teaminfo.json', teams = teams)
-data.to_csv(path+'inputs.csv')
+data, metadata = exportcleaner(export_file='data/export.json', teaminfo_file='data/teaminfo.json', teams=teams)
+# Optionally save metadata
+# import json
+# with open(path + 'metadata.json', 'w') as f:
+#     json.dump(metadata, f, indent=4)
+# data.to_csv(path+'inputs.csv')
 #print(data)
 
 sim = runsim(seed=seed)
-df = sim.PROGEMUP(data, runs=runs)
+df = sim.PROGEMUP(data, runs=runs, output_dir=path)
 df.to_csv(path+'outputs.csv')
 
 print(f'Written to {path}')

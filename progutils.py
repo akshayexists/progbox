@@ -31,7 +31,7 @@ class Config:
 	PHYSICAL_OLD = {'Spd', 'Str', 'Jmp', 'End'}
 	PHYSICAL_MID = {'Spd', 'Str', 'Jmp'}
 	
-	# All progression attributes (excluding Hgt)
+	# All attributes used in OVR calculation (Hgt is excluded during progression)
 	ALL_ATTRS = ['dIQ', 'Dnk', 'Drb', 'End', '2Pt', 'FT', 'Ins', 'Jmp', 
 				 'oIQ', 'Pss', 'Reb', 'Spd', 'Str', '3Pt', 'Hgt']
 	
@@ -70,11 +70,12 @@ class Config:
 class GodProgSystem:
 	"""Tracks and manages 'god progression' events for young players."""
 	
-	godProgCount = 0
-	godprogs = []
-	maxagegp = 0
-	playersgodprogged = []
-	superlucky = {}
+	def __init__(self):
+		"""Initialize god progression tracking state."""
+		self.godProgCount = 0
+		self.maxagegp = 0
+		self.playersgodprogged = []
+		self.superlucky = {}
 	
 	@staticmethod
 	def calculate_god_prog_chance(ovr):
@@ -87,23 +88,29 @@ class GodProgSystem:
 			scale = 1.0 - (ovr - Config.MIN_RATING) / (Config.MAX_RATING - Config.MIN_RATING)
 		return scale * Config.MAX_GOD_PROG_CHANCE
 	
-	@classmethod
-	def attempt_god_prog(cls, age, ovr, rng, name, seed):
+	def reset(self):
+		"""Reset all god progression tracking state to initial values."""
+		self.godProgCount = 0
+		self.playersgodprogged = []
+		self.superlucky = {}
+		self.maxagegp = 0
+	
+	def attempt_god_prog(self, age, ovr, rng, name, seed):
 		"""Attempt god progression for a player. Returns (min, max) tuple or None."""
-		if age >= Config.YOUNG_MAX or rng.random() >= cls.calculate_god_prog_chance(ovr):
+		if age >= Config.YOUNG_MAX or rng.random() >= GodProgSystem.calculate_god_prog_chance(ovr):
 			return None
 		
 		# God progression activated
 		prog_amount = rng.randint(Config.MIN_GOD_PROG, Config.MAX_GOD_PROG)
 		
 		# Track statistics
-		cls.godProgCount += 1
-		cls.maxagegp = max(cls.maxagegp, age)
-		cls.superlucky[str(name)] = cls.superlucky.get(str(name), 0) + 1
-		cls.playersgodprogged.append({
+		self.godProgCount += 1
+		self.maxagegp = max(self.maxagegp, age)
+		self.superlucky[str(name)] = self.superlucky.get(str(name), 0) + 1
+		self.playersgodprogged.append({
 			'RunSeed': str(seed), 'Name': name, 'Age': str(age), 
 			'Jump': str(prog_amount), 'OVR': str(ovr), 
-			'Chance': str(cls.calculate_god_prog_chance(ovr))
+			'Chance': str(GodProgSystem.calculate_god_prog_chance(ovr))
 		})
 		
 		return (prog_amount, prog_amount)
@@ -175,9 +182,9 @@ class ProgressionCalculator:
 				mx = 0
 				if age > 30 and age < 35:
 					mn = -10
-				if age >= 35:
+				elif age >= 35:
 					mn = -14
-				if age <= 30:
+				elif age <= 30:
 					# JS: const randomMin = Utils.randomInt(-2, 0);
 					# JS: if (randomMin < 0.02) adjustedMin = -2;
 					# This generates a value in [-2, 0], checks if it's < 0.02
@@ -252,7 +259,7 @@ class AttributeProgression:
 		
 		# Apply mid-age slowdown and return bounded result
 		prog = cls.apply_mid_age_slowdown(attr, age, prog, rng)
-		return max(0, min(Config.MAX_OVR, current_rating + prog))
+		return max(0, min(100, current_rating + prog))
 
 
 class progsandbox:
@@ -263,6 +270,7 @@ class progsandbox:
 		self.master_seed = seed
 		self.master_rng = random.Random(seed)
 		self.SEED = seed
+		self.god_prog_system = GodProgSystem()
 	
 	def calcovr(self, attrs_dict):
 		"""
@@ -302,12 +310,13 @@ class progsandbox:
 						out["PER"].to_numpy(dtype=float), 0.0)
 		names = out.get("Name", pd.Series(range(len(out)))).to_numpy(dtype=str)
 		
-		# Prepare attribute arrays
-		attr_arrays = {attr: out.get(attr, 0).to_numpy(copy=True, dtype=float) 
+		# Prepare attribute arrays (safe handling for missing columns)
+		attr_arrays = {attr: out[attr].to_numpy(copy=True, dtype=float) if attr in out.columns 
+					   else np.zeros(len(out), dtype=float)
 					   for attr in self.ATTRS}
 		
 		# Initialize OVR if not present
-		ovr_array = out.get("Ovr", 0).to_numpy(copy=True, dtype=float)
+		ovr_array = out["Ovr"].to_numpy(copy=True, dtype=float) if "Ovr" in out.columns else np.zeros(len(out), dtype=float)
 		
 		# Progressive attributes (excluding height)
 		prog_attrs = [k for k in self.ATTRS if k != 'Hgt']
@@ -328,7 +337,7 @@ class progsandbox:
 			mn, mx = ProgressionCalculator.get_progression_range(per, age, ovr, rng)
 			
 			# Check for god progression
-			if (god_prog := GodProgSystem.attempt_god_prog(age, ovr, rng, name, seed)):
+			if (god_prog := self.god_prog_system.attempt_god_prog(age, ovr, rng, name, seed)):
 				mn, mx = god_prog
 			
 			# Apply progression to each attribute
