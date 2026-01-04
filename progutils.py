@@ -1,359 +1,393 @@
 import math
 import random
-import copy
 import numpy as np
-import pandas as pd
 
 """
+Progression utilities (reworked for NoEyeTest v4.0, removed complex class structure since it really is just a single function call to fix them all)
+
 references: https://github.com/fearandesire/NoEyeTest/blob/dev/tiers.md
 			https://github.com/zengm-games/zengm/blob/master/src/worker/core/player/ovr.basketball.ts
 			noeyetest.js (https://github.com/fearandesire/NoEyeTest/blob/dev)
+            plan to update noeyetest.js https://github.com/akshayexists/progbox/blob/updatealgo/NETv4.md
 """
 
-
+# Configuration
 class Config:
-	"""Centralized configuration for all progression constants."""
-	
-	# Age brackets
-	YOUNG_MAX = 30
-	MID_MAX = 34
-	OLD_MIN = 35
-	
-	# Progression limits
-	MAX_OVR = 80
-	MIN_RATING = 30
-	MAX_RATING = 61
-	MAX_GOD_PROG_CHANCE = 0.09
-	MIN_GOD_PROG = 7
-	MAX_GOD_PROG = 13
-	
-	# Physical attributes by age group
-	PHYSICAL_OLD = {'Spd', 'Str', 'Jmp', 'End'}
-	PHYSICAL_MID = {'Spd', 'Str', 'Jmp'}
-	
-	# All attributes used in OVR calculation (Hgt is excluded during progression)
-	ALL_ATTRS = ['dIQ', 'Dnk', 'Drb', 'End', '2Pt', 'FT', 'Ins', 'Jmp', 
-				 'oIQ', 'Pss', 'Reb', 'Spd', 'Str', '3Pt', 'Hgt']
-	
-	# OVR calculation order (CRITICAL - do not change)
-	OVR_CALC_ORDER = ['Hgt', 'Str', 'Spd', 'Jmp', 'End', 'Ins',
-					  'Dnk', 'FT', '3Pt', 'oIQ', 'dIQ', 'Drb',
-					  'Pss', '2Pt', 'Reb']
-	
-	# OVR coefficients and centers for vectorized ovr calc (CRITICAL - do not change)
-	OVR_COEFFS = np.array([0.159, 0.0777, 0.123, 0.051, 0.0632, 0.0126,
-						   0.0286, 0.0202, 0.0726, 0.133, 0.159, 0.059,
-						   0.062, 0.01, 0.01], dtype=float)
-	
-	OVR_CENTERS = np.array([47.5, 50.2, 50.8, 48.7, 39.9, 42.4,
-							49.5, 47.0, 47.1, 46.8, 46.7, 54.8,
-							51.3, 47.0, 51.4], dtype=float)
-	
-	# Progression parameters by age range
-	PROG_PARAMS = {
-		(25, 30): {'min1': 5, 'min2': 7, 'max1': 4, 'max2': 2, 'hardMax': 4, 'hardMin': None},
-		(31, 34): {'min1': 6, 'min2': 7, 'max1': 4, 'max2': 3, 'hardMax': 2, 'hardMin': None},
-		(35, 99): {'min1': 6, 'min2': 9, 'max1': None, 'max2': None, 'hardMax': 0, 'hardMin': None},
-	}
-	
-	# Special progression rules
-	EARLY_PROG_PER_THRESHOLD = 20
-	EARLY_PROG_AGE_THRESHOLD = 31
-	EARLY_PROG_PER_DIVISOR_MN = 5
-	EARLY_PROG_PER_OFFSET_MN = -6
-	EARLY_PROG_PER_DIVISOR_MX = 4
-	EARLY_PROG_PER_OFFSET_MX = -1
-	
-	DEFAULT_MAX_PROG = 2
-	
-
-class GodProgSystem:
-	"""Tracks and manages 'god progression' events for young players."""
-	
-	def __init__(self):
-		"""Initialize god progression tracking state."""
-		self.godProgCount = 0
-		self.maxagegp = 0
-		self.playersgodprogged = []
-		self.superlucky = {}
-	
-	@staticmethod
-	def calculate_god_prog_chance(ovr):
-		"""Calculate god progression chance based on OVR."""
-		if ovr < Config.MIN_RATING:
-			scale = 1.0
-		elif ovr > Config.MAX_RATING:
-			scale = 0.01
-		else:
-			scale = 1.0 - (ovr - Config.MIN_RATING) / (Config.MAX_RATING - Config.MIN_RATING)
-		return scale * Config.MAX_GOD_PROG_CHANCE
-	
-	def reset(self):
-		"""Reset all god progression tracking state to initial values."""
-		self.godProgCount = 0
-		self.playersgodprogged = []
-		self.superlucky = {}
-		self.maxagegp = 0
-	
-	def attempt_god_prog(self, age, ovr, rng, name, seed):
-		"""Attempt god progression for a player. Returns (min, max) tuple or None."""
-		if age >= Config.YOUNG_MAX or rng.random() >= GodProgSystem.calculate_god_prog_chance(ovr):
-			return None
-		
-		# God progression activated
-		prog_amount = rng.randint(Config.MIN_GOD_PROG, Config.MAX_GOD_PROG)
-		
-		# Track statistics
-		self.godProgCount += 1
-		self.maxagegp = max(self.maxagegp, age)
-		self.superlucky[str(name)] = self.superlucky.get(str(name), 0) + 1
-		self.playersgodprogged.append({
-			'RunSeed': str(seed), 'Name': name, 'Age': str(age), 
-			'Jump': str(prog_amount), 'OVR': str(ovr), 
-			'Chance': str(GodProgSystem.calculate_god_prog_chance(ovr))
-		})
-		
-		return (prog_amount, prog_amount)
+    # Attribute bounds
+    ATTR_MIN = 0
+    ATTR_MAX = 100
+    
+    # OVR calculation (kept identical to original)
+    OVR_CALC_ORDER = ['Hgt', 'Str', 'Spd', 'Jmp', 'End', 'Ins',
+                      'Dnk', 'FT', '3Pt', 'oIQ', 'dIQ', 'Drb',
+                      'Pss', '2Pt', 'Reb']
+    OVR_COEFFS = np.array([0.159, 0.0777, 0.123, 0.051, 0.0632, 0.0126,
+                           0.0286, 0.0202, 0.0726, 0.133, 0.159, 0.059,
+                           0.062, 0.01, 0.01], dtype=float)
+    OVR_CENTERS = np.array([47.5, 50.2, 50.8, 48.7, 39.9, 42.4,
+                            49.5, 47.0, 47.1, 46.8, 46.7, 54.8,
+                            51.3, 47.0, 51.4], dtype=float)
+    
+    # Attribute groups
+    PHYSICAL_ATTRS = {'Spd', 'Str', 'Jmp', 'End'}
+    SKILL_ATTRS = {'Drb', '2Pt', '3Pt', 'FT', 'Pss', 'Ins', 'Dnk'}
+    MENTAL_ATTRS = {'oIQ', 'dIQ', 'Reb'}
+    ALL_ATTRS = ['dIQ', 'Dnk', 'Drb', 'End', '2Pt', 'FT', 'Ins', 'Jmp',
+                 'oIQ', 'Pss', 'Reb', 'Spd', 'Str', '3Pt', 'Hgt']
+    NUMCOLS = ["Age", "PER", "DWS", "BLK", "STL"] + ALL_ATTRS
+    
+    # Defense Adjustment
+    DEFENSIVE_WEIGHTS = {'dws': 0.4, 'stl': 0.3, 'blk': 0.3}
+    DEFENSIVE_BONUS_CAP = 3.0
+    
+    # Budget Calculation
+    BASE_DIVISOR = 3.0
+    JITTER_RANGE = 0.5
+    AGE_MULTIPLIERS = {
+        25: 1.0, 26: 1.0, 27: 1.0,
+        28: 0.5, 29: 0.5, 30: 0.5,
+        31: -0.3, 32: -0.3, 33: -0.3, 34: -0.3,
+        35: -0.8  # 36+ same
+    }
+    LOW_PER_BONUS = {'ageThreshold': 28, 'perThreshold': 12, 'bonus': 2}
+    GOD_PROGRESSION = {
+        'baseRate': 0.03,
+        'ovrPenalty': 0.025,
+        'oldAgeMultiplier': 0.5,
+        'ageThreshold': 28,
+        'bonusRange': [5, 10]
+    }
+    
+    # Distribution
+    BASE_WEIGHTS = {'physical': 0.25, 'shooting': 0.30, 'playmaking': 0.20, 'defense': 0.25}
+    AGED_WEIGHTS = {'physical': 0.10, 'shooting': 0.35, 'playmaking': 0.25, 'defense': 0.30}
+    CATEGORY_SKILLS = {
+        'physical': ['Spd', 'Str', 'Jmp', 'End'],
+        'shooting': ['2Pt', 'FT', '3Pt', 'Dnk'],
+        'playmaking': ['Pss', 'Drb', 'oIQ'],
+        'defense': ['dIQ', 'Ins', 'Reb']
+    }
+    
+    # Caps & Limits
+    SKILL_CAPS = {
+        '25-30': {'min': -2, 'max': 4},
+        '31-34': {'min': -3, 'max': 2},
+        '35+': {'min': -5, 'max': 0}
+    }
+    PHYSICAL_DECLINE_AGE = 30
+    PHYSICAL_SKILLS = ['Spd', 'Jmp', 'End']
+    OVR_HARD_CAP = 80
+    
+    # Validation
+    MIN_AGE = 25
+    
+    # Debug
+    DEBUG = False
+    NOTIFY_GOD_PROGS = True
+    NOTIFY_ALL_PROGS = False
 
 
-class ProgressionCalculator:
-	"""Handles the core progression range calculations."""
-	
-	@staticmethod
-	def get_age_params(age):
-		"""Get progression parameters for a given age."""
-		for (min_age, max_age), params in Config.PROG_PARAMS.items():
-			if min_age <= age <= max_age:
-				result = copy.deepcopy(params)
-				result['age'] = age
-				return result
-		# Fallback to oldest bracket
-		result = copy.deepcopy(Config.PROG_PARAMS[(35, 99)])
-		result['age'] = age
-		return result
-	
-	@staticmethod
-	def calculate_base_range(per, params):
-		"""Calculate base min/max progression range from PER and age params."""
-		age = params['age']
-		
-		# Early progression rule for young, low-PER players
-		if per <= Config.EARLY_PROG_PER_THRESHOLD and age < Config.EARLY_PROG_AGE_THRESHOLD:
-			mn = math.ceil(per / Config.EARLY_PROG_PER_DIVISOR_MN) + Config.EARLY_PROG_PER_OFFSET_MN
-			mx = math.ceil(per / Config.EARLY_PROG_PER_DIVISOR_MX) + Config.EARLY_PROG_PER_OFFSET_MX
-		else:
-			# Standard progression calculation
-			mn = math.ceil(per / params['min1']) - params['min2']
+# OVR calculation
+def calcovr(attrs_dict):
+    """Calculate OVR from attribute dictionary"""
+    vals = np.array([float(attrs_dict.get(col, 0)) for col in Config.OVR_CALC_ORDER], dtype=float)
+    s = float((vals - Config.OVR_CENTERS) @ Config.OVR_COEFFS + 48.5)
+    
+    if s >= 68:
+        fudge = 8.0
+    elif s >= 50:
+        fudge = 4.0 + (s - 50.0) * (4.0 / 18.0)
+    elif s >= 42:
+        fudge = -5.0 + (s - 42.0) * (9.0 / 8.0)
+    elif s >= 31:
+        fudge = -5.0 - (42.0 - s) * (5.0 / 11.0)
+    else:
+        fudge = -10.0
+    
+    return max(0, min(100, int(round(s + fudge))))
 
-			if params.get('max1') is not None and params.get('max2') is not None:
-				mx = math.ceil(per / params['max1']) - params['max2']
-			else:
-				mx = Config.DEFAULT_MAX_PROG
-		
-		return mn, mx
-	
-	@staticmethod
-	def apply_hard_limits(mn, mx, params):
-		"""Apply hard min/max limits from config."""
-		hardMin = params.get('hardMin')
-		hardMax = params.get('hardMax')
-		
-		# Direct assignment if hardMin is set (only for specific cases)
-		if hardMin is not None:
-			mn = hardMin
-		
-		# JS: if ((hardMax && max > hardMax) || max > hardMax) max = hardMax;
-		# The OR condition is redundant, simplifies to: if (hardMax && max > hardMax)
-		if hardMax is not None and mx > hardMax:
-			mx = hardMax
-		
-		return mn, mx
-	
-	@staticmethod
-	def apply_ovr_cap_logic(mn, mx, ovr, age, rng):
-		"""Apply OVR cap logic and age-based adjustments."""
-		ovrProgression = mx + ovr
-		flagLower = mn + ovr
-		
-		# Check if progression would exceed cap
-		if ovrProgression >= Config.MAX_OVR:
-			if ovr >= Config.MAX_OVR:
-				# Already at cap - enforce Hard Max: 0
-				mx = 0
-				if age > 30 and age < 35:
-					mn = -10
-				elif age >= 35:
-					mn = -14
-				elif age <= 30:
-					# JS: const randomMin = Utils.randomInt(-2, 0);
-					# JS: if (randomMin < 0.02) adjustedMin = -2;
-					# This generates a value in [-2, 0], checks if it's < 0.02
-					# Since randInt(-2, 0) gives {-2, -1, 0}, only -2 satisfies < 0.02, suspect this is a bug in JS
-					randomMin = rng.randint(-2, 0)
-					if randomMin < 0.02:
-						mn = -2
-				# Prevent inverted range
-				if mn > mx:
-					mn = 0
-			else:
-				# Approaching cap
-				mx = Config.MAX_OVR - ovr
-				if flagLower >= Config.MAX_OVR:
-					mn = 0
-		
-		return int(mn), int(mx)
-	
-	@classmethod
-	def get_progression_range(cls, per, age, ovr, rng):
-		"""Main entry point for calculating progression range."""
-		params = cls.get_age_params(age)
-		mn, mx = cls.calculate_base_range(per, params)
-		mn, mx = cls.apply_hard_limits(mn, mx, params)
-		return cls.apply_ovr_cap_logic(mn, mx, ovr, age, rng)
+# Helper functions
+def get_age_multiplier(age):
+    """Get age multiplier for budget calculation"""
+    if age >= 35:
+        return Config.AGE_MULTIPLIERS[35]
+    return Config.AGE_MULTIPLIERS.get(age, 1.0)
+
+def get_skill_caps(age):
+    """Get min/max caps for skill changes based on age"""
+    if 25 <= age <= 30:
+        return Config.SKILL_CAPS['25-30']
+    elif 31 <= age <= 34:
+        return Config.SKILL_CAPS['31-34']
+    else:  # 35+
+        return Config.SKILL_CAPS['35+']
+
+def calculate_defensive_bonus(dws, stl, blk):
+    """Calculate defense-adjusted bonus (Phase 2)"""
+    bonus = (dws * Config.DEFENSIVE_WEIGHTS['dws'] + 
+             stl * Config.DEFENSIVE_WEIGHTS['stl'] + 
+             blk * Config.DEFENSIVE_WEIGHTS['blk'])
+    return min(bonus, Config.DEFENSIVE_BONUS_CAP)
+
+def calculate_base_budget(adjusted_per, age, rng):
+    """Calculate base budget with age multiplier and jitter (Phase 3)"""
+    age_mult = get_age_multiplier(age)
+    raw_budget = (adjusted_per / Config.BASE_DIVISOR) * age_mult
+    jitter = rng.uniform(-Config.JITTER_RANGE, Config.JITTER_RANGE)
+    return math.floor(raw_budget + jitter)
+
+def apply_budget_adjustments(budget, adjusted_per, age, ovr, rng):
+    """Apply low-PER bonus and god progression (Phase 4)"""
+    is_god_prog = False
+    
+    # Low-PER bonus
+    if age <= Config.LOW_PER_BONUS['ageThreshold'] and adjusted_per < Config.LOW_PER_BONUS['perThreshold']:
+        budget += Config.LOW_PER_BONUS['bonus']
+    
+    # God progression
+    god_prob = (Config.GOD_PROGRESSION['baseRate'] - 
+                (ovr / 100) * Config.GOD_PROGRESSION['ovrPenalty'])
+    if age > Config.GOD_PROGRESSION['ageThreshold']:
+        god_prob *= Config.GOD_PROGRESSION['oldAgeMultiplier']
+    
+    if rng.random() < god_prob:
+        god_bonus = rng.randint(*Config.GOD_PROGRESSION['bonusRange'])
+        budget += god_bonus
+        is_god_prog = True
+    
+    return budget, is_god_prog
+
+def distribute_to_categories(budget, age):
+    """Distribute budget to skill categories (Phase 5)"""
+    weights = Config.AGED_WEIGHTS if age >= 30 else Config.BASE_WEIGHTS
+    
+    category_budgets = {}
+    allocated = 0
+    
+    for category, weight in weights.items():
+        cat_budget = round(budget * weight)
+        category_budgets[category] = cat_budget
+        allocated += cat_budget
+    
+    # Redistribute rounding error to priority category
+    error = budget - allocated
+    if error != 0:
+        priority = 'defense' if age >= 30 else 'physical'
+        category_budgets[priority] += error
+    
+    return category_budgets
+
+def distribute_to_skills(category_budgets, rng):
+    """Distribute category budgets to individual skills (Phase 5)"""
+    skill_changes = {}
+    
+    for category, cat_budget in category_budgets.items():
+        skills = Config.CATEGORY_SKILLS[category]
+        skill_count = len(skills)
+        
+        if skill_count == 0:
+            continue
+        
+        base_per_skill = cat_budget / skill_count
+        
+        for skill in skills:
+            jitter = rng.uniform(-0.5, 0.5)
+            change = round(base_per_skill + jitter)
+            skill_changes[skill] = change
+    
+    return skill_changes
+
+def enforce_skill_caps(skill_changes, age):
+    """Apply per-skill caps (Phase 6)"""
+    caps = get_skill_caps(age)
+    
+    for skill in skill_changes:
+        skill_changes[skill] = max(caps['min'], min(caps['max'], skill_changes[skill]))
+
+def enforce_physical_decline(skill_changes, age):
+    """Prevent physical attributes from increasing for age 30+ (Phase 6)"""
+    if age >= Config.PHYSICAL_DECLINE_AGE:
+        for skill in Config.PHYSICAL_SKILLS:
+            if skill in skill_changes:
+                skill_changes[skill] = min(skill_changes[skill], 0)
+
+def enforce_ovr_cap(skill_changes, current_attrs_array):
+    """Scale positive changes to respect OVR cap (Phase 6)"""
+    # Work with array directly, avoiding dict copies
+    projected = current_attrs_array.copy()
+    
+    # Apply changes
+    for i, skill in enumerate(Config.ALL_ATTRS):
+        if skill in skill_changes:
+            projected[i] = max(Config.ATTR_MIN, min(Config.ATTR_MAX, 
+                                                     projected[i] + skill_changes[skill]))
+    
+    # Fast OVR calc using array slicing
+    projected_ovr = calcovr_from_array(projected)
+    
+    if projected_ovr > Config.OVR_HARD_CAP:
+        scale_factor = 1 - ((projected_ovr - Config.OVR_HARD_CAP) / projected_ovr)
+        
+        for skill in skill_changes:
+            if skill_changes[skill] > 0:
+                skill_changes[skill] = int(skill_changes[skill] * scale_factor)
+
+def calcovr_from_array(attrs_array):
+    """Calculate OVR directly from numpy array (optimized)"""
+    # Map array indices to OVR calc order
+    indices = [Config.ALL_ATTRS.index(attr) for attr in Config.OVR_CALC_ORDER]
+    vals = attrs_array[indices]
+    s = float((vals - Config.OVR_CENTERS) @ Config.OVR_COEFFS + 48.5)
+    
+    if s >= 68:
+        fudge = 8.0
+    elif s >= 50:
+        fudge = 4.0 + (s - 50.0) * (4.0 / 18.0)
+    elif s >= 42:
+        fudge = -5.0 + (s - 42.0) * (9.0 / 8.0)
+    elif s >= 31:
+        fudge = -5.0 - (42.0 - s) * (5.0 / 11.0)
+    else:
+        fudge = -10.0
+    
+    return max(0, min(100, int(round(s + fudge))))
 
 
-class AttributeProgression:
-	"""Handles individual attribute progression logic."""
-	
-	@staticmethod
-	def apply_physical_caps(attr, age, mn, mx, rng):
-		"""Apply physical attribute caps for older players. Returns (mn, mx, skip_prog)."""
-		# CRITICAL FIX: Check age >= 30, not age < 30
-		if age < 30 or attr not in Config.PHYSICAL_OLD or mx <= 0:
-			return mn, mx, False
-		
-		# Old player physical progression chance
-		oldProgPhys = rng.random() * 0.05 + 0.01
-		if rng.random() >= oldProgPhys:
-			return 0, 0, True  # Skip progression entirely
-		
-		# Cap progression for old physical attributes
-		if mx > 3:
-			mx = 3
-		
-		return mn, mx, False
-	
-	@staticmethod
-	def apply_mid_age_slowdown(attr, age, prog, rng):
-		"""Apply mid-age slowdown for physical attributes."""
-		if not (25 <= age < 30 and attr in Config.PHYSICAL_MID and prog > 0):
-			return prog
-		
-		age_factor = 0.7 - (age - 25) * 0.1
-		prob_progression = max(age_factor, 0)
-		
-		# JS: return Math.random() > probProgression;
-		# Returns true to SKIP, so we invert: keep prog if random() <= prob
-		return prog if rng.random() <= prob_progression else 0
-	
-	@classmethod
-	def progress_attribute(cls, attr, age, mn, mx, current_rating, rng):
-		"""Progress a single attribute with all applicable rules."""
-		# Apply physical caps first
-		mn, mx, skip = cls.apply_physical_caps(attr, age, mn, mx, rng)
-		if skip:
-			return current_rating
-		
-		# Calculate base progression
-		prog = rng.randint(mn, mx) if mn <= mx else 0
-		
-		# Apply mid-age slowdown and return bounded result
-		prog = cls.apply_mid_age_slowdown(attr, age, prog, rng)
-		return max(0, min(100, current_rating + prog))
+# Core progression function
+def progplayer(player_row, rng):
+    """
+    Progress a single player based on NoEyeTest v4.0 spec.
+    player_row: numpy array with [Age, PER, DWS, BLK, STL, ...attributes]
+    Returns: modified numpy array (in-place for efficiency)
+    """
+    # Extract values
+    age = int(player_row[0])
+    
+    # Phase 1: Validation
+    if age < Config.MIN_AGE:
+        return player_row
+    
+    per = player_row[1]
+    dws = player_row[2]
+    blk = player_row[3]
+    stl = player_row[4]
+    
+    # Get current attributes as array slice (zero-copy view)
+    current_attrs = player_row[5:5+len(Config.ALL_ATTRS)]
+    current_ovr = calcovr_from_array(current_attrs)
+    
+    # Phase 2: Defense-Adjusted PER
+    defensive_bonus = calculate_defensive_bonus(dws, stl, blk)
+    adjusted_per = per + defensive_bonus
+    
+    # Phase 3: Budget Calculation
+    budget = calculate_base_budget(adjusted_per, age, rng)
+    
+    # Phase 4: Budget Adjustments
+    budget, is_god_prog = apply_budget_adjustments(budget, adjusted_per, age, current_ovr, rng)
+    
+    # Phase 5: Distribution
+    category_budgets = distribute_to_categories(budget, age)
+    skill_changes = distribute_to_skills(category_budgets, rng)
+    
+    # Phase 6: Enforcement
+    enforce_skill_caps(skill_changes, age)
+    enforce_physical_decline(skill_changes, age)
+    enforce_ovr_cap(skill_changes, current_attrs)
+    
+    # Phase 7: Apply changes (in-place)
+    for i, attr in enumerate(Config.ALL_ATTRS):
+        if attr in skill_changes:
+            new_val = current_attrs[i] + skill_changes[attr]
+            player_row[5 + i] = max(Config.ATTR_MIN, min(Config.ATTR_MAX, new_val))
+    
+    return player_row
 
+# Tracking
+class tracking:
+    def __init__(self):
+        self.godprogcount = 0
+        self.playersgodprogged = {}
+    
+    def updategodprog(self, player_name):
+        self.godprogcount += 1
+        if player_name in self.playersgodprogged:
+            self.playersgodprogged[player_name] += 1
+        else:
+            self.playersgodprogged[player_name] = 1
 
+#--------------
+# Main sandbox
 class progsandbox:
-	"""Main progression sandbox for basketball player development."""
-	
-	def __init__(self, seed=0):
-		self.ATTRS = Config.ALL_ATTRS
-		self.master_seed = seed
-		self.master_rng = random.Random(seed)
-		self.SEED = seed
-		self.god_prog_system = GodProgSystem()
-	
-	def calcovr(self, attrs_dict):
-		"""
-		Calculate overall rating from attributes dictionary.
-		CRITICAL: Maintains exact same logic and coefficients as bbgm ovr calculation script: https://github.com/zengm-games/zengm/blob/master/src/worker/core/player/ovr.basketball.ts.
-		"""
-		# Extract values in the exact order required
-		vals = np.array([float(attrs_dict.get(col, 0)) for col in Config.OVR_CALC_ORDER], dtype=float)
-		
-		# Weighted sum
-		s = float((vals - Config.OVR_CENTERS) @ Config.OVR_COEFFS + 48.5)
-		
-		# Piecewise fudge factor (unchanged from original)
-		if s >= 68:
-			fudge = 8.0
-		elif s >= 50:
-			fudge = 4.0 + (s - 50.0) * (4.0 / 18.0)
-		elif s >= 42:
-			fudge = -5.0 + (s - 42.0) * (9.0 / 8.0)
-		elif s >= 31:
-			fudge = -5.0 - (42.0 - s) * (5.0 / 11.0)
-		else:
-			fudge = -10.0
-		
-		return max(0, min(100, int(round(s + fudge))))
-	
-	def runoneprog(self, roster_df, rng, seed):
-		"""
-		Apply PER-based progression to each player in the roster.
-		"""
-		rng = rng or self.master_rng
-		out = roster_df.copy(deep=True)
-		
-		# Extract data arrays for vectorized operations
-		ages = out["Age"].to_numpy(dtype=int)
-		pers = np.where(np.isfinite(out["PER"].to_numpy(dtype=float)), 
-						out["PER"].to_numpy(dtype=float), 0.0)
-		names = out.get("Name", pd.Series(range(len(out)))).to_numpy(dtype=str)
-		
-		# Prepare attribute arrays (safe handling for missing columns)
-		attr_arrays = {attr: out[attr].to_numpy(copy=True, dtype=float) if attr in out.columns 
-					   else np.zeros(len(out), dtype=float)
-					   for attr in self.ATTRS}
-		
-		# Initialize OVR if not present
-		ovr_array = out["Ovr"].to_numpy(copy=True, dtype=float) if "Ovr" in out.columns else np.zeros(len(out), dtype=float)
-		
-		# Progressive attributes (excluding height)
-		prog_attrs = [k for k in self.ATTRS if k != 'Hgt']
-		
-		# Process each player
-		for i in range(len(out)):
-			age, per, name = ages[i], pers[i], names[i]
-			
-			# Skip conditions
-			if age < 25 or per <= 0:
-				continue
-			
-			# Build current ratings dict
-			ratings = {attr: int(round(attr_arrays[attr][i])) for attr in self.ATTRS}
-			ovr = self.calcovr(ratings)
-			
-			# Get progression range
-			mn, mx = ProgressionCalculator.get_progression_range(per, age, ovr, rng)
-			
-			# Check for god progression
-			if (god_prog := self.god_prog_system.attempt_god_prog(age, ovr, rng, name, seed)):
-				mn, mx = god_prog
-			
-			# Apply progression to each attribute
-			for attr in prog_attrs:
-				new_rating = AttributeProgression.progress_attribute(
-					attr, age, mn, mx, ratings[attr], rng
-				)
-				attr_arrays[attr][i] = new_rating
-				ratings[attr] = new_rating
-			
-			# Recalculate OVR with updated ratings
-			ovr_array[i] = self.calcovr(ratings)
-		
-		# Write updated arrays back to DataFrame
-		for attr, arr in attr_arrays.items():
-			out[attr] = arr
-		out["Ovr"] = ovr_array
-		
-		return out
+    def __init__(self, seed=0):
+        self.master_seed = seed
+        self.master_rng = random.Random(seed)
+        self.tracking = tracking()
+    
+    def runoneprog(self, roster_df, rng=None, seed=None):
+        """
+        Apply progression to each player in roster_df.
+        - roster_df: pandas DataFrame with player rows (must contain Age, PER, DWS, BLK, STL and attribute columns)
+        - rng: random.Random-like instance (if None, uses internal RNG)
+        - seed: opaque seed stored for god prog logs
+        Returns updated DataFrame (copy).
+        """
+        rng = rng or self.master_rng
+        out = roster_df.copy(deep=True)
+        
+        # Ensure required columns exist
+        required_cols = Config.NUMCOLS + ['Team', 'Name']
+        for col in required_cols:
+            if col not in out.columns:
+                if col in ['Team', 'Name']:
+                    out[col] = ''
+                else:
+                    out[col] = 0
+        
+        # Ensure Ovr column exists
+        if 'Ovr' not in out.columns:
+            out['Ovr'] = 0
+        
+        # Extract numeric data (zero-copy view where possible)
+        num_arr = out[Config.NUMCOLS].to_numpy(dtype=np.float64)
+        
+        # Pre-compute OVR index mapping for vectorized calculation
+        ovr_indices = [Config.ALL_ATTRS.index(attr) for attr in Config.OVR_CALC_ORDER]
+        
+        # Progress each player (vectorized operations where possible)
+        god_prog_indices = []
+        for i in range(len(num_arr)):
+            age = int(num_arr[i, 0])
+            if age < Config.MIN_AGE:
+                continue
+            
+            # Track changes for god prog detection
+            original_attrs = num_arr[i, 5:].copy()
+            
+            # In-place progression
+            progplayer(num_arr[i], rng)
+            
+            # Fast god prog detection using numpy
+            changes = num_arr[i, 5:] - original_attrs
+            if np.sum(changes > 0) >= 5 and np.sum(changes) >= 8:
+                god_prog_indices.append(i)
+        
+        # Write back numeric data
+        out[Config.NUMCOLS] = num_arr
+        
+        # Vectorized OVR calculation
+        attr_arrays = num_arr[:, 5:5+len(Config.ALL_ATTRS)]
+        ovr_vals = np.zeros(len(out), dtype=int)
+        
+        for i in range(len(out)):
+            ovr_vals[i] = calcovr_from_array(attr_arrays[i])
+        
+        out['Ovr'] = ovr_vals
+        
+        # Update god prog tracking
+        if god_prog_indices:
+            for idx in god_prog_indices:
+                player_name = out.loc[idx, 'Name'] if 'Name' in out.columns else f"Player_{idx}"
+                self.tracking.updategodprog(player_name)
+        
+        return out
