@@ -110,12 +110,12 @@ class runsim(progsandbox):
         try:
             # Resolve output directory safely
             workspace_base = Path(__file__).parent.resolve()
-            
+
             if os.path.isabs(output_dir):
                 output_path = Path(output_dir).resolve()
             else:
                 output_path = (workspace_base / output_dir).resolve()
-            
+
             # Validate path is within workspace
             try:
                 output_path.relative_to(workspace_base)
@@ -123,24 +123,31 @@ class runsim(progsandbox):
                 safe_default = workspace_base / 'outputs' / 'raw'
                 print(f"Warning: Invalid output directory outside workspace. Using: {safe_default}")
                 output_path = safe_default
-            
+
             # Create directory if needed
             output_path.mkdir(parents=True, exist_ok=True)
-            
-            # Export god progressions
+
+            # Export detailed god progression records (array of objects)
             godprogs_file = output_path / 'godprogs.json'
-            god_progs_data = self.tracking.playersgodprogged if hasattr(self.tracking, 'playersgodprogged') else {}
-            
+            god_progs_records = self.tracking.godprog_records if hasattr(self.tracking, 'godprog_records') else []
+
             with open(godprogs_file, 'w', encoding='utf-8') as f:
-                json.dump(god_progs_data, f, ensure_ascii=False, indent=2)
-            
+                json.dump(god_progs_records, f, ensure_ascii=False, indent=2)
+
+            # Export superlucky counts (dict of name -> count)
+            superlucky_file = output_path / 'superlucky.json'
+            superlucky_data = self.tracking.playersgodprogged if hasattr(self.tracking, 'playersgodprogged') else {}
+
+            with open(superlucky_file, 'w', encoding='utf-8') as f:
+                json.dump(superlucky_data, f, ensure_ascii=False, indent=2)
+
             # Print summary
             if self.tracking.godprogcount > 0:
                 print(f'\nGod Progressions: {self.tracking.godprogcount}')
                 print(f'Logs exported to: {output_path}')
             else:
                 print(f'\nNo god progressions occurred.')
-                
+
         except (OSError, ValueError) as e:
             print(f"Error: Could not export logs - {e}")
         except Exception as e:

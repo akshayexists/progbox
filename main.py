@@ -52,30 +52,50 @@ meaned = (
 )
 
 # --- Load and process godprogs.json ---
-godprogs = (
-    pd.read_json(path+'godprogs.json')
-      .drop(['RunSeed', 'OVR', 'Age'], axis=1)
-      .groupby('Name', sort=True)
-      .mean()
-      .reset_index()
-)
-godprogs.columns = ['Name', 'GodProg Average', 'GodProg Chance']
+try:
+    godprogs_raw = pd.read_json(path+'godprogs.json')
+    if godprogs_raw.empty or 'Name' not in godprogs_raw.columns:
+        print("No god progressions occurred or godprogs.json is empty.")
+        godprogs = pd.DataFrame(columns=['Name', 'GodProg Average', 'GodProg Chance'])
+    else:
+        # Drop columns that exist, handle missing columns gracefully
+        cols_to_drop = [c for c in ['RunSeed', 'OVR', 'Age'] if c in godprogs_raw.columns]
+        godprogs = (
+            godprogs_raw.drop(cols_to_drop, axis=1)
+              .groupby('Name', sort=True)
+              .mean()
+              .reset_index()
+        )
+        godprogs.columns = ['Name', 'GodProg Average', 'GodProg Chance']
+except (ValueError, FileNotFoundError) as e:
+    print(f"Warning: Could not load godprogs.json: {e}")
+    godprogs = pd.DataFrame(columns=['Name', 'GodProg Average', 'GodProg Chance'])
 
 # --- Load and process superlucky.json ---
-with open(path+'superlucky.json', 'rb') as f:
-    superlucky = json.load(f)
-
-superlucky = (
-    pd.DataFrame(list(superlucky.items()), columns=['Name', 'GodProgCount'])
-    .sort_values('Name')
-    .reset_index(drop=True)
-)
+try:
+    with open(path+'superlucky.json', 'r', encoding='utf-8') as f:
+        superlucky_data = json.load(f)
+    superlucky = (
+        pd.DataFrame(list(superlucky_data.items()), columns=['Name', 'GodProgCount'])
+        .sort_values('Name')
+        .reset_index(drop=True)
+    )
+except (FileNotFoundError, json.JSONDecodeError) as e:
+    print(f"Warning: Could not load superlucky.json: {e}")
+    superlucky = pd.DataFrame(columns=['Name', 'GodProgCount'])
 
 # --- Merge GodProgCount into godprogs ---
-godprogs = godprogs.merge(superlucky, on='Name', how='left')
+if not godprogs.empty and not superlucky.empty:
+    godprogs = godprogs.merge(superlucky, on='Name', how='left')
+    godprogs['GodProgCount'] = godprogs['GodProgCount'].fillna(1)  # Players in godprogs have at least 1
+elif not superlucky.empty:
+    godprogs = superlucky.copy()
+    godprogs['GodProg Average'] = 0
+    godprogs['GodProg Chance'] = 0
 
-# Optional: fill missing GodProgCount with 0
-godprogs['GodProgCount'] = godprogs['GodProgCount'].fillna(0)
+# Ensure GodProgCount column exists
+if 'GodProgCount' not in godprogs.columns:
+    godprogs['GodProgCount'] = 0
 
 teams_unique = dataraw[["Name", "Team"]].drop_duplicates(subset="Name")
 
