@@ -288,19 +288,21 @@ def validate_tier_compliance(df):
     violations_df = df_filtered[has_violation].copy()
     
     # Convert to dict records
-    violations = violations_df.apply(lambda row: {
-        'name': row.get('Name', 'Unknown'),
-        'team': row.get('Team', 'Unknown'),
-        'age': int(row['Age']),
-        'age_tier': row['age_tier'],
-        'baseline': float(row['Baseline']),
-        'per': float(row.get('PER', 0)) if pd.notna(row.get('PER')) else 0,
-        'actual_delta': float(row['Delta']),
-        'expected_min': int(row['expected_min']),
-        'expected_max': int(row['expected_max']),
-        'violation_type': row['violation_type'],
-        'run': int(row.get('Run', 0))
-    }, axis=1).tolist()
+    violations = []
+    for _, row in violations_df.iterrows():
+        violations.append({
+            'name': row.get('Name', 'Unknown'),
+            'team': row.get('Team', 'Unknown'),
+            'age': int(row['Age']),
+            'age_tier': row['age_tier'],
+            'baseline': float(row['Baseline']),
+            'per': float(row.get('PER', 0)) if pd.notna(row.get('PER')) else 0,
+            'actual_delta': float(row['Delta']),
+            'expected_min': int(row['expected_min']),
+            'expected_max': int(row['expected_max']),
+            'violation_type': row['violation_type'],
+            'run': int(row.get('Run', 0))
+        })
     
     total_violations = len(violations)
     if total_violations > 100:
