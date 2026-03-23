@@ -9,25 +9,6 @@ The progression scripts are the following:
 
 ---
 
-## Table of Contents for this branch and this branch only
-
-- [Overview](#overview)
-- [Project Structure](#project-structure)
-- [How It Works](#how-it-works)
-  - [The Composite Score](#the-composite-score)
-  - [The Progression Range](#the-progression-range)
-  - [Physical Decline Gates](#physical-decline-gates)
-  - [God Progressions](#god-progressions)
-  - [OVR Calculation](#ovr-calculation)
-- [Configuration Reference](#configuration-reference)
-- [Setup](#setup)
-- [Running a Simulation](#running-a-simulation)
-- [Output Files](#output-files)
-- [Analysis Charts](#analysis-charts)
-- [Module Reference](#module-reference)
-
----
-
 ## Overview
 
 Given a roster export, it runs N fully independent progression passes (each with its own RNG seed), then aggregates the results into per-player outcome distributions. This is useful. Well, should be.
@@ -48,119 +29,22 @@ Given a roster export, it runs N fully independent progression passes (each with
 │       │   ├── outputs.csv  # Full long-format simulation results
 │       │   ├── godprogs.json
 │       │   └── superlucky.json
-│       ├── charts/          # Seven diagnostic PNG charts
+│       ├── charts/          # diagnostic PNG charts
 │       └── analysis.xlsx    # Aggregated workbook
 │
-├── exportcleaner.py         # Parses and normalises ZengM export
-├── progutils.py             # Core progression engine + Config
-├── runsim.py                # Monte Carlo harness (parallel)
-├── analysis.py              # Aggregated stats + chart generation
-└── main.py                  # Entry point
+├── exportcleaner.py         # Parses and normalises BBGM export
+├── progutils.py             # Core progression engine + Config <----- pls modify
+├── runsim.py                # Monte Carlo harness <------------------ do not modify
+├── analysis.py              # Aggregated stats + chart generation <-- modify if you modify progutils to use a different prog script
+└── main.py                  # Entry point <-------------------------- for setting sim settings
 ```
-
----
-
-## How It Works (from shawn's NETv4.1)
-
-### The Composite Score
-
-Every player's progression potential is reduced to a single number before any dice are rolled:
-
-```
-composite = PER × 0.70 + DWS × 5.0 × 0.20 + EWA × 3.0 × 0.10
-          = PER × 0.70 + DWS × 1.00 + EWA × 0.30
-```
-
-The scalars on DWS and EWA exist because those stats live on a different numerical range than PER. The effective weight of each stat in the final formula is approximately **PER 70%, DWS 20%, EWA 10%**. Chart 6 lets you verify whether those weights are producing their intended relative influence in practice.
-
-### The Progression Range
-
-The composite score maps to a `[lo, hi]` delta range. Every progressing attribute then rolls a random integer in that range. The mapping differs by age group:
-
-| Age group | Parameters | Hard max per-attr gain |
-|-----------|-----------|------------------------|
-| 26–30 | `lo = ceil(score / 5) − 7`, `hi = ceil(score / 4) − 2` | +4 |
-| 31–34 | `lo = ceil(score / 6) − 7`, `hi = ceil(score / 4) − 3` | +2 |
-| 35+   | `lo = ceil(score / 6) − 9`, `hi = 0` (never improves)  | 0  |
-
-**Low-composite special case** (score ≤ 20 and age < 31): a wider, more volatile range is used: `lo = ceil(score/5) − 6`, `hi = ceil(score/4) − 1`. This gives young underperformers more variance.
-
-**OVR hard cap**: no player may progress past OVR 80. If the range would breach the cap it is clipped. Players already at 80 receive `hi = 0` and an age-appropriate decline floor.
-
-### Physical Decline Gates
-
-v4.1 adds extra age-based restrictions on the four physical attributes `Spd`, `Str`, `Jmp`, `End`.
-
-**Age 30+** (`OLD_AGE_PHYS`): when `hi > 0` (would-be improvement), a random check fires with approximately a 3.5% pass rate. If the check fails the attribute is left unchanged. When `hi ≤ 0` (decline path), the roll applies directly with no gate. Gains that do pass are capped at +3.
-
-**Age 26–29** (`MID_AGE_PHYS`): the delta rolls normally, but any positive result is then subject to a linear fade -- 70% chance at age 26 dropping to 40% at age 29. If the fade check fails the attribute is left unchanged.
-
-Chart 3 directly validates whether these gates are separating physical attrs from skill attrs across age groups.
-
-### God Progressions
-
-Once per player per run, a flat **2% chance** fires before the normal range is calculated. Eligibility: age < 30, OVR < 60. If triggered, `lo = hi = bonus` where bonus is a uniform draw from `[7, 10]`. The normal range is completely overridden for that run.
-
-God progression events are logged to `godprogs.json` and `superlucky.json`, and appear as a separate sheet in `analysis.xlsx` if any fired.
 
 ---
 
 ## Configuration Reference
 
-All tunable parameters live in `Config` inside `progutils.py`.
-
-### Age Group Progression Parameters
-
-```python
-Config.AGE_GROUP_CONFIG = {
-    '26-30': dict(min1=5, min2=7, max1=4, max2=2, hard_max=4),
-    '31-34': dict(min1=6, min2=7, max1=4, max2=3, hard_max=2),
-    '35+':   dict(min1=6, min2=9, max1=None, max2=None, hard_max=0),
-}
-```
-
-- `min1`, `min2` - control the floor of the range: `lo = ceil(score / min1) − min2`
-- `max1`, `max2` - control the ceiling: `hi = ceil(score / max1) − max2` (`None` = no upside)
-- `hard_max`     - absolute per-attribute gain cap for this age group
-
-Increasing `hard_max` allows older players to improve more. Lowering `min2` makes decline steeper. The 35+ group has `hard_max=0` and no upside formula, it can only produce flat or negative deltas.
-
-### Composite Score Weights
-
-```python
-Config.COMPOSITE = dict(per_w=0.70, dws_scale=5.0, dws_w=0.20,
-                        ewa_scale=3.0, ewa_w=0.10)
-```
-
-Effective weights: `composite = PER×per_w + DWS×(dws_scale×dws_w) + EWA×(ewa_scale×ewa_w)`. Chart 6 shows whether the actual influence of each stat in simulation outcomes matches these theoretical shares.
-
-### God Progression
-
-```python
-Config.GOD_PROG = dict(max_chance=0.02, age_limit=30, ovr_limit=60,
-                       bonus_min=7, bonus_max=10)
-```
-
-- `max_chance` - flat probability per eligible player per run (0.02 = 2%)
-- `age_limit`  - players at this age or older are ineligible
-- `ovr_limit`  - players at this OVR or above are ineligible
-- `bonus_min`, `bonus_max` - uniform range for the god-prog delta
-
-### Physical Decline Sets
-
-```python
-Config.OLD_AGE_PHYS = frozenset({'Spd', 'Str', 'Jmp', 'End'})  # gates at 30+
-Config.MID_AGE_PHYS = frozenset({'Spd', 'Str', 'Jmp'})          # fade at 26–29
-```
-
-`End` is in `OLD_AGE_PHYS` but not `MID_AGE_PHYS`, endurance fades later than the pure physical trio.
-
-### Other
-
-```python
-Config.OVR_HARD_CAP = 80   # no player may progress above this OVR
-Config.MIN_AGE      = 26   # players younger than this are skipped entirely
-```
+All tunable parameters live in `Config` inside `progutils.py`. 
+If you wish to change the prog script, you may do so, just ensure ProgressionSandbox class and its API hygine is maintained.
 
 ---
 
@@ -225,15 +109,6 @@ Array of every god-progression event across all runs. Fields: `name`, `run_seed`
 Object mapping player name → total god-prog count across all runs.
 
 ### `outputs/{RUN_TS}/analysis.xlsx`
-
-| Sheet | Contents |
-|-------|----------|
-| `Aggregated` | Per-player: baseline, mean/std/min/max OVR, quartiles Q10/25/75/90, % runs positive, composite score, percentile rank |
-| `AgeGroups` | Delta statistics (mean, median, std, IQR, % positive) split by 26-30 / 31-34 / 35+ |
-| `StatDrivers` | Per-player averaged PER / DWS / EWA / composite score alongside mean delta |
-| `Correlations` | Pearson r and p-value for each stat vs mean delta |
-| `AttrSensitivity` | Per-attribute std across runs + coefficient of variation + physical flag |
-| `GodProgs` | Only present if god progressions occurred |
 
 ---
 
