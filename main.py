@@ -1,165 +1,57 @@
-from runsim import *
-from exportcleaner import *
-
-#look at all available teams
-teams = []    #change to list of teams if specific teams are to be tested eg. ['GSW', 'BOS', 'NOL']
-
-seed = 69
-print("Master seed:", seed)
-runs = 1000
-path = 'outputs/raw/'
-data, metadata = exportcleaner(export_file='data/export.json', teaminfo_file='data/teaminfo.json', teams=teams)
-# Optionally save metadata
-# import json
-# with open(path + 'metadata.json', 'w') as f:
-#     json.dump(metadata, f, indent=4)
-# data.to_csv(path+'inputs.csv')
-#print(data)
-
-sim = runsim(seed=seed)
-df = sim.PROGEMUP(data, runs=runs, output_dir=path)
-df.to_csv(path+'outputs.csv')
-
-print(f'Written to {path}')
-
-#---------------------- exporting to excel for Further Analysis ----------------------
-# modify this if you want to change how aggregation is done or to add more analysis types
-# I could've folded this into a method of the runsim class itself, but I find it better to keep
-# analysis separate from data collection.
-
-import pandas as pd
+from runsim import runsim
+from exportcleaner import exportcleaner
+from analysis import generate_analysis
+from datetime import datetime
+from pathlib import Path
 import json
-from openpyxl import load_workbook
-from openpyxl.worksheet.table import TableColumn
-from openpyxl.utils import get_column_letter, range_boundaries
+import os
 
-dataraw = pd.read_csv(path+'outputs.csv', index_col=0)
-data = dataraw.drop(['Team', 'RunSeed', 'Run', 'AboveBaseline', 'Value', 'PlayerID'], axis=1).sort_values(by='Name')
-meaned = (
-    data.groupby("Name", sort=True)
-        .agg(
-            Ovr=("Ovr", "mean"),
-            Ovr_min=("Ovr", "min"),
-            Ovr_max=("Ovr", "max"),
-            Ovr_q10=("Ovr", lambda s: s.quantile(0.10)),
-            Ovr_q25=("Ovr", lambda s: s.quantile(0.25)),
-            Ovr_q75=("Ovr", lambda s: s.quantile(0.75)),
-            Ovr_q90=("Ovr", lambda s: s.quantile(0.90)),
-            **{f"{col}": (col, "mean") 
-               for col in data.columns if col not in {"Name", "Ovr"}}
-        )
-        .reset_index()
-)
+if __name__=="__main__":
+    # ── Run configuration ─────────────────────────────────────────────────────────
+    # Store these in a dict so we can easily export them later
+    config = {
+        "teams": [], # [] = all teams; e.g. ['GSW', 'BOS'] for specific teams
+        "seed": 69,
+        "runs": 500,
+        "n_workers": max(os.cpu_count()-1, 1),
+        "export_file": 'data/export.json',
+        "teaminfo_file": 'data/teaminfo.json'
+    }
 
-# --- Load and process godprogs.json ---
-try:
-    godprogs_raw = pd.read_json(path+'godprogs.json')
-    if godprogs_raw.empty or 'Name' not in godprogs_raw.columns:
-        print("No god progressions occurred or godprogs.json is empty.")
-        godprogs = pd.DataFrame(columns=['Name', 'GodProg Average', 'GodProg Chance'])
-    else:
-        # Drop columns that exist, handle missing columns gracefully
-        cols_to_drop = [c for c in ['RunSeed', 'OVR', 'Age'] if c in godprogs_raw.columns]
-        godprogs = (
-            godprogs_raw.drop(cols_to_drop, axis=1)
-              .groupby('Name', sort=True)
-              .mean()
-              .reset_index()
-        )
-        godprogs.columns = ['Name', 'GodProg Average', 'GodProg Chance']
-except (ValueError, FileNotFoundError) as e:
-    print(f"Warning: Could not load godprogs.json: {e}")
-    godprogs = pd.DataFrame(columns=['Name', 'GodProg Average', 'GodProg Chance'])
+    RUN_TS = datetime.now().strftime("%Y%m%d_%H%M%S")
+    analysis_path = f'outputs/{RUN_TS}'
+    path = f'outputs/{RUN_TS}/raw/'
+    Path(path).mkdir(parents=True, exist_ok=True)
 
-# --- Load and process superlucky.json ---
-try:
-    with open(path+'superlucky.json', 'r', encoding='utf-8') as f:
-        superlucky_data = json.load(f)
-    superlucky = (
-        pd.DataFrame(list(superlucky_data.items()), columns=['Name', 'GodProgCount'])
-        .sort_values('Name')
-        .reset_index(drop=True)
+    # ── Export Metadata ───────────────────────────────────────────────────────────
+    # We do this early so even if the sim crashes, we know what we tried to run
+    with open(f'{analysis_path}/metadata.json', 'w') as f:
+        json.dump(config, f, indent=4)
+    
+    print("Master seed:", config["seed"])
+
+    data, metadata = exportcleaner(
+        export_file=config["export_file"],
+        teaminfo_file=config["teaminfo_file"],
+        teams=config["teams"],
     )
-except (FileNotFoundError, json.JSONDecodeError) as e:
-    print(f"Warning: Could not load superlucky.json: {e}")
-    superlucky = pd.DataFrame(columns=['Name', 'GodProgCount'])
 
-# --- Merge GodProgCount into godprogs ---
-if not godprogs.empty and not superlucky.empty:
-    godprogs = godprogs.merge(superlucky, on='Name', how='left')
-    godprogs['GodProgCount'] = godprogs['GodProgCount'].fillna(1)  # Players in godprogs have at least 1
-elif not superlucky.empty:
-    godprogs = superlucky.copy()
-    godprogs['GodProg Average'] = 0
-    godprogs['GodProg Chance'] = 0
+    # ── Simulation ────────────────────────────────────────────────────────────────
+    sim = runsim(seed=config["seed"])
+    print("beginning the simulation, give it a while to start up!...")
+    
+    df = sim.PROGEMUP(
+        data, 
+        runs=config["runs"], 
+        output_dir=path, 
+        n_workers=config["n_workers"]
+    )
+    
+    df.to_csv(path + 'outputs.csv')
+    print(f'Written to {path}')
 
-# Ensure GodProgCount column exists
-if 'GodProgCount' not in godprogs.columns:
-    godprogs['GodProgCount'] = 0
+    print(f'Generating Sim Analytics Report!')
+    sim.analytics.print_report()
 
-teams_unique = dataraw[["Name", "Team"]].drop_duplicates(subset="Name")
-
-aggregated = meaned.merge(
-    godprogs,
-    on="Name",
-    how="left"   # keep all rows from big df
-)
-
-# Merge safely
-aggregated = aggregated.merge(
-    teams_unique,
-    on="Name",
-    how="left"
-)
-
-aggregated = aggregated[['Name', 'Team', 'Age', 'Baseline', 'Ovr', 'Delta', 'PctChange', 'Ovr_min', 'Ovr_max', 'Ovr_q10', 'Ovr_q25', 'Ovr_q75', 'Ovr_q90', 'PER', 'GodProg Average', 'GodProg Chance', 'GodProgCount', 
-                        'dIQ', 'Dnk', 'Drb', 'End', '2Pt', 'FT', 'Ins', 'Jmp', 'oIQ', 'Pss', 'Reb', 'Spd', 'Str', '3Pt', 'Hgt']]
-
-
-# aggregated is your pandas DataFrame
-wb = load_workbook("outputs/analysis.xlsx")
-ws = wb["aggregated"]
-
-# target size (including header row)
-nrows = len(aggregated) + 1
-ncols = len(aggregated.columns)
-end_col_letter = get_column_letter(ncols)
-new_ref = f"A1:{end_col_letter}{nrows}"
-
-# --- 1) Find candidate table(s) to update ---
-candidate_tables = []
-# ws._tables is a dict of name -> Table objects
-for t in ws._tables.values():
-    min_col, min_row, max_col, max_row = range_boundaries(t.ref)
-    # pick tables that start at the header row (min_row == 1) as likely target
-    if min_row == 1:
-        candidate_tables.append(t)
-
-# fallback: if no table with min_row==1 found, pick the first table if any
-if not candidate_tables and ws._tables:
-    candidate_tables = list(ws._tables.values())[:1]
-
-# --- 2) Update table ref and columns for each candidate ---
-for t in candidate_tables:
-    # set the new ref (range) for the table
-    t.ref = new_ref
-    # rebuild tableColumns to match DataFrame column names (keeps the table structure valid)
-    t.tableColumns = [TableColumn(id=i+1, name=str(col)) for i, col in enumerate(aggregated.columns)]
-
-# --- 3) Clear only the relevant cell values (don't delete rows/cols!) ---
-# Clear a bounding box covering the old used area and new area to be safe
-max_row = max(ws.max_row, nrows)
-max_col = max(ws.max_column, ncols)
-for row in ws.iter_rows(min_row=1, max_row=max_row, min_col=1, max_col=max_col):
-    for cell in row:
-        cell.value = None
-
-# --- 4) Write headers and data ---
-for c_idx, col_name in enumerate(aggregated.columns, start=1):
-    ws.cell(row=1, column=c_idx, value=col_name)
-
-for r_idx, row in enumerate(aggregated.values, start=2):
-    for c_idx, value in enumerate(row, start=1):
-        ws.cell(row=r_idx, column=c_idx, value=value)
-
-wb.save("outputs/analysis.xlsx")
+    # ── Perform analysis ──────────────────────────────────────────────────────────
+    generate_analysis(analysis_path)

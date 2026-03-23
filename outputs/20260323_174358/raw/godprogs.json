@@ -1,0 +1,10442 @@
+[
+  {
+    "name": "Kris Dunn",
+    "run_seed": 688148579456019026,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Mickey",
+    "run_seed": 1229949226926665160,
+    "age": 27,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 1229949226926665160,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Quinn Cook",
+    "run_seed": 6357070312469259691,
+    "age": 28,
+    "ovr": 40,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Taurean Prince",
+    "run_seed": 6357070312469259691,
+    "age": 27,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryn Forbes",
+    "run_seed": 8574358577053880358,
+    "age": 28,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 8574358577053880358,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Noah Vonleh",
+    "run_seed": 8574358577053880358,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Troy Williams",
+    "run_seed": 8574358577053880358,
+    "age": 27,
+    "ovr": 39,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 7901593402644300020,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Denzel Valentine",
+    "run_seed": 7901593402644300020,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 8073191144725013768,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 8073191144725013768,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "James Michael McAdoo",
+    "run_seed": 8073191144725013768,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 2618624979393466152,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Nicolás Brussino",
+    "run_seed": 2618624979393466152,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 2618624979393466152,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Cliff Alexander",
+    "run_seed": 1187021004000573462,
+    "age": 26,
+    "ovr": 40,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 1187021004000573462,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Grant Jerrett (PO)",
+    "run_seed": 1187021004000573462,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Parker",
+    "run_seed": 1187021004000573462,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Devyn Marble",
+    "run_seed": 5278439655225739622,
+    "age": 29,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Luis Montero",
+    "run_seed": 5278439655225739622,
+    "age": 28,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Julius Randle",
+    "run_seed": 5278439655225739622,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 5278439655225739622,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "DeAndre' Bembry",
+    "run_seed": 3615918158087423758,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 3615918158087423758,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Chris McCullough",
+    "run_seed": 3615918158087423758,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "James Michael McAdoo",
+    "run_seed": 3892243096047485749,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 3892243096047485749,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 3892243096047485749,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 3830394040151819976,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 3830394040151819976,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 1833673473574008533,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Alex Len",
+    "run_seed": 1833673473574008533,
+    "age": 28,
+    "ovr": 49,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Parker",
+    "run_seed": 1833673473574008533,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "R.J. Hunter",
+    "run_seed": 4835834318867227579,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 4835834318867227579,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Parker",
+    "run_seed": 1160624919469011122,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 4030549726473559065,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "James Michael McAdoo",
+    "run_seed": 4030549726473559065,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 4030549726473559065,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Austin Rivers",
+    "run_seed": 4030549726473559065,
+    "age": 29,
+    "ovr": 49,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 2677300329750262381,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Álex Abrines",
+    "run_seed": 5044548959759844343,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 5044548959759844343,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "R.J. Hunter",
+    "run_seed": 5044548959759844343,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Embiid",
+    "run_seed": 1485702854119839149,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jake Layman",
+    "run_seed": 1485702854119839149,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Chasson Randle",
+    "run_seed": 6058081047952441321,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bradley Beal",
+    "run_seed": 4861442995091664198,
+    "age": 28,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 4861442995091664198,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Allen Crabbe",
+    "run_seed": 4861442995091664198,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 4861442995091664198,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Pat Connaughton",
+    "run_seed": 7688216170460285192,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 7688216170460285192,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Tyler Johnson",
+    "run_seed": 4705970600941787767,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 5659402956777863002,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerian Grant",
+    "run_seed": 5659402956777863002,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Brown",
+    "run_seed": 5025485123288596233,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 5025485123288596233,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bradley Beal",
+    "run_seed": 3534236742021273651,
+    "age": 28,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Cotton",
+    "run_seed": 3534236742021273651,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 3534236742021273651,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Montrezl Harrell",
+    "run_seed": 7411702608403322753,
+    "age": 27,
+    "ovr": 39,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Nerlens Noel",
+    "run_seed": 7411702608403322753,
+    "age": 27,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 7630091818645422739,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Mickey",
+    "run_seed": 7630091818645422739,
+    "age": 27,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "DeAndre' Bembry",
+    "run_seed": 4770052588405093329,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 4770052588405093329,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 4770052588405093329,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "run_seed": 7024804685943247468,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 1469084114909081230,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Dāvis Bertāns",
+    "run_seed": 8143263077563601205,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryn Forbes",
+    "run_seed": 8143263077563601205,
+    "age": 28,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Patricio Garino",
+    "run_seed": 8143263077563601205,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerian Grant",
+    "run_seed": 8143263077563601205,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Gary Harris",
+    "run_seed": 8143263077563601205,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 8020035199892114739,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jusuf Nurkić",
+    "run_seed": 8020035199892114739,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Marcus Georges-Hunt",
+    "run_seed": 2262675826769523800,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "James Michael McAdoo",
+    "run_seed": 2262675826769523800,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bobby Portis",
+    "run_seed": 2262675826769523800,
+    "age": 26,
+    "ovr": 49,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Taurean Prince",
+    "run_seed": 2262675826769523800,
+    "age": 27,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Justin Anderson",
+    "run_seed": 6714296289167186573,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 6714296289167186573,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 501018523066533700,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Chasson Randle",
+    "run_seed": 501018523066533700,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "JaKarr Sampson",
+    "run_seed": 501018523066533700,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Pascal Siakam",
+    "run_seed": 501018523066533700,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Ron Baker",
+    "run_seed": 7212662468333673399,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 7212662468333673399,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 4529947254235158307,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 4770825498700884877,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 4770825498700884877,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 4770825498700884877,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 4770825498700884877,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 4770825498700884877,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 2799210319643675085,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 2799210319643675085,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 2799210319643675085,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Justin Anderson",
+    "run_seed": 5251990768348534052,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Shabazz Muhammad",
+    "run_seed": 5251990768348534052,
+    "age": 29,
+    "ovr": 50,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Marcus Georges-Hunt",
+    "run_seed": 9208912381160998826,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Brice Johnson",
+    "run_seed": 9208912381160998826,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 9208912381160998826,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Parker",
+    "run_seed": 9208912381160998826,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Josh Richardson",
+    "run_seed": 9208912381160998826,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Quinn Cook",
+    "run_seed": 8282370630224781480,
+    "age": 28,
+    "ovr": 40,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Mario Hezonja",
+    "run_seed": 1526993881750862206,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Darrun Hilliard",
+    "run_seed": 1526993881750862206,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Timothé Luwawu-Cabarrot",
+    "run_seed": 1526993881750862206,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Adams",
+    "run_seed": 7239034276906580845,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Ron Baker",
+    "run_seed": 7239034276906580845,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Frank Kaminsky",
+    "run_seed": 7239034276906580845,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Pat Connaughton",
+    "run_seed": 3062118653065717652,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Quinn Cook",
+    "run_seed": 1350435083412312995,
+    "age": 28,
+    "ovr": 40,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Archie Goodwin",
+    "run_seed": 1350435083412312995,
+    "age": 27,
+    "ovr": 33,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Tobias Harris",
+    "run_seed": 8609453692602571084,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Ben Bentil",
+    "run_seed": 8609453692602571084,
+    "age": 26,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Coty Clarke",
+    "run_seed": 8609453692602571084,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "run_seed": 8609453692602571084,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Patrick McCaw",
+    "run_seed": 8609453692602571084,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Chasson Randle",
+    "run_seed": 8609453692602571084,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 2524303667825771330,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Cliff Alexander",
+    "run_seed": 6260617635335907144,
+    "age": 26,
+    "ovr": 40,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Cotton",
+    "run_seed": 7024810087081111931,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bismack Biyombo",
+    "run_seed": 8950500840768462429,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Bennett",
+    "run_seed": 8950500840768462429,
+    "age": 28,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Darrun Hilliard",
+    "run_seed": 8950500840768462429,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Kay Felder",
+    "run_seed": 943819844206154439,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Delon Wright",
+    "run_seed": 943819844206154439,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Frank Kaminsky",
+    "run_seed": 2884320995039953125,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 2884320995039953125,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 126397263807559590,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Norman Powell",
+    "run_seed": 126397263807559590,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Edy Tavares",
+    "run_seed": 126397263807559590,
+    "age": 29,
+    "ovr": 40,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Grant Jerrett (PO)",
+    "run_seed": 2496161551371296377,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Ricky Ledo",
+    "run_seed": 2496161551371296377,
+    "age": 29,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Caris LeVert",
+    "run_seed": 2496161551371296377,
+    "age": 27,
+    "ovr": 52,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. Warren",
+    "run_seed": 2496161551371296377,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Delon Wright",
+    "run_seed": 2496161551371296377,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 3477426160795549637,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 3477426160795549637,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Devyn Marble",
+    "run_seed": 3477426160795549637,
+    "age": 29,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Edy Tavares",
+    "run_seed": 3477426160795549637,
+    "age": 29,
+    "ovr": 40,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Coty Clarke",
+    "run_seed": 5387336062925628075,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 5387336062925628075,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 5387336062925628075,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dāvis Bertāns",
+    "run_seed": 6755935582711578404,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 6755935582711578404,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Alan Williams",
+    "run_seed": 6755935582711578404,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 98340588793381138,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Embiid",
+    "run_seed": 98340588793381138,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Mario Hezonja",
+    "run_seed": 5721863662961586178,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Lucas Nogueira",
+    "run_seed": 5721863662961586178,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Pascal Siakam",
+    "run_seed": 5721863662961586178,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Darrun Hilliard",
+    "run_seed": 6799499983019449372,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 6799499983019449372,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 6799499983019449372,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Quinn Cook",
+    "run_seed": 2208684135997425791,
+    "age": 28,
+    "ovr": 40,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Norman Powell",
+    "run_seed": 2208684135997425791,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Patricio Garino",
+    "run_seed": 7437782876716720167,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 5759769098702220312,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 5759769098702220312,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Raul Neto",
+    "run_seed": 5759769098702220312,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jusuf Nurkić",
+    "run_seed": 5759769098702220312,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Delon Wright",
+    "run_seed": 5759769098702220312,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Luis Montero",
+    "run_seed": 7153028011321105898,
+    "age": 28,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarnell Stokes",
+    "run_seed": 7153028011321105898,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Mario Hezonja",
+    "run_seed": 4884977638217140173,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Norman Powell",
+    "run_seed": 4884977638217140173,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Isaiah Whitehead",
+    "run_seed": 4884977638217140173,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Keith Appling",
+    "run_seed": 7227355502139298643,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 7227355502139298643,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Sergey Karasev",
+    "run_seed": 7227355502139298643,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 7227355502139298643,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 9105847075165926283,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 9105847075165926283,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 9105847075165926283,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Ron Baker",
+    "run_seed": 763706887426532616,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Tyler Johnson",
+    "run_seed": 763706887426532616,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Frank Kaminsky",
+    "run_seed": 763706887426532616,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 6074489757685519276,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 6074489757685519276,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 3885399502371543261,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 3885399502371543261,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Alex Len",
+    "run_seed": 3885399502371543261,
+    "age": 28,
+    "ovr": 49,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 6435405464438948919,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 6435405464438948919,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Adams",
+    "run_seed": 1299473954793633791,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Richaun Holmes",
+    "run_seed": 1299473954793633791,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. McConnell",
+    "run_seed": 1299473954793633791,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerami Grant",
+    "run_seed": 2566094082899842633,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 2566094082899842633,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Keith Appling",
+    "run_seed": 6061280438013730122,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Allen Crabbe",
+    "run_seed": 6061280438013730122,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 6061280438013730122,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 6452859583332800523,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Josh Richardson",
+    "run_seed": 3095816985473729406,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 8110523146166575764,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Luis Montero",
+    "run_seed": 8110523146166575764,
+    "age": 28,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Marquis Teague (PO)",
+    "run_seed": 8110523146166575764,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Brown",
+    "run_seed": 6231656505891599081,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Allen Crabbe",
+    "run_seed": 6231656505891599081,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 6231656505891599081,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 6231656505891599081,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Gary Harris",
+    "run_seed": 6231656505891599081,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Alex Len",
+    "run_seed": 6231656505891599081,
+    "age": 28,
+    "ovr": 49,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jusuf Nurkić",
+    "run_seed": 6231656505891599081,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Noah Vonleh",
+    "run_seed": 6231656505891599081,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Cliff Alexander",
+    "run_seed": 7649950746149473702,
+    "age": 26,
+    "ovr": 40,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Archie Goodwin",
+    "run_seed": 7649950746149473702,
+    "age": 27,
+    "ovr": 33,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Cotton",
+    "run_seed": 4318345207886863744,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 4318345207886863744,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Doug McDermott",
+    "run_seed": 4318345207886863744,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Mickey",
+    "run_seed": 4318345207886863744,
+    "age": 27,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 4318345207886863744,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 2648540822030187627,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Devyn Marble",
+    "run_seed": 2648540822030187627,
+    "age": 29,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Keith Appling",
+    "run_seed": 1808700527201165004,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Brown",
+    "run_seed": 1808700527201165004,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "run_seed": 1808700527201165004,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Montrezl Harrell",
+    "run_seed": 1808700527201165004,
+    "age": 27,
+    "ovr": 39,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 1808700527201165004,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 1808700527201165004,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Alan Williams",
+    "run_seed": 1808700527201165004,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Tim Hardaway Jr.",
+    "run_seed": 6713783775910166910,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 8533904647180215425,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Grant Jerrett (PO)",
+    "run_seed": 8533904647180215425,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Cotton",
+    "run_seed": 9039856001519848357,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 9039856001519848357,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 9039856001519848357,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 322443852464795062,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 322443852464795062,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jahlil Okafor",
+    "run_seed": 322443852464795062,
+    "age": 26,
+    "ovr": 59,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 1835279979981709807,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "run_seed": 1835279979981709807,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 3276445996204627851,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 3276445996204627851,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Brice Johnson",
+    "run_seed": 3276445996204627851,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Bennett",
+    "run_seed": 8997356817062245217,
+    "age": 28,
+    "ovr": 55,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bobby Portis",
+    "run_seed": 8997356817062245217,
+    "age": 26,
+    "ovr": 49,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Josh Richardson",
+    "run_seed": 8997356817062245217,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 8997356817062245217,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Denzel Valentine",
+    "run_seed": 8997356817062245217,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Thanasis Antetokounmpo",
+    "run_seed": 2071302673342693986,
+    "age": 29,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 2071302673342693986,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kentavious Caldwell-Pope",
+    "run_seed": 5737697196256162530,
+    "age": 28,
+    "ovr": 42,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 5737697196256162530,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 5737697196256162530,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Taurean Prince",
+    "run_seed": 5737697196256162530,
+    "age": 27,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Adams",
+    "run_seed": 6691101401938229028,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 6691101401938229028,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "DeAndre' Bembry",
+    "run_seed": 1023345227441898042,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "DeAndre' Bembry",
+    "run_seed": 4544461362800437948,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "R.J. Hunter",
+    "run_seed": 4544461362800437948,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Austin Rivers",
+    "run_seed": 4544461362800437948,
+    "age": 29,
+    "ovr": 49,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 4544461362800437948,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 8198503286944014602,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Patricio Garino",
+    "run_seed": 8198503286944014602,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 8198503286944014602,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Parker",
+    "run_seed": 8198503286944014602,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 8198503286944014602,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jake Layman",
+    "run_seed": 4817275642482552373,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Alex Len",
+    "run_seed": 4817275642482552373,
+    "age": 28,
+    "ovr": 49,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jusuf Nurkić",
+    "run_seed": 4817275642482552373,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Cody Zeller",
+    "run_seed": 4817275642482552373,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerami Grant",
+    "run_seed": 6192931585259494864,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Noah Vonleh",
+    "run_seed": 6192931585259494864,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Kentavious Caldwell-Pope",
+    "run_seed": 3922231172471328454,
+    "age": 28,
+    "ovr": 42,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Alex Len",
+    "run_seed": 3922231172471328454,
+    "age": 28,
+    "ovr": 49,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Devyn Marble",
+    "run_seed": 4929984438885025944,
+    "age": 29,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Norman Powell",
+    "run_seed": 4929984438885025944,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Nicolás Brussino",
+    "run_seed": 7986640716065104562,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bruno Caboclo",
+    "run_seed": 7986640716065104562,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 7986640716065104562,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Patrick McCaw",
+    "run_seed": 7986640716065104562,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rondae Hollis-Jefferson",
+    "run_seed": 1846413500310782109,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 1846413500310782109,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Alan Williams",
+    "run_seed": 1846413500310782109,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "DeAndre' Bembry",
+    "run_seed": 4965181668033345916,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Patricio Garino",
+    "run_seed": 4965181668033345916,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Timothé Luwawu-Cabarrot",
+    "run_seed": 4965181668033345916,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Norman Powell",
+    "run_seed": 4965181668033345916,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Fred VanVleet",
+    "run_seed": 4965181668033345916,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Isaiah Whitehead",
+    "run_seed": 4965181668033345916,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 2280194683452145400,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Patrick McCaw",
+    "run_seed": 2280194683452145400,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 6801398955862010588,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 8626147466192899155,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryn Forbes",
+    "run_seed": 8626147466192899155,
+    "age": 28,
+    "ovr": 45,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 8626147466192899155,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Julius Randle",
+    "run_seed": 8626147466192899155,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 6682955510558196934,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 6682955510558196934,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 4716391956856602247,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 4716391956856602247,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Tyler Johnson",
+    "run_seed": 4716391956856602247,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 4716391956856602247,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Denzel Valentine",
+    "run_seed": 4716391956856602247,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Ben Bentil",
+    "run_seed": 8897283279251280436,
+    "age": 26,
+    "ovr": 35,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 8897283279251280436,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Patricio Garino",
+    "run_seed": 8897283279251280436,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 8897283279251280436,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Devyn Marble",
+    "run_seed": 8897283279251280436,
+    "age": 29,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Tony Mitchell",
+    "run_seed": 8897283279251280436,
+    "age": 29,
+    "ovr": 33,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bobby Portis",
+    "run_seed": 4637112010516292327,
+    "age": 26,
+    "ovr": 49,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Austin Rivers",
+    "run_seed": 4637112010516292327,
+    "age": 29,
+    "ovr": 49,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. Warren",
+    "run_seed": 4637112010516292327,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Álex Abrines",
+    "run_seed": 6933460847660639189,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerami Grant",
+    "run_seed": 6933460847660639189,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 6933460847660639189,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 6933460847660639189,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. Warren",
+    "run_seed": 6933460847660639189,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 4872774503100592637,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 4872774503100592637,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Álex Abrines",
+    "run_seed": 148833634908992108,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 148833634908992108,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Thanasis Antetokounmpo",
+    "run_seed": 7793398988714152254,
+    "age": 29,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Marquis Teague (PO)",
+    "run_seed": 7793398988714152254,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Tyler Johnson",
+    "run_seed": 3987280006972441376,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 3987280006972441376,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Timothé Luwawu-Cabarrot",
+    "run_seed": 3669296157348970846,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Cody Zeller",
+    "run_seed": 2882944914713275097,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Justin Anderson",
+    "run_seed": 5061646595296223321,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Tony Mitchell",
+    "run_seed": 5061646595296223321,
+    "age": 29,
+    "ovr": 33,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Marquis Teague (PO)",
+    "run_seed": 5061646595296223321,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 7569038322698239725,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 7569038322698239725,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. McConnell",
+    "run_seed": 7386155655400471949,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 5211210385115257189,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Nerlens Noel",
+    "run_seed": 5211210385115257189,
+    "age": 27,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Delon Wright",
+    "run_seed": 5211210385115257189,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 6534040520599471185,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 6534040520599471185,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Kay Felder",
+    "run_seed": 362145903168830105,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 362145903168830105,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Harrison",
+    "run_seed": 362145903168830105,
+    "age": 27,
+    "ovr": 59,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 362145903168830105,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Marcus Georges-Hunt",
+    "run_seed": 6198681582258829125,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Thanasis Antetokounmpo",
+    "run_seed": 1536622744430949526,
+    "age": 29,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Kentavious Caldwell-Pope",
+    "run_seed": 1536622744430949526,
+    "age": 28,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Cody Zeller",
+    "run_seed": 1536622744430949526,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bruno Caboclo",
+    "run_seed": 2985203088494806702,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Yogi Ferrell",
+    "run_seed": 2985203088494806702,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 2985203088494806702,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Montrezl Harrell",
+    "run_seed": 2985203088494806702,
+    "age": 27,
+    "ovr": 39,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 2985203088494806702,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 2985203088494806702,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dāvis Bertāns",
+    "run_seed": 7372378562554123916,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 7372378562554123916,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 7372378562554123916,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 7372378562554123916,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Álex Abrines",
+    "run_seed": 4612749573095357269,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Quinn Cook",
+    "run_seed": 4612749573095357269,
+    "age": 28,
+    "ovr": 40,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 4612749573095357269,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 5464363634085153639,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 5464363634085153639,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Devyn Marble",
+    "run_seed": 5464363634085153639,
+    "age": 29,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 6369289904065795510,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 6369289904065795510,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryn Forbes",
+    "run_seed": 6369289904065795510,
+    "age": 28,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 6369289904065795510,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Josh Richardson",
+    "run_seed": 6369289904065795510,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Noah Vonleh",
+    "run_seed": 6369289904065795510,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Álex Abrines",
+    "run_seed": 4732325639132592325,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Quinn Cook",
+    "run_seed": 4732325639132592325,
+    "age": 28,
+    "ovr": 40,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kelly Oubre Jr.",
+    "run_seed": 4732325639132592325,
+    "age": 26,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cliff Alexander",
+    "run_seed": 1084508418341133962,
+    "age": 26,
+    "ovr": 40,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 1084508418341133962,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Richaun Holmes",
+    "run_seed": 5608032876338726293,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 7667116852270042257,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Tyler Johnson",
+    "run_seed": 7667116852270042257,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Shabazz Muhammad",
+    "run_seed": 7667116852270042257,
+    "age": 29,
+    "ovr": 50,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Fred VanVleet",
+    "run_seed": 7667116852270042257,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Luis Montero",
+    "run_seed": 2999945592344635557,
+    "age": 28,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 5109135027726492502,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 8922258606136123031,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Nicolás Brussino",
+    "run_seed": 8922258606136123031,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 8922258606136123031,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Grant Jerrett (PO)",
+    "run_seed": 5810451425714550140,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 5810451425714550140,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Lucas Nogueira",
+    "run_seed": 5810451425714550140,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 8048008240129335502,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 8048008240129335502,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 8048008240129335502,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 8048008240129335502,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Denzel Valentine",
+    "run_seed": 8048008240129335502,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 8487291715582164224,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Josh Richardson",
+    "run_seed": 8487291715582164224,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 1362228765707710052,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 1362228765707710052,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Parker",
+    "run_seed": 1362228765707710052,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Parker",
+    "run_seed": 5512666115978800838,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dāvis Bertāns",
+    "run_seed": 4363031399663794605,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Allen Crabbe",
+    "run_seed": 4363031399663794605,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Raul Neto",
+    "run_seed": 4363031399663794605,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Alan Williams",
+    "run_seed": 4363031399663794605,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Chasson Randle",
+    "run_seed": 7585905154386636702,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Pascal Siakam",
+    "run_seed": 7585905154386636702,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Edy Tavares",
+    "run_seed": 7585905154386636702,
+    "age": 29,
+    "ovr": 40,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 3809001647891806936,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Chasson Randle",
+    "run_seed": 3809001647891806936,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 1842775758958050936,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Tim Hardaway Jr.",
+    "run_seed": 1842775758958050936,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 1842775758958050936,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Allen Crabbe",
+    "run_seed": 11866106404218936,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryn Forbes",
+    "run_seed": 11866106404218936,
+    "age": 28,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jake Layman",
+    "run_seed": 11866106404218936,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 11866106404218936,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 11866106404218936,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Denzel Valentine",
+    "run_seed": 11866106404218936,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Ron Baker",
+    "run_seed": 3325457922691036499,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Brown",
+    "run_seed": 3325457922691036499,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 3325457922691036499,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 3325457922691036499,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 3325457922691036499,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 3594773376372900584,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Tim Hardaway Jr.",
+    "run_seed": 196657027263556255,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Mickey",
+    "run_seed": 196657027263556255,
+    "age": 27,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jusuf Nurkić",
+    "run_seed": 196657027263556255,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Josh Richardson",
+    "run_seed": 196657027263556255,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 1768864825889821865,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Bennett",
+    "run_seed": 1813220908466165749,
+    "age": 28,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Darrun Hilliard",
+    "run_seed": 1813220908466165749,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Nicolás Brussino",
+    "run_seed": 6303115819088535081,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Pat Connaughton",
+    "run_seed": 6303115819088535081,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 4356357196930568240,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 4356357196930568240,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 4356357196930568240,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Chasson Randle",
+    "run_seed": 4356357196930568240,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 4356357196930568240,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Nicolás Brussino",
+    "run_seed": 2711088240057935558,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 2711088240057935558,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 2711088240057935558,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Tobias Harris",
+    "run_seed": 7165677099851314190,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 7165677099851314190,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Gary Harris",
+    "run_seed": 7165677099851314190,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 7165677099851314190,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Nicolás Brussino",
+    "run_seed": 4689865814148705655,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Trey Lyles",
+    "run_seed": 4689865814148705655,
+    "age": 26,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Pascal Siakam",
+    "run_seed": 4689865814148705655,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bradley Beal",
+    "run_seed": 2638759110926582584,
+    "age": 28,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 2638759110926582584,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 2638759110926582584,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jusuf Nurkić",
+    "run_seed": 2638759110926582584,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 2638759110926582584,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Pascal Siakam",
+    "run_seed": 2638759110926582584,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Grant Jerrett (PO)",
+    "run_seed": 8756701507757096924,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Frank Kaminsky",
+    "run_seed": 8756701507757096924,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 8756701507757096924,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 8756701507757096924,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Raul Neto",
+    "run_seed": 8756701507757096924,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kay Felder",
+    "run_seed": 3416413572141988254,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Kelly Oubre Jr.",
+    "run_seed": 3416413572141988254,
+    "age": 26,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "P.J. Hairston",
+    "run_seed": 4257803939942914833,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 1084011561640324061,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Richaun Holmes",
+    "run_seed": 1084011561640324061,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 1084011561640324061,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Kelly Oubre Jr.",
+    "run_seed": 1084011561640324061,
+    "age": 26,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Allen Crabbe",
+    "run_seed": 3779608525273867050,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Branden Dawson",
+    "run_seed": 3779608525273867050,
+    "age": 28,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Patrick McCaw",
+    "run_seed": 5462681563558232403,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. McConnell",
+    "run_seed": 5462681563558232403,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 5462681563558232403,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. Warren",
+    "run_seed": 951469901982859142,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Mickey",
+    "run_seed": 5777063372968056479,
+    "age": 27,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Noah Vonleh",
+    "run_seed": 7430394190710522016,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 7430394190710522016,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 3517074769631019024,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Cotton",
+    "run_seed": 7473023959824607465,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Delon Wright",
+    "run_seed": 6340389630516991864,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Ben Bentil",
+    "run_seed": 7522761427596369284,
+    "age": 26,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 7522761427596369284,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 7522761427596369284,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 7522761427596369284,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 7522761427596369284,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Adams",
+    "run_seed": 975460466686690923,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Tim Hardaway Jr.",
+    "run_seed": 975460466686690923,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 975460466686690923,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jake Layman",
+    "run_seed": 975460466686690923,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Caris LeVert",
+    "run_seed": 975460466686690923,
+    "age": 27,
+    "ovr": 52,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 1682500695288624979,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 1682500695288624979,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Chris McCullough",
+    "run_seed": 1682500695288624979,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. McConnell",
+    "run_seed": 8404692387861867932,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Nik Stauskas",
+    "run_seed": 8404692387861867932,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 8404692387861867932,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 8546743894892261549,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 6821229784045404560,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. McConnell",
+    "run_seed": 6821229784045404560,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 6821229784045404560,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Mickey",
+    "run_seed": 6821229784045404560,
+    "age": 27,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Kelly Oubre Jr.",
+    "run_seed": 6821229784045404560,
+    "age": 26,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 2433257726299733302,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Yogi Ferrell",
+    "run_seed": 2433257726299733302,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bobby Portis",
+    "run_seed": 2901682767869671829,
+    "age": 26,
+    "ovr": 49,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Denzel Valentine",
+    "run_seed": 2901682767869671829,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 1212260070203266297,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Chris McCullough",
+    "run_seed": 1212260070203266297,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Raul Neto",
+    "run_seed": 1212260070203266297,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 1212260070203266297,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 7353142046419614694,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Coty Clarke",
+    "run_seed": 5217739015156319074,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 5217739015156319074,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Branden Dawson",
+    "run_seed": 4346776488468045523,
+    "age": 28,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Gary Harris",
+    "run_seed": 4346776488468045523,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Caris LeVert",
+    "run_seed": 4346776488468045523,
+    "age": 27,
+    "ovr": 52,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 4346776488468045523,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Noah Vonleh",
+    "run_seed": 4346776488468045523,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 6597436563689713140,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 169203296734015790,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Grant Jerrett (PO)",
+    "run_seed": 169203296734015790,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 169203296734015790,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Axel Toupane",
+    "run_seed": 169203296734015790,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cliff Alexander",
+    "run_seed": 820023246394563003,
+    "age": 26,
+    "ovr": 40,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Nicolás Brussino",
+    "run_seed": 820023246394563003,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "run_seed": 5286949868391721776,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Nerlens Noel",
+    "run_seed": 5286949868391721776,
+    "age": 27,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Ben Bentil",
+    "run_seed": 6132358255891725397,
+    "age": 26,
+    "ovr": 35,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 7599368649096429619,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 7599368649096429619,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "James Michael McAdoo",
+    "run_seed": 7599368649096429619,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 9143038245148344357,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Ricky Ledo",
+    "run_seed": 7521730454352761471,
+    "age": 29,
+    "ovr": 42,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 7106083429288242698,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 7106083429288242698,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 7106083429288242698,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 1265808317596017644,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Caris LeVert",
+    "run_seed": 1265808317596017644,
+    "age": 27,
+    "ovr": 52,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 1265808317596017644,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Taurean Prince",
+    "run_seed": 1265808317596017644,
+    "age": 27,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 1265808317596017644,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Fred VanVleet",
+    "run_seed": 1265808317596017644,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Timothé Luwawu-Cabarrot",
+    "run_seed": 8021136681415632940,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 8021136681415632940,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Quinn Cook",
+    "run_seed": 3682649138981832581,
+    "age": 28,
+    "ovr": 40,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 3682649138981832581,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 2837039786858388403,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 8417658860709767102,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 8417658860709767102,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 8417658860709767102,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "run_seed": 2804903758799822347,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 2804903758799822347,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Troy Williams",
+    "run_seed": 2804903758799822347,
+    "age": 27,
+    "ovr": 39,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 5218995104866228455,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Caris LeVert",
+    "run_seed": 5218995104866228455,
+    "age": 27,
+    "ovr": 52,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Pascal Siakam",
+    "run_seed": 5218995104866228455,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Embiid",
+    "run_seed": 1527350467138801112,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 1527350467138801112,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Marcus Georges-Hunt",
+    "run_seed": 1527350467138801112,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Darrun Hilliard",
+    "run_seed": 1527350467138801112,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 1527350467138801112,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 1527350467138801112,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 1527350467138801112,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 343539296654369035,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Nik Stauskas",
+    "run_seed": 343539296654369035,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Axel Toupane",
+    "run_seed": 343539296654369035,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 688578191294203365,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Isaiah Whitehead",
+    "run_seed": 688578191294203365,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Alan Williams",
+    "run_seed": 688578191294203365,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Marquis Teague (PO)",
+    "run_seed": 6910267410923128138,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 6910267410923128138,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Taurean Prince",
+    "run_seed": 3845387592816633028,
+    "age": 27,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 7488585599986553233,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Doug McDermott",
+    "run_seed": 7488585599986553233,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 7488585599986553233,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Isaiah Whitehead",
+    "run_seed": 7488585599986553233,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Joe Young",
+    "run_seed": 7488585599986553233,
+    "age": 29,
+    "ovr": 42,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Keith Appling",
+    "run_seed": 8868465939002368673,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 8868465939002368673,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Chris McCullough",
+    "run_seed": 8868465939002368673,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 8868465939002368673,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 8720191590733290124,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 8720191590733290124,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Yogi Ferrell",
+    "run_seed": 8720191590733290124,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Parker",
+    "run_seed": 8720191590733290124,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Isaiah Whitehead",
+    "run_seed": 8720191590733290124,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 1361975641529358774,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Yogi Ferrell",
+    "run_seed": 1361975641529358774,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Sergey Karasev",
+    "run_seed": 1361975641529358774,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Justin Anderson",
+    "run_seed": 378616570467014040,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Joe Young",
+    "run_seed": 378616570467014040,
+    "age": 29,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 5403944467805890819,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 5403944467805890819,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Tim Hardaway Jr.",
+    "run_seed": 5403944467805890819,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Tobias Harris",
+    "run_seed": 4873755812210790805,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 4873755812210790805,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "James Michael McAdoo",
+    "run_seed": 4873755812210790805,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Lucas Nogueira",
+    "run_seed": 4873755812210790805,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Norman Powell",
+    "run_seed": 4873755812210790805,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Trey Lyles",
+    "run_seed": 5646766404078171037,
+    "age": 26,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 5646766404078171037,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 5646766404078171037,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 58624893846502400,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 58624893846502400,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 7638427579870667176,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "James Michael McAdoo",
+    "run_seed": 6628077068273393166,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Archie Goodwin",
+    "run_seed": 9095590710174036997,
+    "age": 27,
+    "ovr": 33,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Brown",
+    "run_seed": 5101696313489517261,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Alex Len",
+    "run_seed": 5101696313489517261,
+    "age": 28,
+    "ovr": 49,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Ben Bentil",
+    "run_seed": 2921591003518207252,
+    "age": 26,
+    "ovr": 35,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 2921591003518207252,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 2921591003518207252,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 2921591003518207252,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Brown",
+    "run_seed": 4088684443356186333,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 4088684443356186333,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Yogi Ferrell",
+    "run_seed": 4088684443356186333,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Patricio Garino",
+    "run_seed": 4088684443356186333,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Brown",
+    "run_seed": 9119540358542124158,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Embiid",
+    "run_seed": 7585637081821998433,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Yogi Ferrell",
+    "run_seed": 7585637081821998433,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Richaun Holmes",
+    "run_seed": 7585637081821998433,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 6361752126990260585,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Alex Len",
+    "run_seed": 2641268951499450505,
+    "age": 28,
+    "ovr": 49,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Cody Zeller",
+    "run_seed": 2641268951499450505,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerami Grant",
+    "run_seed": 5608618817334767827,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 5474172039844109752,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Richaun Holmes",
+    "run_seed": 5474172039844109752,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 5474172039844109752,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Patrick McCaw",
+    "run_seed": 5474172039844109752,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Nik Stauskas",
+    "run_seed": 5474172039844109752,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Cliff Alexander",
+    "run_seed": 817698263092258851,
+    "age": 26,
+    "ovr": 40,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerami Grant",
+    "run_seed": 817698263092258851,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 817698263092258851,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 530530641924319601,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 530530641924319601,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 1449638410091565817,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Embiid",
+    "run_seed": 1449638410091565817,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "P.J. Hairston",
+    "run_seed": 1449638410091565817,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Glenn Robinson III",
+    "run_seed": 1449638410091565817,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Keith Appling",
+    "run_seed": 2374187402070290900,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 2374187402070290900,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Embiid",
+    "run_seed": 2374187402070290900,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 2374187402070290900,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Julius Randle",
+    "run_seed": 2374187402070290900,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bruno Caboclo",
+    "run_seed": 377019832869827480,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Yogi Ferrell",
+    "run_seed": 377019832869827480,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 377019832869827480,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Delon Wright",
+    "run_seed": 377019832869827480,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Archie Goodwin",
+    "run_seed": 1194317066960873749,
+    "age": 27,
+    "ovr": 33,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 3515152772870802477,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Allen Crabbe",
+    "run_seed": 7549019428640868960,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 7549019428640868960,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 5214600293987754749,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 8184055454748212920,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 8184055454748212920,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 8184055454748212920,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Joe Young",
+    "run_seed": 8184055454748212920,
+    "age": 29,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Thanasis Antetokounmpo",
+    "run_seed": 3292411261795287190,
+    "age": 29,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Keith Appling",
+    "run_seed": 3292411261795287190,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 8888664878108503855,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 8888664878108503855,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Mickey",
+    "run_seed": 8888664878108503855,
+    "age": 27,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Luis Montero",
+    "run_seed": 8888664878108503855,
+    "age": 28,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 5515846495012957818,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Ron Baker",
+    "run_seed": 8643429905587308671,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Marquis Teague (PO)",
+    "run_seed": 8643429905587308671,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 3544677205354862020,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 3544677205354862020,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 3544677205354862020,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 6979198485421643597,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 6979198485421643597,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 6979198485421643597,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Luis Montero",
+    "run_seed": 6979198485421643597,
+    "age": 28,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 6979198485421643597,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Coty Clarke",
+    "run_seed": 1311158586088618317,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Cotton",
+    "run_seed": 1311158586088618317,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Devyn Marble",
+    "run_seed": 1311158586088618317,
+    "age": 29,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 1311158586088618317,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Troy Williams",
+    "run_seed": 1311158586088618317,
+    "age": 27,
+    "ovr": 39,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Branden Dawson",
+    "run_seed": 745778506774212156,
+    "age": 28,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 745778506774212156,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 745778506774212156,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Archie Goodwin",
+    "run_seed": 3841556039940283244,
+    "age": 27,
+    "ovr": 33,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarnell Stokes",
+    "run_seed": 3841556039940283244,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Axel Toupane",
+    "run_seed": 4285773088136408846,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 4285773088136408846,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Justin Anderson",
+    "run_seed": 6710593794589807801,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 6710593794589807801,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Axel Toupane",
+    "run_seed": 7640549294817887648,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Patricio Garino",
+    "run_seed": 4000951925112273288,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Richaun Holmes",
+    "run_seed": 4000951925112273288,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Chris McCullough",
+    "run_seed": 4000951925112273288,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Álex Abrines",
+    "run_seed": 6500382942736902909,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Timothé Luwawu-Cabarrot",
+    "run_seed": 6500382942736902909,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Trey Lyles",
+    "run_seed": 2682571781129310197,
+    "age": 26,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Taurean Prince",
+    "run_seed": 2682571781129310197,
+    "age": 27,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Chasson Randle",
+    "run_seed": 2682571781129310197,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Branden Dawson",
+    "run_seed": 2925835062721081601,
+    "age": 28,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 2925835062721081601,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Frank Kaminsky",
+    "run_seed": 1027747547889306496,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 8526360255244209686,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Sergey Karasev",
+    "run_seed": 8526360255244209686,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 8526360255244209686,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Sergey Karasev",
+    "run_seed": 4343782796807620896,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Tony Mitchell",
+    "run_seed": 4343782796807620896,
+    "age": 29,
+    "ovr": 33,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Embiid",
+    "run_seed": 3036326491688330925,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Frank Kaminsky",
+    "run_seed": 3036326491688330925,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Tony Mitchell",
+    "run_seed": 3036326491688330925,
+    "age": 29,
+    "ovr": 33,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Nerlens Noel",
+    "run_seed": 3036326491688330925,
+    "age": 27,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarnell Stokes",
+    "run_seed": 3036326491688330925,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Denzel Valentine",
+    "run_seed": 3036326491688330925,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 6350660946829321764,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "run_seed": 6350660946829321764,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Devyn Marble",
+    "run_seed": 6350660946829321764,
+    "age": 29,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 6350660946829321764,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Norman Powell",
+    "run_seed": 6350660946829321764,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 6350660946829321764,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 6350660946829321764,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 60284932581065651,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Archie Goodwin",
+    "run_seed": 60284932581065651,
+    "age": 27,
+    "ovr": 33,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Darrun Hilliard",
+    "run_seed": 60284932581065651,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bobby Portis",
+    "run_seed": 8087664944322887024,
+    "age": 26,
+    "ovr": 49,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 3382786132905227732,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryn Forbes",
+    "run_seed": 1784045571897571279,
+    "age": 28,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 1784045571897571279,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Nerlens Noel",
+    "run_seed": 1784045571897571279,
+    "age": 27,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Lucas Nogueira",
+    "run_seed": 1784045571897571279,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Trey Lyles",
+    "run_seed": 2323999087612969637,
+    "age": 26,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Shabazz Muhammad",
+    "run_seed": 2323999087612969637,
+    "age": 29,
+    "ovr": 50,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jusuf Nurkić",
+    "run_seed": 2323999087612969637,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 2323999087612969637,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Bennett",
+    "run_seed": 8141109834457222445,
+    "age": 28,
+    "ovr": 55,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 8141109834457222445,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 8141109834457222445,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 8141109834457222445,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 8141109834457222445,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 8141109834457222445,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 1593419447205402042,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Coty Clarke",
+    "run_seed": 1593419447205402042,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Kelly Oubre Jr.",
+    "run_seed": 1593419447205402042,
+    "age": 26,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Coty Clarke",
+    "run_seed": 8297956396730123129,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 8297956396730123129,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 8297956396730123129,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "JaKarr Sampson",
+    "run_seed": 8297956396730123129,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 8297956396730123129,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 6527643839954075078,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 6527643839954075078,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 6527643839954075078,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Pat Connaughton",
+    "run_seed": 4557620626310744807,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Ron Baker",
+    "run_seed": 4932022534382226197,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 7235049262167500614,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Lucas Nogueira",
+    "run_seed": 7235049262167500614,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 187769105622327288,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Montrezl Harrell",
+    "run_seed": 187769105622327288,
+    "age": 27,
+    "ovr": 39,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Kelly Oubre Jr.",
+    "run_seed": 187769105622327288,
+    "age": 26,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Tobias Harris",
+    "run_seed": 3989796245713295983,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Ben Bentil",
+    "run_seed": 8193242404923793088,
+    "age": 26,
+    "ovr": 35,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. McConnell",
+    "run_seed": 8193242404923793088,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 8193242404923793088,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 3242735526511835437,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 3242735526511835437,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Caris LeVert",
+    "run_seed": 3242735526511835437,
+    "age": 27,
+    "ovr": 52,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Doug McDermott",
+    "run_seed": 3242735526511835437,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. Warren",
+    "run_seed": 3242735526511835437,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Álex Abrines",
+    "run_seed": 4199338084575551178,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Thanasis Antetokounmpo",
+    "run_seed": 4199338084575551178,
+    "age": 29,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 3630673365354975171,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Coty Clarke",
+    "run_seed": 3630673365354975171,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kay Felder",
+    "run_seed": 3630673365354975171,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 3630673365354975171,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "P.J. Hairston",
+    "run_seed": 3630673365354975171,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Frank Kaminsky",
+    "run_seed": 3630673365354975171,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Lucas Nogueira",
+    "run_seed": 3630673365354975171,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 8256742665620491214,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 8256742665620491214,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Parker",
+    "run_seed": 8256742665620491214,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Nik Stauskas",
+    "run_seed": 8256742665620491214,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 8256742665620491214,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 8256742665620491214,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Archie Goodwin",
+    "run_seed": 6001828713560612807,
+    "age": 27,
+    "ovr": 33,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Brice Johnson",
+    "run_seed": 6001828713560612807,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Denzel Valentine",
+    "run_seed": 6001828713560612807,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Keith Appling",
+    "run_seed": 470602051284660941,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "James Michael McAdoo",
+    "run_seed": 470602051284660941,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 470602051284660941,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Justin Anderson",
+    "run_seed": 5665313536293745649,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 5665313536293745649,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Nicolás Brussino",
+    "run_seed": 5665313536293745649,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bruno Caboclo",
+    "run_seed": 5665313536293745649,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Trey Lyles",
+    "run_seed": 5665313536293745649,
+    "age": 26,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Brown",
+    "run_seed": 1430229002151101370,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 1430229002151101370,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. McConnell",
+    "run_seed": 1430229002151101370,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Thanasis Antetokounmpo",
+    "run_seed": 557512826280687218,
+    "age": 29,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Thanasis Antetokounmpo",
+    "run_seed": 5770307053804634908,
+    "age": 29,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Cotton",
+    "run_seed": 5770307053804634908,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryn Forbes",
+    "run_seed": 5770307053804634908,
+    "age": 28,
+    "ovr": 45,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 5770307053804634908,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 5770307053804634908,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 5770307053804634908,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Shabazz Muhammad",
+    "run_seed": 5770307053804634908,
+    "age": 29,
+    "ovr": 50,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 5676713808019231906,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 5676713808019231906,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 5676713808019231906,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Axel Toupane",
+    "run_seed": 5676713808019231906,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 5676713808019231906,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 506966620327363302,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 8453101645887636721,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Joe Young",
+    "run_seed": 8453101645887636721,
+    "age": 29,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bradley Beal",
+    "run_seed": 3005929375477874398,
+    "age": 28,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 3005929375477874398,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Pat Connaughton",
+    "run_seed": 6112617426758657394,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "P.J. Hairston",
+    "run_seed": 3916654632172053073,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Tony Mitchell",
+    "run_seed": 3916654632172053073,
+    "age": 29,
+    "ovr": 33,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Nerlens Noel",
+    "run_seed": 3916654632172053073,
+    "age": 27,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Isaiah Whitehead",
+    "run_seed": 3916654632172053073,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 3916654632172053073,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 8270216532251889574,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Tyler Johnson",
+    "run_seed": 8270216532251889574,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Mario Hezonja",
+    "run_seed": 1280161613247138297,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Trey Lyles",
+    "run_seed": 1280161613247138297,
+    "age": 26,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Mickey",
+    "run_seed": 1280161613247138297,
+    "age": 27,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Darrun Hilliard",
+    "run_seed": 213774974454141729,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 213774974454141729,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Fred VanVleet",
+    "run_seed": 213774974454141729,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Troy Williams",
+    "run_seed": 213774974454141729,
+    "age": 27,
+    "ovr": 39,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 5815665697349192203,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 5815665697349192203,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "P.J. Hairston",
+    "run_seed": 5815665697349192203,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Archie Goodwin",
+    "run_seed": 5993872633956906870,
+    "age": 27,
+    "ovr": 33,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Taurean Prince",
+    "run_seed": 5993872633956906870,
+    "age": 27,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Nerlens Noel",
+    "run_seed": 5146984065625313630,
+    "age": 27,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 5868359041641899946,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 5868359041641899946,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Patricio Garino",
+    "run_seed": 4936982640099307310,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Trey Lyles",
+    "run_seed": 4936982640099307310,
+    "age": 26,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 4936982640099307310,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Nik Stauskas",
+    "run_seed": 4936982640099307310,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Marcus Georges-Hunt",
+    "run_seed": 1505299513937967567,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Archie Goodwin",
+    "run_seed": 1505299513937967567,
+    "age": 27,
+    "ovr": 33,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 1505299513937967567,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Grant Jerrett (PO)",
+    "run_seed": 1505299513937967567,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 1505299513937967567,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 1505299513937967567,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Chasson Randle",
+    "run_seed": 1505299513937967567,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cliff Alexander",
+    "run_seed": 3246088086417198332,
+    "age": 26,
+    "ovr": 40,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 3246088086417198332,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 3246088086417198332,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 3246088086417198332,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Doug McDermott",
+    "run_seed": 3246088086417198332,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Austin Rivers",
+    "run_seed": 3246088086417198332,
+    "age": 29,
+    "ovr": 49,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 4319051504393825292,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Lucas Nogueira",
+    "run_seed": 4319051504393825292,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Tobias Harris",
+    "run_seed": 8077011144457501845,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Embiid",
+    "run_seed": 8077011144457501845,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Caris LeVert",
+    "run_seed": 8077011144457501845,
+    "age": 27,
+    "ovr": 52,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 8077011144457501845,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 6739669607765908853,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Darrun Hilliard",
+    "run_seed": 6739669607765908853,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Tobias Harris",
+    "run_seed": 881261745148090895,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Branden Dawson",
+    "run_seed": 6662625093385416002,
+    "age": 28,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 6662625093385416002,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Adams",
+    "run_seed": 3188525377133742749,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Cliff Alexander",
+    "run_seed": 3188525377133742749,
+    "age": 26,
+    "ovr": 40,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 3188525377133742749,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cliff Alexander",
+    "run_seed": 3212206027477739605,
+    "age": 26,
+    "ovr": 40,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dāvis Bertāns",
+    "run_seed": 3212206027477739605,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 3212206027477739605,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 3212206027477739605,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Norman Powell",
+    "run_seed": 3212206027477739605,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 6544183169554921218,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 6544183169554921218,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 6544183169554921218,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Julius Randle",
+    "run_seed": 6544183169554921218,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Noah Vonleh",
+    "run_seed": 6544183169554921218,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Gary Harris",
+    "run_seed": 393058917408792064,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 393058917408792064,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jahlil Okafor",
+    "run_seed": 393058917408792064,
+    "age": 26,
+    "ovr": 59,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Cody Zeller",
+    "run_seed": 393058917408792064,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Cotton",
+    "run_seed": 6925553015967789439,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerami Grant",
+    "run_seed": 6925553015967789439,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 6938468632965972974,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bobby Portis",
+    "run_seed": 6938468632965972974,
+    "age": 26,
+    "ovr": 49,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Brown",
+    "run_seed": 7368902886670881871,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 7368902886670881871,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Lucas Nogueira",
+    "run_seed": 5160290135804966674,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 5160290135804966674,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Álex Abrines",
+    "run_seed": 1702316690262843223,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 1702316690262843223,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Patrick McCaw",
+    "run_seed": 1702316690262843223,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Shabazz Muhammad",
+    "run_seed": 1702316690262843223,
+    "age": 29,
+    "ovr": 50,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 7665109438870710735,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 7665109438870710735,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kentavious Caldwell-Pope",
+    "run_seed": 1717438386940439609,
+    "age": 28,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bruno Caboclo",
+    "run_seed": 3547140160264742432,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Coty Clarke",
+    "run_seed": 3547140160264742432,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Sergey Karasev",
+    "run_seed": 1892594118434598103,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Noah Vonleh",
+    "run_seed": 1892594118434598103,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Adams",
+    "run_seed": 2272275646954503655,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dāvis Bertāns",
+    "run_seed": 2272275646954503655,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Allen Crabbe",
+    "run_seed": 2272275646954503655,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 2272275646954503655,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kay Felder",
+    "run_seed": 2272275646954503655,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 2272275646954503655,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "run_seed": 2272275646954503655,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 2272275646954503655,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Keith Appling",
+    "run_seed": 1123847303609779593,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "DeAndre' Bembry",
+    "run_seed": 1123847303609779593,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 1123847303609779593,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 4067054595580603777,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Ron Baker",
+    "run_seed": 7225933635112137663,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 7225933635112137663,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarnell Stokes",
+    "run_seed": 7225933635112137663,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bruno Caboclo",
+    "run_seed": 2361139431074825496,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 2361139431074825496,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryn Forbes",
+    "run_seed": 4129165262841535272,
+    "age": 28,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerian Grant",
+    "run_seed": 4129165262841535272,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Alan Williams",
+    "run_seed": 4129165262841535272,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Ben Bentil",
+    "run_seed": 733116458740646041,
+    "age": 26,
+    "ovr": 35,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 733116458740646041,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "JaKarr Sampson",
+    "run_seed": 733116458740646041,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Tim Hardaway Jr.",
+    "run_seed": 5691970959284247686,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 5691970959284247686,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cliff Alexander",
+    "run_seed": 5598659383939172188,
+    "age": 26,
+    "ovr": 40,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 5598659383939172188,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 3440038996325499420,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 3440038996325499420,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 4836791008759890768,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "JaKarr Sampson",
+    "run_seed": 4836791008759890768,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jahlil Okafor",
+    "run_seed": 5311103954289620084,
+    "age": 26,
+    "ovr": 59,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 5311103954289620084,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Allen Crabbe",
+    "run_seed": 2391559183143377810,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Bennett",
+    "run_seed": 8211825664425244902,
+    "age": 28,
+    "ovr": 55,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 8211825664425244902,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bobby Portis",
+    "run_seed": 8211825664425244902,
+    "age": 26,
+    "ovr": 49,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Mario Hezonja",
+    "run_seed": 8326442253901702778,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 8326442253901702778,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Cotton",
+    "run_seed": 3970373888830385983,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sergey Karasev",
+    "run_seed": 3970373888830385983,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 3970373888830385983,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Tyler Johnson",
+    "run_seed": 6271820823822072627,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Shabazz Muhammad",
+    "run_seed": 6271820823822072627,
+    "age": 29,
+    "ovr": 50,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jahlil Okafor",
+    "run_seed": 6271820823822072627,
+    "age": 26,
+    "ovr": 59,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "P.J. Hairston",
+    "run_seed": 1193016805793218434,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 1193016805793218434,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. Warren",
+    "run_seed": 1193016805793218434,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Trey Lyles",
+    "run_seed": 117299256138886153,
+    "age": 26,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Isaiah Whitehead",
+    "run_seed": 117299256138886153,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 117299256138886153,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jake Layman",
+    "run_seed": 3496027382965913951,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Trey Lyles",
+    "run_seed": 3496027382965913951,
+    "age": 26,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Caris LeVert",
+    "run_seed": 4803711051254094696,
+    "age": 27,
+    "ovr": 52,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Mickey",
+    "run_seed": 4803711051254094696,
+    "age": 27,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerian Grant",
+    "run_seed": 4896341323354662253,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Sergey Karasev",
+    "run_seed": 4896341323354662253,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "James Michael McAdoo",
+    "run_seed": 4896341323354662253,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Josh Richardson",
+    "run_seed": 4896341323354662253,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 1786765974450000562,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Brown",
+    "run_seed": 1786765974450000562,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Fred VanVleet",
+    "run_seed": 1786765974450000562,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cliff Alexander",
+    "run_seed": 195072965206880374,
+    "age": 26,
+    "ovr": 40,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Nicolás Brussino",
+    "run_seed": 195072965206880374,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Yogi Ferrell",
+    "run_seed": 195072965206880374,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "R.J. Hunter",
+    "run_seed": 195072965206880374,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarnell Stokes",
+    "run_seed": 195072965206880374,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Isaiah Whitehead",
+    "run_seed": 195072965206880374,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Thanasis Antetokounmpo",
+    "run_seed": 8060471354994015947,
+    "age": 29,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 8060471354994015947,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 8060471354994015947,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Mickey",
+    "run_seed": 8060471354994015947,
+    "age": 27,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "run_seed": 1201494734054652455,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Raul Neto",
+    "run_seed": 1201494734054652455,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 4510740804370151416,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Wayne Selden",
+    "run_seed": 50867245031765200,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 50867245031765200,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Adams",
+    "run_seed": 168224486080880160,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Nicolás Brussino",
+    "run_seed": 168224486080880160,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Norman Powell",
+    "run_seed": 168224486080880160,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Josh Richardson",
+    "run_seed": 168224486080880160,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Austin Rivers",
+    "run_seed": 168224486080880160,
+    "age": 29,
+    "ovr": 49,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Noah Vonleh",
+    "run_seed": 168224486080880160,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Alan Williams",
+    "run_seed": 168224486080880160,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "DeAndre' Bembry",
+    "run_seed": 3446190017542215913,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Bennett",
+    "run_seed": 3446190017542215913,
+    "age": 28,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jake Layman",
+    "run_seed": 482402772360144003,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Christian Wood",
+    "run_seed": 482402772360144003,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Damien Inglis",
+    "run_seed": 7315311987538107777,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 7315311987538107777,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 7315311987538107777,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 7315311987538107777,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bobby Portis",
+    "run_seed": 7315311987538107777,
+    "age": 26,
+    "ovr": 49,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Archie Goodwin",
+    "run_seed": 802766798182617536,
+    "age": 27,
+    "ovr": 33,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 802766798182617536,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Richaun Holmes",
+    "run_seed": 802766798182617536,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 8444162687746982453,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 8444162687746982453,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Joe Young",
+    "run_seed": 8444162687746982453,
+    "age": 29,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 7729379645169746281,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 7729379645169746281,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 7729379645169746281,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 8019234337028098808,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Taurean Prince",
+    "run_seed": 8019234337028098808,
+    "age": 27,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Nik Stauskas",
+    "run_seed": 8019234337028098808,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Joe Young",
+    "run_seed": 8019234337028098808,
+    "age": 29,
+    "ovr": 42,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Yogi Ferrell",
+    "run_seed": 4999052030585856313,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Marcus Georges-Hunt",
+    "run_seed": 4999052030585856313,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Kelly Oubre Jr.",
+    "run_seed": 4999052030585856313,
+    "age": 26,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 8935392892893372734,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 8935392892893372734,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Richaun Holmes",
+    "run_seed": 4757611252197009658,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jahlil Okafor",
+    "run_seed": 4757611252197009658,
+    "age": 26,
+    "ovr": 59,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 4757611252197009658,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Adams",
+    "run_seed": 5128162806612950169,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 5128162806612950169,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jake Layman",
+    "run_seed": 5128162806612950169,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Doug McDermott",
+    "run_seed": 5128162806612950169,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Cody Zeller",
+    "run_seed": 5128162806612950169,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 7140168169490540651,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Coty Clarke",
+    "run_seed": 7140168169490540651,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 7140168169490540651,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 7140168169490540651,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 7140168169490540651,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 722720819044317757,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 722720819044317757,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 722720819044317757,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 595383292348279810,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "R.J. Hunter",
+    "run_seed": 595383292348279810,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Grant Jerrett (PO)",
+    "run_seed": 595383292348279810,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Troy Williams",
+    "run_seed": 595383292348279810,
+    "age": 27,
+    "ovr": 39,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Cody Zeller",
+    "run_seed": 595383292348279810,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "run_seed": 6992829941199558403,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 6992829941199558403,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 6992829941199558403,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Pascal Siakam",
+    "run_seed": 7736560091011683023,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 8055295197478571149,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Rondae Hollis-Jefferson",
+    "run_seed": 8055295197478571149,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Chris McCullough",
+    "run_seed": 8055295197478571149,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Austin Rivers",
+    "run_seed": 8055295197478571149,
+    "age": 29,
+    "ovr": 49,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Pat Connaughton",
+    "run_seed": 2968635972414236018,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 2968635972414236018,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Keith Appling",
+    "run_seed": 5193202548521482890,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Allen Crabbe",
+    "run_seed": 5193202548521482890,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 5193202548521482890,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Frank Kaminsky",
+    "run_seed": 353100964933283546,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Bennett",
+    "run_seed": 4760710937675525340,
+    "age": 28,
+    "ovr": 55,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 4760710937675525340,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 4760710937675525340,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 4444641631422757373,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Gary Harris",
+    "run_seed": 4444641631422757373,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Caris LeVert",
+    "run_seed": 4444641631422757373,
+    "age": 27,
+    "ovr": 52,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 4444641631422757373,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 4444641631422757373,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bradley Beal",
+    "run_seed": 7232696643509843154,
+    "age": 28,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Pat Connaughton",
+    "run_seed": 7232696643509843154,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Patrick McCaw",
+    "run_seed": 7232696643509843154,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Luis Montero",
+    "run_seed": 7232696643509843154,
+    "age": 28,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Adonis Thomas",
+    "run_seed": 7232696643509843154,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 7232696643509843154,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryn Forbes",
+    "run_seed": 8381442162423847310,
+    "age": 28,
+    "ovr": 45,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "James Michael McAdoo",
+    "run_seed": 8381442162423847310,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Raul Neto",
+    "run_seed": 8381442162423847310,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 5185875083711429558,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 7903885501096689021,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Julius Randle",
+    "run_seed": 7903885501096689021,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 6991254074551194879,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 6991254074551194879,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Kelly Oubre Jr.",
+    "run_seed": 6991254074551194879,
+    "age": 26,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Chasson Randle",
+    "run_seed": 6991254074551194879,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 3027923285117096243,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 4502358983699297145,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Fred VanVleet",
+    "run_seed": 4502358983699297145,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bradley Beal",
+    "run_seed": 1689283166735666698,
+    "age": 28,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Branden Dawson",
+    "run_seed": 1689283166735666698,
+    "age": 28,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Cotton",
+    "run_seed": 4185001089122845957,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Dorian Finney-Smith",
+    "run_seed": 4185001089122845957,
+    "age": 28,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Patrick McCaw",
+    "run_seed": 1669118313216555802,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 3471447486878274887,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Chasson Randle",
+    "run_seed": 470415179866181138,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 3418967913751729941,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "James Michael McAdoo",
+    "run_seed": 3418967913751729941,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Troy Williams",
+    "run_seed": 3418967913751729941,
+    "age": 27,
+    "ovr": 39,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Dejean-Jones",
+    "run_seed": 1757824267330072843,
+    "age": 29,
+    "ovr": 34,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 1757824267330072843,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 1757824267330072843,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Yogi Ferrell",
+    "run_seed": 9005166290958237248,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 9005166290958237248,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 9005166290958237248,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sim Bhullar",
+    "run_seed": 4498040842741061699,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 4498040842741061699,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Kentavious Caldwell-Pope",
+    "run_seed": 9191745725204707650,
+    "age": 28,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 9191745725204707650,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerami Grant",
+    "run_seed": 9191745725204707650,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 9191745725204707650,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Keith Appling",
+    "run_seed": 4826102745944022540,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dāvis Bertāns",
+    "run_seed": 4826102745944022540,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 4826102745944022540,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "P.J. Hairston",
+    "run_seed": 4826102745944022540,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 4826102745944022540,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Joe Young",
+    "run_seed": 4826102745944022540,
+    "age": 29,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bryce Cotton",
+    "run_seed": 5401077731136589967,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 5401077731136589967,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. McConnell",
+    "run_seed": 5401077731136589967,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Richaun Holmes",
+    "run_seed": 5516628732069174240,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Rondae Hollis-Jefferson",
+    "run_seed": 1838142248652406004,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 1838142248652406004,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 7500468994473012133,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Nerlens Noel",
+    "run_seed": 7500468994473012133,
+    "age": 27,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarnell Stokes",
+    "run_seed": 7500468994473012133,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 7530508075552373657,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Shabazz Muhammad",
+    "run_seed": 7530508075552373657,
+    "age": 29,
+    "ovr": 50,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 7530508075552373657,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 6077778245502253009,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Chasson Randle",
+    "run_seed": 6077778245502253009,
+    "age": 28,
+    "ovr": 37,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 7055723576152505544,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bruno Caboclo",
+    "run_seed": 1998890864999283022,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Doug McDermott",
+    "run_seed": 1998890864999283022,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Mario Hezonja",
+    "run_seed": 660183058702953673,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 660183058702953673,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 3972017089260840070,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Devyn Marble",
+    "run_seed": 3972017089260840070,
+    "age": 29,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 3972017089260840070,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 3972017089260840070,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kay Felder",
+    "run_seed": 6935139435355760914,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 6935139435355760914,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bismack Biyombo",
+    "run_seed": 8811828159347271123,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 8811828159347271123,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 8811828159347271123,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Caris LeVert",
+    "run_seed": 5852961199129463974,
+    "age": 27,
+    "ovr": 52,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Larry Nance Jr.",
+    "run_seed": 5852961199129463974,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Marquis Teague (PO)",
+    "run_seed": 7870706599346464292,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 7870706599346464292,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 6404565548504281428,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 6404565548504281428,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 2041552295435332758,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerian Grant",
+    "run_seed": 2041552295435332758,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Julius Randle",
+    "run_seed": 2041552295435332758,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 4801287523774146618,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 4801287523774146618,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Caris LeVert",
+    "run_seed": 4801287523774146618,
+    "age": 27,
+    "ovr": 52,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. McConnell",
+    "run_seed": 4801287523774146618,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Luis Montero",
+    "run_seed": 4801287523774146618,
+    "age": 28,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 3786171172983581292,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Bennett",
+    "run_seed": 8966712322111669685,
+    "age": 28,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dāvis Bertāns",
+    "run_seed": 8966712322111669685,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 8966712322111669685,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jake Layman",
+    "run_seed": 8160182918122798675,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Rondae Hollis-Jefferson",
+    "run_seed": 8103533425235247024,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kelly Oubre Jr.",
+    "run_seed": 8103533425235247024,
+    "age": 26,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 8293085773509636539,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Gordon",
+    "run_seed": 8293085773509636539,
+    "age": 26,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Bismack Biyombo",
+    "run_seed": 1171694755926371595,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Johnny O'Bryant",
+    "run_seed": 1171694755926371595,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Norman Powell",
+    "run_seed": 1171694755926371595,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Noah Vonleh",
+    "run_seed": 1171694755926371595,
+    "age": 26,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Luis Montero",
+    "run_seed": 5759858342040177891,
+    "age": 28,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Fred VanVleet",
+    "run_seed": 5759858342040177891,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Joe Young",
+    "run_seed": 5759858342040177891,
+    "age": 29,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 1833952687194110492,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Gary Harris",
+    "run_seed": 1833952687194110492,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 1833952687194110492,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Mickey",
+    "run_seed": 7842028927058017037,
+    "age": 27,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Delon Wright",
+    "run_seed": 7842028927058017037,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 7092644189498091368,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Axel Toupane",
+    "run_seed": 7092644189498091368,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Patrick McCaw",
+    "run_seed": 2912608790900864588,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Ron Baker",
+    "run_seed": 6502955056135452250,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Brown",
+    "run_seed": 6502955056135452250,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Darrun Hilliard",
+    "run_seed": 6502955056135452250,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jeremy Lamb",
+    "run_seed": 6502955056135452250,
+    "age": 29,
+    "ovr": 35,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dāvis Bertāns",
+    "run_seed": 4653946513806795164,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Harrison",
+    "run_seed": 4653946513806795164,
+    "age": 27,
+    "ovr": 59,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 4653946513806795164,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Embiid",
+    "run_seed": 9085675316288813892,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 9085675316288813892,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jahlil Okafor",
+    "run_seed": 9085675316288813892,
+    "age": 26,
+    "ovr": 59,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Denzel Valentine",
+    "run_seed": 9085675316288813892,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cody Zeller",
+    "run_seed": 9085675316288813892,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Archie Goodwin",
+    "run_seed": 8416594205192397108,
+    "age": 27,
+    "ovr": 33,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Raul Neto",
+    "run_seed": 8416594205192397108,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Anthony Bennett",
+    "run_seed": 8188804992584037321,
+    "age": 28,
+    "ovr": 55,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Rudy Gobert",
+    "run_seed": 8188804992584037321,
+    "age": 29,
+    "ovr": 32,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Devyn Marble",
+    "run_seed": 8188804992584037321,
+    "age": 29,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Jakob Poeltl",
+    "run_seed": 8188804992584037321,
+    "age": 26,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bradley Beal",
+    "run_seed": 6139470648323834707,
+    "age": 28,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kay Felder",
+    "run_seed": 3135889051405867238,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Gary Harris",
+    "run_seed": 3135889051405867238,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Shabazz Muhammad",
+    "run_seed": 3135889051405867238,
+    "age": 29,
+    "ovr": 50,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Adams",
+    "run_seed": 2724411776704220835,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rondae Hollis-Jefferson",
+    "run_seed": 2724411776704220835,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Marquis Teague (PO)",
+    "run_seed": 2226492235452095977,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Ricky Ledo",
+    "run_seed": 8920737019549867294,
+    "age": 29,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 8062286144428634381,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Darrun Hilliard",
+    "run_seed": 8062286144428634381,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Tobias Harris",
+    "run_seed": 4522339969323907797,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Álex Abrines",
+    "run_seed": 4522339969323907797,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 4522339969323907797,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Richaun Holmes",
+    "run_seed": 4522339969323907797,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 7474521555907049431,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jabari Parker",
+    "run_seed": 7474521555907049431,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarnell Stokes",
+    "run_seed": 7474521555907049431,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 8991810348487467466,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 8991810348487467466,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Brice Johnson",
+    "run_seed": 4334795939627122916,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarnell Stokes",
+    "run_seed": 4334795939627122916,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Justin Anderson",
+    "run_seed": 6046342631346183919,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "DeAndre' Bembry",
+    "run_seed": 6046342631346183919,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 6046342631346183919,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Sergey Karasev",
+    "run_seed": 6046342631346183919,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. McConnell",
+    "run_seed": 6046342631346183919,
+    "age": 29,
+    "ovr": 47,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Quinn Cook",
+    "run_seed": 6666908178028520166,
+    "age": 28,
+    "ovr": 40,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 6666908178028520166,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Sam Dekker",
+    "run_seed": 5965684759790739780,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 5965684759790739780,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Nerlens Noel",
+    "run_seed": 5965684759790739780,
+    "age": 27,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Cody Zeller",
+    "run_seed": 5965684759790739780,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Markel Brown",
+    "run_seed": 359903862405711486,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 359903862405711486,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerian Grant",
+    "run_seed": 359903862405711486,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Glenn Robinson III",
+    "run_seed": 359903862405711486,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Ron Baker",
+    "run_seed": 6671410646995963140,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "DeAndre' Bembry",
+    "run_seed": 6671410646995963140,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Taurean Prince",
+    "run_seed": 6671410646995963140,
+    "age": 27,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 9178980725194490491,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Marcus Georges-Hunt",
+    "run_seed": 9178980725194490491,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Luis Montero",
+    "run_seed": 9178980725194490491,
+    "age": 28,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bismack Biyombo",
+    "run_seed": 187458575170936125,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 187458575170936125,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Bradley Beal",
+    "run_seed": 2047682965325864511,
+    "age": 28,
+    "ovr": 58,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 2047682965325864511,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jake Layman",
+    "run_seed": 2047682965325864511,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Tony Mitchell",
+    "run_seed": 2047682965325864511,
+    "age": 29,
+    "ovr": 33,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Lucas Nogueira",
+    "run_seed": 2047682965325864511,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Austin Rivers",
+    "run_seed": 2047682965325864511,
+    "age": 29,
+    "ovr": 49,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Aaron Harrison",
+    "run_seed": 4593181804169536295,
+    "age": 27,
+    "ovr": 59,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Ron Baker",
+    "run_seed": 2419603767029255331,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Thanasis Antetokounmpo",
+    "run_seed": 3841419893995837515,
+    "age": 29,
+    "ovr": 43,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Meyers Leonard",
+    "run_seed": 3841419893995837515,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Lucas Nogueira",
+    "run_seed": 3841419893995837515,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dāvis Bertāns",
+    "run_seed": 5088581368782584073,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Branden Dawson",
+    "run_seed": 5088581368782584073,
+    "age": 28,
+    "ovr": 48,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Edy Tavares",
+    "run_seed": 5088581368782584073,
+    "age": 29,
+    "ovr": 40,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "T.J. Warren",
+    "run_seed": 5088581368782584073,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Yogi Ferrell",
+    "run_seed": 1953221689617078714,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Patricio Garino",
+    "run_seed": 1953221689617078714,
+    "age": 28,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Nik Stauskas",
+    "run_seed": 1953221689617078714,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Coty Clarke",
+    "run_seed": 5499130040177150036,
+    "age": 29,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Pat Connaughton",
+    "run_seed": 2001816350546751212,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Sergey Karasev",
+    "run_seed": 2001816350546751212,
+    "age": 28,
+    "ovr": 38,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jahlil Okafor",
+    "run_seed": 2001816350546751212,
+    "age": 26,
+    "ovr": 59,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Cristiano Felício",
+    "run_seed": 4844814171289713709,
+    "age": 29,
+    "ovr": 38,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Tyler Johnson",
+    "run_seed": 198925915237813657,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Julius Randle",
+    "run_seed": 198925915237813657,
+    "age": 27,
+    "ovr": 35,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Cody Zeller",
+    "run_seed": 198925915237813657,
+    "age": 29,
+    "ovr": 51,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jahlil Okafor",
+    "run_seed": 3163585769758286647,
+    "age": 26,
+    "ovr": 59,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 3163585769758286647,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Tyler Johnson",
+    "run_seed": 2695609794923067959,
+    "age": 29,
+    "ovr": 57,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Austin Rivers",
+    "run_seed": 2695609794923067959,
+    "age": 29,
+    "ovr": 49,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "JaKarr Sampson",
+    "run_seed": 2695609794923067959,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 2695609794923067959,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Álex Abrines",
+    "run_seed": 5751872293205944122,
+    "age": 28,
+    "ovr": 57,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Pat Connaughton",
+    "run_seed": 8328155635635038920,
+    "age": 28,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Luis Montero",
+    "run_seed": 8328155635635038920,
+    "age": 28,
+    "ovr": 51,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Jerami Grant",
+    "run_seed": 9200568593457650757,
+    "age": 27,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Zach LaVine",
+    "run_seed": 9200568593457650757,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 9200568593457650757,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Willy Hernangómez",
+    "run_seed": 729721052713526866,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jarell Martin",
+    "run_seed": 729721052713526866,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Spencer Dinwiddie",
+    "run_seed": 2386252260815592588,
+    "age": 28,
+    "ovr": 53,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Mitch McGary",
+    "run_seed": 2386252260815592588,
+    "age": 29,
+    "ovr": 45,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 6196591083428969139,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 6196591083428969139,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "K.J. McDaniels",
+    "run_seed": 6196591083428969139,
+    "age": 28,
+    "ovr": 36,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Edy Tavares",
+    "run_seed": 6196591083428969139,
+    "age": 29,
+    "ovr": 40,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Dāvis Bertāns",
+    "run_seed": 5437830997586224517,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Evan Fournier",
+    "run_seed": 5437830997586224517,
+    "age": 29,
+    "ovr": 46,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Rodney Hood",
+    "run_seed": 5437830997586224517,
+    "age": 29,
+    "ovr": 58,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Bobby Portis",
+    "run_seed": 5437830997586224517,
+    "age": 26,
+    "ovr": 49,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Justin Anderson",
+    "run_seed": 2454247919849988004,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Willie Cauley-Stein",
+    "run_seed": 2454247919849988004,
+    "age": 28,
+    "ovr": 56,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dante Exum",
+    "run_seed": 2454247919849988004,
+    "age": 26,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Fred VanVleet",
+    "run_seed": 2454247919849988004,
+    "age": 27,
+    "ovr": 37,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Gary Harris",
+    "run_seed": 7723703697028885147,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Rondae Hollis-Jefferson",
+    "run_seed": 4427418749959938430,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Paul Zipser",
+    "run_seed": 4427418749959938430,
+    "age": 27,
+    "ovr": 44,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Mario Hezonja",
+    "run_seed": 1145701229829085003,
+    "age": 26,
+    "ovr": 53,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Juancho Hernangómez",
+    "run_seed": 6433818374700062941,
+    "age": 26,
+    "ovr": 51,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 6433818374700062941,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "James Young",
+    "run_seed": 4152070733751732681,
+    "age": 26,
+    "ovr": 48,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Andrew Harrison",
+    "run_seed": 3840775081659470345,
+    "age": 27,
+    "ovr": 51,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Shabazz Muhammad",
+    "run_seed": 3840775081659470345,
+    "age": 29,
+    "ovr": 50,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Victor Oladipo",
+    "run_seed": 3840775081659470345,
+    "age": 29,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Quinn Cook",
+    "run_seed": 4192749286152449357,
+    "age": 28,
+    "ovr": 40,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kay Felder",
+    "run_seed": 4192749286152449357,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Montrezl Harrell",
+    "run_seed": 4192749286152449357,
+    "age": 27,
+    "ovr": 39,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Gary Harris",
+    "run_seed": 4192749286152449357,
+    "age": 27,
+    "ovr": 43,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Kay Felder",
+    "run_seed": 6253041392611225017,
+    "age": 26,
+    "ovr": 42,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Buddy Hield",
+    "run_seed": 6253041392611225017,
+    "age": 29,
+    "ovr": 48,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Jusuf Nurkić",
+    "run_seed": 6253041392611225017,
+    "age": 27,
+    "ovr": 36,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Bolomboy",
+    "run_seed": 7421865679445327473,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Chris McCullough",
+    "run_seed": 7421865679445327473,
+    "age": 26,
+    "ovr": 55,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Kris Dunn",
+    "run_seed": 3057951399734680649,
+    "age": 27,
+    "ovr": 41,
+    "bonus": 9,
+    "chance": 0.02
+  },
+  {
+    "name": "Demetrius Jackson",
+    "run_seed": 3057951399734680649,
+    "age": 27,
+    "ovr": 42,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Tony Mitchell",
+    "run_seed": 3057951399734680649,
+    "age": 29,
+    "ovr": 33,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "JaKarr Sampson",
+    "run_seed": 3057951399734680649,
+    "age": 28,
+    "ovr": 54,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Mike Tobey",
+    "run_seed": 3057951399734680649,
+    "age": 27,
+    "ovr": 45,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Bruno Caboclo",
+    "run_seed": 7090841526600598913,
+    "age": 26,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Kentavious Caldwell-Pope",
+    "run_seed": 7090841526600598913,
+    "age": 28,
+    "ovr": 42,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Joel Embiid",
+    "run_seed": 8906743141686673278,
+    "age": 27,
+    "ovr": 56,
+    "bonus": 7,
+    "chance": 0.02
+  },
+  {
+    "name": "Rondae Hollis-Jefferson",
+    "run_seed": 8906743141686673278,
+    "age": 26,
+    "ovr": 44,
+    "bonus": 10,
+    "chance": 0.02
+  },
+  {
+    "name": "Jordan Adams",
+    "run_seed": 5580326570284742912,
+    "age": 27,
+    "ovr": 58,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Justin Anderson",
+    "run_seed": 5580326570284742912,
+    "age": 28,
+    "ovr": 44,
+    "bonus": 8,
+    "chance": 0.02
+  },
+  {
+    "name": "Dennis Schröder",
+    "run_seed": 5580326570284742912,
+    "age": 28,
+    "ovr": 50,
+    "bonus": 8,
+    "chance": 0.02
+  }
+]

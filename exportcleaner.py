@@ -47,8 +47,7 @@ def exportcleaner(export_file, teams:list, teaminfo_file) -> tuple[pd.DataFrame,
 
         # Extract defensive stats for progression calculation
         dws = stats.get("dws", 0)
-        blk = stats.get("blk", 0)
-        stl = stats.get("stl", 0)
+        ewa = stats.get("ewa", 0)
 
         team = team_lookup.get(str(p["tid"]))
         if teams and team not in teams: 
@@ -65,10 +64,11 @@ def exportcleaner(export_file, teams:list, teaminfo_file) -> tuple[pd.DataFrame,
             "Age": age,
             "PER": per,
             "DWS": dws,
-            "BLK": blk,
-            "STL": stl,
+            "EWA": ewa,
             **{a: ratings.get(FAILSAFE.get(a.lower(), a.lower()), 0) for a in ATTRS}
         }
         records.append(row)
     print("Export loaded.")
+    pd.DataFrame(records).to_csv("data/input.csv")
+    print("Saved to data/input.csv.")
     return pd.DataFrame(records), metadata

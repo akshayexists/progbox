@@ -1,211 +1,285 @@
-from progutils import *
+"""
+runsim.py  ·  NoEyeTest Monte Carlo Simulation Runner
+Wraps ProgressionSandbox in a parallelised multi-run engine.
+
+Each run is fully independent (separate RNG seed, separate worker state),
+so parallelism is embarrassingly simple. The DataFrame is serialised once
+per worker process via the Pool initializer, not once per task.
+
+Typical usage
+-------------
+    sim     = runsim(seed=69)
+    results = sim.PROGEMUP(data, runs=1000, output_dir='outputs/raw')
+    results.to_csv('outputs/raw/outputs.csv')
+    sim.analytics.print_report()
+
+Windows note
+------------
+Wrap the call site in  `if __name__ == '__main__':`  or multiprocessing
+will fork-bomb on spawn-based platforms.
+"""
+from __future__ import annotations
+
+import json
+import multiprocessing as mp
+import os
+import random
+from pathlib import Path
+from typing import Optional
+
 import numpy as np
 import pandas as pd
-import random
-import json
-import os
-from pathlib import Path
+from tqdm import tqdm
+import sys
+from progutils import (
+    Config,
+    ProgressionSandbox,
+    ProgressionTracker,
+    SimAnalytics,
+    calcovr_from_array,
+)
 
-class runsim(progsandbox):
-    """Monte Carlo wrapper for NoEyeTest simulation."""
-    
-    def __init__(self, seed):
-        if seed is None:
-            raise ValueError("runsim requires a seed")
-        
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Module-level worker state
+#  Must live at module scope so multiprocessing can pickle the references.
+# ─────────────────────────────────────────────────────────────────────────────
+
+_worker_df:      Optional[pd.DataFrame]       = None
+_worker_sandbox: Optional[ProgressionSandbox] = None
+
+
+def _worker_init(df: pd.DataFrame) -> None:
+    """
+    Called once per worker process when the Pool starts.
+    Stores the roster DataFrame and a reusable ProgressionSandbox in globals
+    so they are not re-serialised for every task.
+    """
+    global _worker_df, _worker_sandbox
+    _worker_df      = df
+    _worker_sandbox = ProgressionSandbox(seed=0)   # seed overridden per task
+
+
+def _worker_run(task: tuple[int, int, list]) -> tuple[int, np.ndarray, list]:
+    """
+    Execute one simulation run inside a worker process.
+
+    Parameters
+    ----------
+    task : (run_idx, run_seed, players)
+
+    Returns
+    -------
+    (run_idx, result_array, god_prog_records)
+        result_array columns:
+            0     → Ovr
+            1-3   → PER, DWS, EWA
+            4-18  → ALL_ATTRS
+    """
+    run_idx, run_seed, players = task
+
+    # Fresh tracker per run, prevents records bleeding across tasks in one worker
+    _worker_sandbox.tracker = ProgressionTracker()
+
+    progressed = _worker_sandbox.progress_roster(
+        _worker_df,
+        rng=random.Random(run_seed),
+        run_seed=run_seed,
+    ).reindex(players)
+
+    ovr_col   = progressed['Ovr'].fillna(0).to_numpy(dtype=np.float64).reshape(-1, 1)
+    stats_col = progressed[Config.STAT_COLS[1:]].fillna(0).to_numpy(dtype=np.float64)
+    attr_col  = progressed[Config.ALL_ATTRS].fillna(0).to_numpy(dtype=np.float64)
+
+    result  = np.hstack([ovr_col, stats_col, attr_col])
+    records = list(_worker_sandbox.tracker.records)   # copy before tracker resets
+    return run_idx, result, records
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  runsim
+# ─────────────────────────────────────────────────────────────────────────────
+
+class runsim(ProgressionSandbox):
+    """
+    Monte Carlo wrapper for the NoEyeTest progression engine.
+
+    Inherits ProgressionSandbox for the single-pass logic and tracker,
+    then orchestrates N independent runs in parallel using a process Pool.
+    After PROGEMUP() completes, .analytics is a ready SimAnalytics instance.
+    """
+
+    def __init__(self, seed: int) -> None:
         super().__init__(seed=seed)
-        self.seed = seed
-        self.master_rng = random.Random(seed)
-        self.np_rng = np.random.default_rng(seed)
-        self.total_simulation_count = 0
-        self.results_df = None
+        self.seed        = seed
+        self._master_rng = random.Random(seed)
+        self.analytics:  Optional[SimAnalytics] = None
 
-    def _extract_player_data(self, df):
-        """Extract and prepare player data for simulations."""
-        players = list(df.index)
-        
-        # Extract metadata
-        meta_cols = ['Name', 'Team', 'Age']
-        metadata = df[meta_cols].fillna('').copy()
-        
-        # Prepare baseline attribute data
-        all_attrs = ['Ovr', 'PER', 'DWS', 'BLK', 'STL'] + Config.ALL_ATTRS
-        baseline_data = np.zeros((len(players), len(all_attrs)), dtype=np.float64)
-        
-        # Vectorized attribute extraction
-        for i, player_idx in enumerate(players):
-            row = df.loc[player_idx]
-            
-            # Calculate OVR from core attributes
-            core_attrs = {attr: float(row.get(attr, 0) or 0) for attr in Config.ALL_ATTRS}
-            baseline_data[i, 0] = calcovr(core_attrs)
-            
-            # Extract remaining attributes
-            for j, attr in enumerate(all_attrs[1:], 1):
-                baseline_data[i, j] = float(row.get(attr, 0) or 0)
-        
-        return players, all_attrs, baseline_data, metadata
+    # ─────────────────────────────────────────────────────────────────────────
+    #  Data preparation
+    # ─────────────────────────────────────────────────────────────────────────
 
-    def _simulate_single_run(self, df, baseline_data, players, attrs, run_seed):
-        """Execute one simulation run and return results."""
-        # Run progression with dedicated RNG
-        progressed_df = self.runoneprog(df, rng=random.Random(run_seed), seed=run_seed)
-        
-        # Align with original player list
-        baseline_df = pd.DataFrame(baseline_data, index=players, columns=attrs)
-        aligned_df = progressed_df.reindex(index=players, columns=attrs).fillna(baseline_df)
-        
-        # Recalculate OVR for all players
-        ovr_values = np.zeros(len(players), dtype=int)
-        for i, player_idx in enumerate(players):
-            self.total_simulation_count += 1
-            attr_dict = {attr: float(aligned_df.at[player_idx, attr]) 
-                        for attr in Config.ALL_ATTRS}
-            ovr_values[i] = calcovr(attr_dict)
-        
-        aligned_df['Ovr'] = ovr_values
-        return aligned_df.to_numpy()
-
-    def _build_results_dataframe(self, sim_results, baseline_data, players, attrs, metadata, run_seeds):
-        """Convert simulation results into structured DataFrame."""
-        n_runs = len(sim_results)
-        n_players = len(players)
-        
-        # Stack all simulation results (runs × players × attrs)
-        stacked_results = np.stack(sim_results, axis=0)
-        
-        # Extract OVR and calculate deltas (vectorized)
-        sim_ovr = stacked_results[:, :, 0].flatten()
-        baseline_ovr = np.tile(baseline_data[:, 0], n_runs)
-        delta_ovr = sim_ovr - baseline_ovr
-        
-        # Calculate percentage change (handle division by zero)
-        with np.errstate(divide='ignore', invalid='ignore'):
-            pct_change = np.where(baseline_ovr != 0, delta_ovr / baseline_ovr, 0)
-        
-        # Build core result data using vectorized operations
-        results_data = {
-            'Run': np.repeat(range(n_runs), n_players),
-            'RunSeed': np.repeat(run_seeds, n_players),
-            'PlayerID': np.tile(players, n_runs),
-            'Baseline': baseline_ovr,
-            'Value': sim_ovr,
-            'Delta': delta_ovr,
-            'PctChange': pct_change,
-            'AboveBaseline': (sim_ovr > baseline_ovr),
-        }
-        
-        # Add metadata columns
-        for col in metadata.columns:
-            results_data[col] = np.tile(metadata[col].values, n_runs)
-        
-        # Add attribute columns
-        for i, attr in enumerate(attrs):
-            results_data[attr] = stacked_results[:, :, i].flatten()
-        
-        return pd.DataFrame(results_data)
-
-    def _export_logs(self, output_dir='outputs/raw'):
-        """Export god progression logs to JSON files."""
-        try:
-            # Resolve output directory safely
-            workspace_base = Path(__file__).parent.resolve()
-
-            if os.path.isabs(output_dir):
-                output_path = Path(output_dir).resolve()
-            else:
-                output_path = (workspace_base / output_dir).resolve()
-
-            # Validate path is within workspace
-            try:
-                output_path.relative_to(workspace_base)
-            except ValueError:
-                safe_default = workspace_base / 'outputs' / 'raw'
-                print(f"Warning: Invalid output directory outside workspace. Using: {safe_default}")
-                output_path = safe_default
-
-            # Create directory if needed
-            output_path.mkdir(parents=True, exist_ok=True)
-
-            # Export detailed god progression records (array of objects)
-            godprogs_file = output_path / 'godprogs.json'
-            god_progs_records = self.tracking.godprog_records if hasattr(self.tracking, 'godprog_records') else []
-
-            with open(godprogs_file, 'w', encoding='utf-8') as f:
-                json.dump(god_progs_records, f, ensure_ascii=False, indent=2)
-
-            # Export superlucky counts (dict of name -> count)
-            superlucky_file = output_path / 'superlucky.json'
-            superlucky_data = self.tracking.playersgodprogged if hasattr(self.tracking, 'playersgodprogged') else {}
-
-            with open(superlucky_file, 'w', encoding='utf-8') as f:
-                json.dump(superlucky_data, f, ensure_ascii=False, indent=2)
-
-            # Print summary
-            if self.tracking.godprogcount > 0:
-                print(f'\nGod Progressions: {self.tracking.godprogcount}')
-                print(f'Logs exported to: {output_path}')
-            else:
-                print(f'\nNo god progressions occurred.')
-
-        except (OSError, ValueError) as e:
-            print(f"Error: Could not export logs - {e}")
-        except Exception as e:
-            print(f"Warning: Unexpected error during log export - {e}")
-
-    def PROGEMUP(self, initial_df, runs=100, seed=None, output_dir='outputs/raw'):
-        """
-        Execute Monte Carlo simulation with vectorized processing.
-        
-        Args:
-            initial_df: DataFrame with player data (must include Age, PER, DWS, BLK, STL, and attributes)
-            runs: Number of simulation runs (default: 100)
-            seed: Optional seed override
-            output_dir: Directory for log exports (default: 'outputs/raw')
-            
-        Returns:
-            DataFrame with simulation results including baseline, value, delta, and pct change
-        """
-        
-        # Update seed if provided
-        if seed is not None:
-            self.seed = seed
-            self.master_rng = random.Random(seed)
-            self.np_rng = np.random.default_rng(seed)
-        
-        print(f"Starting Monte Carlo simulation: {runs} runs, seed={self.seed}")
-        
-        # Extract and prepare data
-        players, attrs, baseline_data, metadata = self._extract_player_data(initial_df)
-        print(f"Processing {len(players)} players with {len(attrs)} attributes")
-        
-        # Pre-generate all run seeds
-        run_seeds = [self.master_rng.randint(0, 2**63 - 1) for _ in range(runs)]
-        
-        # Execute simulations
-        sim_results = []
-        for run_idx, run_seed in enumerate(run_seeds, 1):
-            result = self._simulate_single_run(initial_df, baseline_data, players, attrs, run_seed)
-            sim_results.append(result)
-            
-            # Progress indicator
-            if run_idx % 100 == 0 or run_idx == runs:
-                print(f"Completed: {run_idx}/{runs} runs")
-        
-        # Build final results DataFrame
-        print("Building results DataFrame...")
-        results_df = self._build_results_dataframe(
-            sim_results, baseline_data, players, attrs, metadata, run_seeds
+    @staticmethod
+    def _prepare_baseline(df: pd.DataFrame) -> tuple[list, np.ndarray, pd.DataFrame]:
+        players    = list(df.index)
+        meta       = df[['Name', 'Team', 'Age']].fillna('').copy()
+        base_attrs = df[Config.ALL_ATTRS].fillna(0).to_numpy(dtype=np.float64)
+        base_ovr   = np.array(
+            [calcovr_from_array(base_attrs[i]) for i in range(len(players))],
+            dtype=np.float64,
         )
-        
-        # Ensure proper column ordering
-        base_columns = ['Run', 'RunSeed', 'Name', 'Team', 'Age', 'PlayerID',
-                       'Baseline', 'Value', 'Delta', 'PctChange', 'AboveBaseline']
-        self.results_df = results_df[base_columns + attrs]
-        
-        # Export logs and print summary
+        return players, base_ovr, meta
+
+    # ─────────────────────────────────────────────────────────────────────────
+    #  Result assembly
+    # ─────────────────────────────────────────────────────────────────────────
+
+    @staticmethod
+    def _assemble_results(sim_results: list[np.ndarray],
+                          base_ovr:    np.ndarray,
+                          players:     list,
+                          meta:        pd.DataFrame,
+                          run_seeds:   list[int]) -> pd.DataFrame:
+        """Flatten (runs × players × cols) into a long-format DataFrame."""
+        stacked    = np.stack(sim_results, axis=0)   # (n_runs, n_players, ncols)
+        n_runs     = len(sim_results)
+        n_players  = len(players)
+
+        sim_ovr    = stacked[:, :, 0].flatten()
+        tiled_base = np.tile(base_ovr, n_runs)
+        delta      = sim_ovr - tiled_base
+
+        with np.errstate(divide='ignore', invalid='ignore'):
+            pct_change = np.where(tiled_base != 0, delta / tiled_base, 0.0)
+
+        frame: dict = {
+            'Run':           np.repeat(np.arange(n_runs), n_players),
+            'RunSeed':       np.repeat(run_seeds, n_players),
+            'PlayerID':      np.tile(players, n_runs),
+            'Baseline':      tiled_base,
+            'Ovr':           sim_ovr,
+            'Delta':         delta,
+            'PctChange':     pct_change,
+            'AboveBaseline': sim_ovr > tiled_base,
+        }
+        for col in meta.columns:
+            frame[col] = np.tile(meta[col].values, n_runs)
+        for i, stat in enumerate(Config.STAT_COLS[1:], start=1):
+            frame[stat] = stacked[:, :, i].flatten()
+        for i, attr in enumerate(Config.ALL_ATTRS, start=4):
+            frame[attr] = stacked[:, :, i].flatten()
+
+        head = ['Run', 'RunSeed', 'Name', 'Team', 'Age', 'PlayerID',
+                'Baseline', 'Ovr', 'Delta', 'PctChange', 'AboveBaseline']
+        tail = Config.STAT_COLS[1:] + Config.ALL_ATTRS
+        return pd.DataFrame(frame)[head + tail]
+
+    # ─────────────────────────────────────────────────────────────────────────
+    #  Log export
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def _export_logs(self, output_dir: str | Path) -> None:
+        out_path = self._resolve_output_path(output_dir)
+        out_path.mkdir(parents=True, exist_ok=True)
+
+        godprogs_df, superlucky_df = self.tracker.to_dataframes()
+
+        records = godprogs_df.to_dict('records') if not godprogs_df.empty else []
+        with open(out_path / 'godprogs.json', 'w', encoding='utf-8') as fh:
+            json.dump(records, fh, ensure_ascii=False, indent=2)
+
+        lucky = (dict(zip(superlucky_df['Name'], superlucky_df['GodProgCount']))
+                 if not superlucky_df.empty else {})
+        with open(out_path / 'superlucky.json', 'w', encoding='utf-8') as fh:
+            json.dump(lucky, fh, ensure_ascii=False, indent=2)
+
+        count = self.tracker.god_prog_count
+        print(f'\nGod Progressions: {count}' if count else '\nNo god progressions.')
+        print(f'Logs → {out_path}')
+
+    @staticmethod
+    def _resolve_output_path(output_dir: str | Path) -> Path:
+        workspace = Path(__file__).parent.resolve()
+        path      = Path(output_dir)
+        if not path.is_absolute():
+            path = (workspace / path).resolve()
+        try:
+            path.relative_to(workspace)
+        except ValueError:
+            path = workspace / 'outputs' / 'raw'
+            print(f'Warning: path outside workspace, using {path}')
+        return path
+
+    # ─────────────────────────────────────────────────────────────────────────
+    #  Public API
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def PROGEMUP(self,
+                 initial_df: pd.DataFrame,
+                 runs:       int = 100,
+                 output_dir: str = 'outputs/raw',
+                 n_workers:  Optional[int] = None) -> pd.DataFrame:
+        """
+        Run a parallelised Monte Carlo simulation over initial_df.
+
+        Parameters
+        ----------
+        initial_df : DataFrame with Config.NUMCOLS + Name / Team columns.
+        runs       : Number of independent simulation passes.
+        output_dir : Directory for godprogs.json / superlucky.json.
+        n_workers  : Worker processes. Defaults to os.cpu_count().
+                     Pass 1 to force single-process (useful for debugging).
+
+        Returns
+        -------
+        Long-format DataFrame, one row per (player × run).
+        self.analytics is populated immediately after this returns.
+        """
+        n_workers = n_workers or os.cpu_count() or 1
+        players, base_ovr, meta = self._prepare_baseline(initial_df)
+
+        run_seeds = [self._master_rng.randint(0, 2**63 - 1) for _ in range(runs)]
+        tasks     = [(idx, seed, players) for idx, seed in enumerate(run_seeds)]
+
+        print(f'Starting simulation: {runs} runs · seed={self.seed} · '
+              f'{n_workers} workers · {len(players)} players')
+
+        # ── Parallel execution ────────────────────────────────────────────────
+        # imap_unordered streams results as workers finish (ideal for tqdm).
+        # We sort by run_idx afterward to guarantee deterministic output order.
+        raw_results: list[tuple[int, np.ndarray, list]] = []
+        print('')
+        with mp.Pool(
+            processes=n_workers,
+            initializer=_worker_init,
+            initargs=(initial_df,),
+        ) as pool:
+            with tqdm(total=runs, desc='Simulating', unit='run',
+                        dynamic_ncols=True, colour='green',
+                        file=sys.stderr, leave=True, position=0) as bar:
+                for result in pool.imap_unordered(_worker_run, tasks, chunksize=4):
+                    raw_results.append(result)
+                    bar.update()
+
+        # ── Sort & unpack ─────────────────────────────────────────────────────
+        raw_results.sort(key=lambda t: t[0])
+        ordered_arrays = [r[1] for r in raw_results]
+
+        # Merge god-prog records from every worker run back into self.tracker
+        for _, _, records in raw_results:
+            for rec in records:
+                self.tracker.records.append(rec)
+                self.tracker.god_prog_count += 1
+                self.tracker.player_god_counts[rec.name] = (
+                    self.tracker.player_god_counts.get(rec.name, 0) + 1
+                )
+
+        # ── Assemble & finalise ───────────────────────────────────────────────
+        print('Assembling results…')
+        results = self._assemble_results(ordered_arrays, base_ovr, players, meta, run_seeds)
+
         self._export_logs(output_dir)
-        print(f"\nTotal simulations executed: {self.total_simulation_count}")
-        print(f"Results shape: {self.results_df.shape}")
-        
-        return self.results_df
+        self.analytics = SimAnalytics(results, self.tracker)
+
+        print(f'Done · {len(results):,} rows · {results.shape[1]} columns')
+        return results

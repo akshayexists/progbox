@@ -1,0 +1,8 @@
+{
+    "teams": [],
+    "seed": 69,
+    "runs": 500,
+    "n_workers": 21,
+    "export_file": "data/export.json",
+    "teaminfo_file": "data/teaminfo.json"
+}
