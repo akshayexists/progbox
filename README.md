@@ -1,20 +1,23 @@
 # Progbox v2
-a ***Monte Carlo Progression Simulator***
+*A highly parallelised, Monte Carlo Progression Simulator for custom [BasketballGM](https://play.basketball-gm.com/) Prog scripts*
 
-A parallelised C++ Monte Carlo engine for simulating and analysing player progression in [BasketballGM](https://zengm.com/basketball/). Runs hundreds or thousands of independent progression passes over a roster, then produces aggregated statistics and tuner-focused diagnostic charts.
+[![C++17](https://img.shields.io/badge/C++-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17)
+[![Python](https://img.shields.io/badge/Python-Post--Processing-yellow.svg)](https://python.org)
+
+Progbox is a native C++ engine that runs hundreds or thousands of independent progression passes over a BasketballGM roster. It outputs aggregated statistics and tuner-focused diagnostic charts, serving as a powerful sandbox for balancing progression algorithms.
 
 ### The Progression Scripts
 This engine ports the following NoEyeTest (NET) progression scripts into native C++:
-- [NET v3.2 (archive, dev v3.2)](https://github.com/fearandesire/NoEyeTest/blob/dev/src/NoEyeTest.js)
-- [NET v4 (updatealgo)](https://gist.github.com/fearandesire/fa7ddef9be41be66e1b9639b51bb88d6) 
-- [modified for NET v4.1 (dev-v4.1)](https://github.com/shawnmalik1/NoEyeTest-v4/blob/main/noeyetest_progs_v4.js)
+- **NET v3.2** ([archive](https://github.com/fearandesire/NoEyeTest/blob/dev/src/NoEyeTest.js))
+- **NET v4** ([updatealgo](https://gist.github.com/fearandesire/fa7ddef9be41be66e1b9639b51bb88d6)) 
+- **NET v4.1** ([modified](https://github.com/shawnmalik1/NoEyeTest-v4/blob/main/noeyetest_progs_v4.js))
 
-All into a single codebase so we don't have to keep switching branches!!
+All scripts live in a single codebase. no more switching branches to test different algorithms.
 
 ### Why C++?
-The previous Python implementation required maintaining multiple branching scripts and config dictionaries to swap between progression versions. Further, GIL meant i couldn't do my usual multithreading shenanigans simply. This C++ rewrite solves that by using a **Algorithm Registry Pattern**. Progression scripts are now self-contained C++ objects. 
+The previous Python implementation suffered from two limitations: maintaining branching config dictionaries, and the GIL blocking true multithreading. Progbox solves both using a **Registry Pattern**. 
 
-Adding a new script requires zero changes to the core engine and all you have to do is register it. Best of all, It gives you a single, compact binary you can plug and play to your heart's content in any frontend/backend as long as you have an operating system that supports it. Currently only tested for Linux and WSL (ubuntu 20 and above, we do need filesystem support!!).
+Progression scripts are now self-contained C++ objects. Adding a new script requires zero changes to the core engine. The result is a single, compact binary you can plug into any frontend/backend pipeline (tested on Linux and WSL Ubuntu 20+).
 
 ---
 
@@ -38,7 +41,7 @@ graph TD
     K --> N[Export godprogs.json & superlucky.json]
     
     L & M & N --> O[Python Post-Processor]
-    O --> P[analysis.xlsx & Diagnostic Charts]
+    O --> P[analysis.xlsx & 8 Diagnostic Charts]
 ```
 
 ---
@@ -48,22 +51,27 @@ graph TD
 ```text
 .
 ├── src/
-│   ├── main.cpp                 # Entry point & CLI parsing
-│   ├── sim_engine.hpp/cpp       # Monte Carlo harness
-│   ├── analytics.hpp/cpp        # CSV/JSON export logic
-│   ├── progression_registry.hpp # Auto-discovery of progression scripts
+│   ├── main.cpp                 # Entry point, CLI parsing, orchestration
+├── include/scripts/
+│   ├── v321_progression.hpp     # NET v3.2.1 implementation
+│   └── v41_progression.hpp      # NET v4.1 implementation
+├── include
+│   ├── sim_engine.hpp           # Thread-pool Monte Carlo harness
+│   ├── analytics.hpp            # Raw CSV/JSON export logic
+│   ├── progression_registry.hpp # Auto-discovery of progression scripts, (TO EDIT WHEN NEW SCRIPTS ARE ADDED)
 │   ├── i_progression.hpp        # Interface all scripts must implement
-│   ├── core_types.hpp           # PlayerState, PlayerMeta, RunResult
-│   ├── analysis.py              # Python post-processor (Charts/Excel)
-│   └── scripts/
-│       ├── v321_progression.hpp # NET v3.2.1 implementation
-│       └── v41_progression.hpp  # NET v4.1 implementation
+|   ├── ovr_math.hpp             # posted BBGM OVR calculation logic
+|   ├── json.hpp                 # https://github.com/nlohmann/json
+|   ├── progress.hpp             # factory progress bars!!
+│   └── core_types.hpp           # shared data structures
+├── tools/
+│   └── analysis.py              # Python post-processor (Excel/Charts)
 ├── data/
 │   ├── export.json              # BBGM league export
 │   └── teaminfo.json            # Team ID to Name mapping
 ├── outputs/
-│   └── {YYYYMMDDHHMMSS}/       # Timestamped run directory
-├── buildprogbox.sh
+│   └── {YYYYMMDDHHMMSS}/        # Timestamped run directory
+├── buildprogbox.sh              # Quick build script
 └── CMakeLists.txt
 ```
 
@@ -71,26 +79,33 @@ graph TD
 
 ## Setup
 
-**C++ Engine:**
-- Requires C++17 or higher.
-- Dependencies: `nlohmann/json` (header-only).
-- Compile using your preferred build system (CMake recommended).
+### C++ Engine
+- **Compiler:** C++17 or higher (GCC/Clang recommended).
+- **Dependencies:** [nlohmann/json](https://github.com/nlohmann/json) (header-only, already included in the include folder).
+- **Build:** 
+  ```bash
+  # Quick build (Linux/WSL)
+  chmod +x buildprogbox.sh && ./buildprogbox.sh
+  
+  # Or via CMake directly
+  mkdir build && cd build
+  cmake .. && make -j$(nproc)
+  ```
 
-quick script for building and running if you're on linux or wsl: `./buildprogbox.sh`
-
-**Python Post-Processor:**
-Required only if you want the Excel workbook and diagnostic charts.
+### Python Post-Processor
+Required only for the Excel workbook and diagnostic charts.
 ```bash
-pip install numpy pandas scipy matplotlib tqdm openpyxl
+pip install numpy pandas scipy matplotlib openpyxl
 ```
 
+### Data
 Place your BBGM league export at `data/export.json` and team metadata at `data/teaminfo.json`.
 
 ---
 
 ## Running a Simulation
 
-Configuration is handled entirely via CLI arguments. No source code editing needed.
+Configuration is handled entirely via CLI arguments. No source code editing required.
 
 ```bash
 ./progbox data/export.json data/teaminfo.json ./outputs \
@@ -109,75 +124,87 @@ Configuration is handled entirely via CLI arguments. No source code editing need
 | `-v, --version` | Progression script ID | `v321` |
 | `-r, --runs` | Number of Monte Carlo passes | `1000` |
 | `-y, --year` | Season year (for age calculation) | `2021` |
-| `-w, --workers` | Thread pool size | `hardware_concurrency` |
+| `-w, --workers` | Thread pool size (`0` = auto) | `hardware_concurrency` |
 | `-s, --seed` | Master RNG seed (`0` = random) | `0` |
 
-*Note: The master RNG derives each run's seed, so the same `seed` always produces the same set of simulations regardless of `workers`.*
+*Note: The master RNG derives each run's seed, so the same `seed` always produces the exact same set of simulations. Important for reproducibility of the monte carlo simulations. Otherwise, the simulations would not hold water mathematically and practically for any form of cross-script or tuning comparison.*
 
 ---
 
 ## Output Files
 
-All raw numeric outputs are generated natively in C++. The C++ engine applies a strict filter pipeline: players must have `tid >= -1`, non-empty stats, `PER > 0`, and `age >= 25`.
+The C++ engine applies a strict filter pipeline: players must have `tid >= -1`, non-empty stats, `PER > 0`, and `age >= 25`.
 
-### `outputs/{RUN_TS}/metadata.json`
+All outputs are written to `outputs/{RUN_TS}/`:
+
+### `metadata.json`
 Reproducibility tracking. Records the exact CLI args, progression version, CalVer timestamp, and seed used.
 
-### `outputs/{RUN_TS}/raw_outputs.csv`
+### `raw_outputs.csv`
 Long-format table with one row per player × run.
-| Column | Description |
+| Column Group | Description |
 |--------|-------------|
-| `Run` / `RunSeed` | Simulation index and its specific RNG seed |
+| `Run`, `RunSeed` | Simulation index and its specific RNG seed |
 | `Name`, `Team`, `Age`, `PlayerID` | Player metadata |
-| `Baseline` | Player's OVR before progression |
-| `Ovr` | Simulated OVR after progression |
-| `Delta` / `PctChange` / `AboveBaseline` | Outcome metrics |
-| `PER`, `DWS`, `EWA` | Input stats |
+| `Baseline`, `Ovr` | OVR before and after progression |
+| `Delta`, `PctChange`, `AboveBaseline` | Outcome metrics |
+| `PER`, `DWS`, `EWA` | Input stats driving the algorithm |
 | `dIQ` … `3Pt` | Final simulated attribute values (15 attrs) |
 
-### `outputs/{RUN_TS}/analytics_summary.csv`
-Per-player aggregated distributions computed in C++ (mean, std dev, min/max, Q10/Q25/Q75/Q90 quantiles, and % of runs above baseline).
+### `analytics_summary.csv`
+Per-player aggregated distributions computed natively in C++ (mean, std dev, min/max, Q10/Q25/Q75/Q90 quantiles, and % of runs above baseline).
 
-### `outputs/{RUN_TS}/godprogs.json`
-Array of every rare god-progression event. Fields: `name`, `run_seed`, `age`, `ovr`, `bonus`, `chance`.
-
-### `outputs/{RUN_TS}/superlucky.json`
-Object mapping `player_name → total_god_prog_count` across all runs.
+### `godprogs.json` & `superlucky.json`
+Logs every rare god-progression event (`name`, `run_seed`, `age`, `ovr`, `bonus`, `chance`) and a summary map of `player_name → total_god_prog_count`.
 
 ---
 
-## Analysis & Charts (Python Post-Processor)
+## Analysis & Charts (`analysis.py` Post-Processor)
 
-The C++ engine automatically invokes `src/analysis.py` after exporting CSVs. This script reads the raw outputs and generates an `analysis.xlsx` workbook and `charts/` directory.
+After C++ exports the data, it automatically invokes `tools/analysis.py`. This script generates a styled `analysis.xlsx` workbook and an 8-chart diagnostic dashboard in `charts/`. The charts are specific to v4.1 mostly, but are easily modifiable.
 
-All thresholds and splits are derived dynamically from the dataset.
+All thresholds and splits are derived dynamically from the dataset:
 
-1. **Age Outcome Profiles:** KDE density curves per age group to check if age tiers produce meaningfully different outcome shapes.
-2. **Progression Response Curve:** Composite score → OVR delta mapping (decile buckets with IQR error bars) to find dead zones.
-3. **Physical vs Skill Gate Check:** Grouped bars comparing physical attr decay vs skill attr decay across age tiers.
-4. **Attribute Delta Heatmap:** 14-row × 3-column grid (attrs × age groups) showing net gain/decline at a glance.
-5. **Player Outcome Certainty:** Horizontal spans (Q10 to Q90) per player to identify who has locked-in outcomes vs RNG-dominated outcomes.
-6. **Stat Weight Reality Check:** Theoretical composite weights vs actual partial R² shares to detect over/under-driving stats.
-7. **Age × Performance Matrix:** 3×3 heatmap (Age Group × Performance Tertile) showing mean deltas and sample sizes.
+1. **Age Tier Profiles:** KDE density curves per age group checking if tiers produce distinct shapes.
+2. **Composite Calibration:** Observed mean delta vs composite score, overlaid on the formula's theoretical lo/hi band.
+3. **Physical vs Cognitive:** Mean attribute delta for physical vs skill groups per age tier (validates age-gate restrictions).
+4. **Player Reliability:** Scatter plot (Mean Delta vs Std Delta) identifying Boom-or-Bust vs Locked-In players.
+5. **Attribute Heatmap:** Player × Attribute grid showing net movement, highlighting physical decline gates.
+6. **Composite Tier Separation:** Violin plots checking if within-age-group composite quartiles strictly order outcomes.
+7. **Outcome Range:** Horizontal span bars (P5/P25/P50/P75/P95) showing realistic floors and ceilings per player.
+8. **Convergence:** Running mean delta ± MCSE for high-variance players to validate if `runs` is high enough.
 
 ---
 
 ## Adding a New Progression Script
 
-You never need to touch `main.cpp`, `sim_engine.hpp`, or `analytics.hpp`. 
+You never need to touch the engine code. 
 
-1. Create `src/scripts/vXXX_progression.hpp` implementing `IProgressionStrategy`.
-2. Include it in `progression_registry.hpp`.
-3. Add a factory entry to the registry vector:
-
+**1. Create the implementation** in `src/scripts/vXXX_progression.hpp`:
 ```cpp
-// In progression_registry.hpp
+#include "i_progression.hpp"
+
+namespace progbox {
+class VXXXProgression final : public IProgressionStrategy {
+public:
+    [[nodiscard]] std::string version() const noexcept override { return "vXXX"; }
+    
+    ProgressionResult progress(const PlayerState& state, std::mt19937_64& rng) const override {
+        // Your algorithm here
+        return result;
+    }
+};
+}
+```
+
+**2. Register it** in `progression_registry.hpp`:
+```cpp
 #include "scripts/vXXX_progression.hpp"
 
-// Inside ProgressionRegistry::entries()
+// Inside the registry vector:
 {
     "vXXX",
-    "VX.X - Description of your script",
+    "VX.X - Short description of your script",
     []() -> std::unique_ptr<IProgressionStrategy> { return std::make_unique<VXXXProgression>(); }
 },
 ```
