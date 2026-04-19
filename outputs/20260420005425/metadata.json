@@ -1,0 +1,19 @@
+{
+    "build_id": "20260420005425",
+    "inputs": {
+        "export_path": "data/export.json",
+        "teaminfo_path": "data/teaminfo.json"
+    },
+    "player_count": 473,
+    "progression": {
+        "id": "v41",
+        "name": "V4.1 - updated version using EWA, DWS on top of PER from v3"
+    },
+    "simulation": {
+        "runs": 1000,
+        "seed": 69,
+        "workers": 22,
+        "year": 2021
+    },
+    "timestamp": "2026-04-20T00:54:29"
+}

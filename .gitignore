@@ -1,3 +1,3 @@
-outputs
 __pycache__
-!examples/**/*
+.vscode
+build/
