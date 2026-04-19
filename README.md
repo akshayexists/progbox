@@ -8,16 +8,16 @@ Progbox is a native C++ engine that runs hundreds or thousands of independent pr
 
 ### The Progression Scripts
 This engine ports the following NoEyeTest (NET) progression scripts into native C++:
-- **NET v3.2** ([archive](https://github.com/fearandesire/NoEyeTest/blob/dev/src/NoEyeTest.js))
-- **NET v4** ([updatealgo](https://gist.github.com/fearandesire/fa7ddef9be41be66e1b9639b51bb88d6)) 
-- **NET v4.1** ([modified](https://github.com/shawnmalik1/NoEyeTest-v4/blob/main/noeyetest_progs_v4.js))
+- [**NET v3.2**](https://github.com/fearandesire/NoEyeTest/blob/dev/src/NoEyeTest.js) (python ver branch: dev_v3.2) 
+- [**NET v4**](https://gist.github.com/fearandesire/fa7ddef9be41be66e1b9639b51bb88d6) (python ver branch: updatealgo) 
+- [**NET v4.1**](https://github.com/shawnmalik1/NoEyeTest-v4/blob/main/noeyetest_progs_v4.js) (python ver branch: dev_v4.1) 
 
-All scripts live in a single codebase. no more switching branches to test different algorithms.
+With this rewrite, all scripts live in a single codebase. no more switching branches to test different algorithms.
 
 ### Why C++?
 The previous Python implementation suffered from two limitations: maintaining branching config dictionaries, and the GIL blocking true multithreading. Progbox solves both using a **Registry Pattern**. 
 
-Progression scripts are now self-contained C++ objects. Adding a new script requires zero changes to the core engine. The result is a single, compact binary you can plug into any frontend/backend pipeline (tested on Linux and WSL Ubuntu 20+).
+Progression scripts are now self-contained C++ objects. Adding a new script requires zero changes to the core engine. The result is a single, compact binary you can plug into any frontend/backend pipeline (tested on Linux and WSL, Ubuntu 20+ as I require std::filesystem).
 
 ---
 
@@ -36,8 +36,8 @@ graph TD
     I -- No --> J[Exit 1: Simulation Error]
     I -- Yes --> K[Analytics Pipeline]
     
-    K --> L[Export raw_outputs.csv]
-    K --> M[Export analytics_summary.csv]
+    K --> L[Export outputs.csv]
+    K --> M[Export summary.csv]
     K --> N[Export godprogs.json & superlucky.json]
     
     L & M & N --> O[Python Post-Processor]
