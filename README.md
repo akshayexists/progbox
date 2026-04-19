@@ -1,4 +1,4 @@
-# NoEyeTest, Monte Carlo Progression Simulator
+# Progbox, Monte Carlo Progression Simulator
 
 A parallelised Monte Carlo engine for simulating and analysing player progression in [BasketballGM](https://zengm.com/basketball/). Runs hundreds or thousands of independent progression passes over a roster, then produces aggregated statistics and tuner-focused diagnostic charts.
 
