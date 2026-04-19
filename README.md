@@ -14,7 +14,7 @@ All into a single codebase so we don't have to keep switching branches!!
 ### Why C++?
 The previous Python implementation required maintaining multiple branching scripts and config dictionaries to swap between progression versions. Further, GIL meant i couldn't do my usual multithreading shenanigans simply. This C++ rewrite solves that by using a **Algorithm Registry Pattern**. Progression scripts are now self-contained C++ objects. 
 
-Adding a new script requires zero changes to the core engine and all you have to do is register it. Best of all, It gives you a single, compact binary you can plug and play to your heart's content in any frontend/backend as long as you have a system that supports it. Currently only tested for Linux and WSL.
+Adding a new script requires zero changes to the core engine and all you have to do is register it. Best of all, It gives you a single, compact binary you can plug and play to your heart's content in any frontend/backend as long as you have an operating system that supports it. Currently only tested for Linux and WSL (ubuntu 20 and above, we do need filesystem support!!).
 
 ---
 
