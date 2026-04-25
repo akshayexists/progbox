@@ -131,8 +131,7 @@ Configuration is handled entirely via CLI arguments. No source code editing requ
 
 *Note: The master RNG derives each run's seed, so the same `seed` always produces the exact same set of simulations. Important for reproducibility of the monte carlo simulations. Otherwise, the simulations would not hold water mathematically and practically for any form of cross-script or tuning comparison.*
 
-Running the python post-processing is now OPTIONAL. the CLI will prompt you.
----
+**Running the python post-processing is now OPTIONAL. the CLI will prompt you.**
 
 ## Output Files
 
