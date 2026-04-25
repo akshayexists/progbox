@@ -52,10 +52,10 @@ graph TD
 .
 ├── src/
 │   ├── main.cpp                 # Entry point, CLI parsing, orchestration
-├── include/scripts/
+├── scripts/
 │   ├── v321_progression.hpp     # NET v3.2.1 implementation
 │   └── v41_progression.hpp      # NET v4.1 implementation
-├── include
+├── include/
 │   ├── sim_engine.hpp           # Thread-pool Monte Carlo harness
 │   ├── analytics.hpp            # Raw CSV/JSON export logic
 │   ├── progression_registry.hpp # Auto-discovery of progression scripts, (TO EDIT WHEN NEW SCRIPTS ARE ADDED)
@@ -64,6 +64,8 @@ graph TD
 |   ├── json.hpp                 # https://github.com/nlohmann/json
 |   ├── progress.hpp             # factory progress bars!!
 │   └── core_types.hpp           # shared data structures
+├── cmake/
+│   └── generate_progression_registry.py
 ├── tools/
 │   └── analysis.py              # Python post-processor (Excel/Charts)
 ├── data/
@@ -129,6 +131,7 @@ Configuration is handled entirely via CLI arguments. No source code editing requ
 
 *Note: The master RNG derives each run's seed, so the same `seed` always produces the exact same set of simulations. Important for reproducibility of the monte carlo simulations. Otherwise, the simulations would not hold water mathematically and practically for any form of cross-script or tuning comparison.*
 
+Running the python post-processing is now OPTIONAL. the CLI will prompt you.
 ---
 
 ## Output Files
@@ -161,7 +164,7 @@ Logs every rare god-progression event (`name`, `run_seed`, `age`, `ovr`, `bonus`
 
 ## Analysis & Charts (`analysis.py` Post-Processor)
 
-After C++ exports the data, it automatically invokes `tools/analysis.py`. This script generates a styled `analysis.xlsx` workbook and an 8-chart diagnostic dashboard in `charts/`. The charts are specific to v4.1 mostly, but are easily modifiable.
+After C++ exports the data, if you have opted for python post-processing, it automatically invokes `tools/analysis.py`. This script generates a styled `analysis.xlsx` workbook and an 8-chart diagnostic dashboard in `charts/`. The charts are specific to v4.1 mostly, but are easily modifiable.
 
 All thresholds and splits are derived dynamically from the dataset:
 
@@ -178,35 +181,44 @@ All thresholds and splits are derived dynamically from the dataset:
 
 ## Adding a New Progression Script
 
-You never need to touch the engine code. 
+You never need to touch the engine code or manually edit any registry files. The build system now automatically discovers new scripts.
 
-**1. Create the implementation** in `src/scripts/vXXX_progression.hpp`:
+**1. Create the implementation** in `scripts/vXXX_progression.hpp`:
+
 ```cpp
+/// @progbox-register
+///   id: vXXX
+///   name: "VX.X - Short description of your script"
+///   class: VXXXProgression
+/// @end-progbox-register
+
 #include "i_progression.hpp"
 
 namespace progbox {
+
 class VXXXProgression final : public IProgressionStrategy {
 public:
-    [[nodiscard]] std::string version() const noexcept override { return "vXXX"; }
+    [[nodiscard]] std::string version() const noexcept override { 
+        return "vXXX"; 
+    }
     
-    ProgressionResult progress(const PlayerState& state, std::mt19937_64& rng) const override {
+    ProgressionResult progress_player(
+        const PlayerState& player, 
+        std::mt19937& rng, 
+        int64_t run_seed
+    ) const override {
         // Your algorithm here
+        ProgressionResult result;
+        // ...
         return result;
     }
 };
-}
+
+} // namespace progbox
 ```
 
-**2. Register it** in `progression_registry.hpp`:
-```cpp
-#include "scripts/vXXX_progression.hpp"
+**2. Rebuild.** 
 
-// Inside the registry vector:
-{
-    "vXXX",
-    "VX.X - Short description of your script",
-    []() -> std::unique_ptr<IProgressionStrategy> { return std::make_unique<VXXXProgression>(); }
-},
-```
+The CLI (`-h`), registry, and engine will automatically discover and support `./progbox ... -v vXXX`.
 
-Rebuild. The CLI (`-h`), registry, and engine will automatically discover and support `./progbox ... -v vXXX`.
+> **Note:** The `name:` field *must* be wrapped in quotes. Do not manually edit `generated_progression_registry.hpp`, as your changes will be overwritten on the next build.
