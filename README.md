@@ -131,7 +131,8 @@ Configuration is handled entirely via CLI arguments. No source code editing requ
 
 *Note: The master RNG derives each run's seed, so the same `seed` always produces the exact same set of simulations. Important for reproducibility of the monte carlo simulations. Otherwise, the simulations would not hold water mathematically and practically for any form of cross-script or tuning comparison.*
 
-**Running the python post-processing is now OPTIONAL. the CLI will prompt you.**
+Running the python post-processing is now OPTIONAL. the CLI will prompt you.
+---
 
 ## Output Files
 
@@ -163,20 +164,7 @@ Logs every rare god-progression event (`name`, `run_seed`, `age`, `ovr`, `bonus`
 
 ## Analysis & Charts (`analysis.py` Post-Processor)
 
-After C++ exports the data, if you have opted for python post-processing, it automatically invokes `tools/analysis.py`. This script generates a styled `analysis.xlsx` workbook and an 8-chart diagnostic dashboard in `charts/`. The charts are specific to v4.1 mostly, but are easily modifiable.
-
-All thresholds and splits are derived dynamically from the dataset:
-
-1. **Age Tier Profiles:** KDE density curves per age group checking if tiers produce distinct shapes.
-2. **Composite Calibration:** Observed mean delta vs composite score, overlaid on the formula's theoretical lo/hi band.
-3. **Physical vs Cognitive:** Mean attribute delta for physical vs skill groups per age tier (validates age-gate restrictions).
-4. **Player Reliability:** Scatter plot (Mean Delta vs Std Delta) identifying Boom-or-Bust vs Locked-In players.
-5. **Attribute Heatmap:** Player × Attribute grid showing net movement, highlighting physical decline gates.
-6. **Composite Tier Separation:** Violin plots checking if within-age-group composite quartiles strictly order outcomes.
-7. **Outcome Range:** Horizontal span bars (P5/P25/P50/P75/P95) showing realistic floors and ceilings per player.
-8. **Convergence:** Running mean delta ± MCSE for high-variance players to validate if `runs` is high enough.
-
----
+After C++ exports the data, if you have opted for python post-processing, it automatically invokes `tools/analysis.py`. This script generates a styled `analysis.xlsx` workbook and a static html diagnostic dashboard in the output directory. Please refer to charts.md for more information on how to interpret each chart.
 
 ## Adding a New Progression Script
 

@@ -59,7 +59,7 @@ struct CliArgs {
     fs::path output_dir;           ///< Base output directory (build ID appended).
     std::string version;           ///< Progression strategy ID (e.g., "v321").
     int runs = 1000;               ///< Number of Monte Carlo simulation runs.
-    int year = 2021;               ///< Season year for age calculation.
+    int year = 2012;               ///< Season year for age calculation.
     int workers = 0;               ///< Worker threads (0 = auto-detect).
     int seed = 69;                 ///< RNG seed (0 = random).
 };
