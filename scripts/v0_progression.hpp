@@ -256,26 +256,26 @@ inline ProgressionResult V0Progression::progress_player(
     constexpr double NINF = -std::numeric_limits<double>::infinity();
     constexpr double PINF =  std::numeric_limits<double>::infinity();
 
-    // stre — no aging, no delta cap
+    // stre -> no aging, no delta cap
     apply_rating(attrs, STR, base, 0.0, NINF, PINF, rng);
 
-    // spd — aging-only decline, asymmetric cap
+    // spd -> aging-only decline, asymmetric cap
     apply_rating(attrs, SPD, base, spd_age_mod(age), -12.0, 2.0, rng);
 
-    // jmp — same shape as spd, steeper falloff
+    // jmp -> same shape as spd, steeper falloff
     apply_rating(attrs, JMP, base, jmp_age_mod(age), -12.0, 2.0, rng);
 
-    // endu — uniform-driven for the young, declining for the old.
+    // endu -> uniform-driven for the young, declining for the old.
     // Evaluate the age modifier in its own statement: it may draw from
     // `rng`, and we must guarantee that draw lands before `apply_rating`'s
     // own uniform (C++ argument-evaluation order is unspecified).
     const double endu_mod = endu_age_mod(age, rng);
     apply_rating(attrs, END, base, endu_mod, -11.0, 19.0, rng);
 
-    // dnk — shooting-shaped, capped at +0.5 for old players
+    // dnk -> shooting-shaped, capped at +0.5 for old players
     apply_rating(attrs, DNK, base, dnk_age_mod(age), -3.0, 13.0, rng);
 
-    // shooting cluster — ins / ft / fg / tp share the same formula
+    // shooting cluster -> ins / ft / fg / tp share the same formula
     {
         const double s_mod = shooting_age_mod(age);
         apply_rating(attrs, INS, base, s_mod, -3.0, 13.0, rng);
@@ -284,7 +284,7 @@ inline ProgressionResult V0Progression::progress_player(
         apply_rating(attrs, TP,  base, s_mod, -3.0, 13.0, rng);
     }
 
-    // iq cluster — oIQ / dIQ share both modifier and limits
+    // iq cluster -> oIQ / dIQ share both modifier and limits
     {
         const double iq_mod = iq_age_mod(age);
         const auto   iq_lim = iq_limits(age);
@@ -292,7 +292,7 @@ inline ProgressionResult V0Progression::progress_player(
         apply_rating(attrs, DIQ, base, iq_mod, iq_lim[0], iq_lim[1], rng);
     }
 
-    // drb / pss / reb — shooting age curve but tighter delta cap
+    // drb / pss / reb -> shooting age curve but tighter delta cap
     {
         const double s_mod = shooting_age_mod(age);
         apply_rating(attrs, DRB, base, s_mod, -2.0, 5.0, rng);
