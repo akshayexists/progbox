@@ -50,6 +50,42 @@ public:
     //  Raw CSV
     // ─────────────────────────────────────────────────────────────────────────
     
+    /// @brief Exports the parsed player input data to CSV for inspection/reproducibility and use in the python analysis script.
+    /// @param dir Output directory where `input.csv` will be saved.
+    void export_input_csv(const std::filesystem::path& dir) const {
+        std::filesystem::create_directories(dir);
+        std::string path = (dir / "input.csv").string();
+        FILE* f = fopen(path.c_str(), "w");
+        if (!f) return;
+
+        // ── Header ──
+        fprintf(f, "PlayerID,Name,Team,Age,PER,DWS,EWA,BaselineOvr");
+        for (const char* attr : ALL_ATTRS) {
+            fprintf(f, ",%s", attr);
+        }
+        fprintf(f, "\n");
+
+        // ── Rows ──
+        for (size_t p = 0; p < n_players_; ++p) {
+            const auto& m = meta_[p];
+            const auto& s = base_states_[p];
+
+            fprintf(f, "%zu,%s,%s,%d,%.4f,%.4f,%.4f,%.1f",
+                p,
+                m.name.c_str(), m.team.c_str(),
+                static_cast<int>(s.age),
+                s.per, s.dws, s.ewa,
+                s.baseline_ovr);
+
+            for (size_t a = 0; a < ALL_ATTRS.size(); ++a) {
+                fprintf(f, ",%.1f", s.attrs[a]);
+            }
+            fprintf(f, "\n");
+        }
+
+        fclose(f);
+    }
+
     /// @brief Exports every run/player combination to a detailed CSV.
     /// @param dir Output directory where `outputs.csv` will be saved.
     void export_raw_csv(const std::filesystem::path& dir) const {
@@ -221,6 +257,8 @@ public:
     /// @brief Convenience wrapper to execute all export functions sequentially.
     /// @param dir Output directory for all generated CSV and JSON files.
     void export_all(const std::filesystem::path& dir) const {
+        printf("\n");
+        export_input_csv(dir);
         printf("\n");
         export_raw_csv(dir);
         printf("\n");

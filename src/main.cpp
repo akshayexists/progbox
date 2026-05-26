@@ -225,10 +225,9 @@ std::string make_calver_id() {
 /// @brief Executes the Python post-processing analysis script.
 /// @param out_dir Directory containing simulation output files.
 /// @return The exit code from the Python script (0 = success).
-int run_python_analysis(const std::filesystem::path& out_dir) {
-    std::string cmd =
-        "python3 tools/analysis.py \"" + out_dir.string() + "\"";
-
+int run_python_analysis(const std::filesystem::path& out_dir, bool raw) {
+    std::string cmd;
+    cmd = "python3 tools/analysis.py \"" + out_dir.string() + "\"";
     printf("Running analysis: %s\n", cmd.c_str());
     return std::system(cmd.c_str());
 }
@@ -495,33 +494,33 @@ int main(int argc, char** argv) {
 )", player_meta.size(), args->runs, seed, god_count, args->output_dir.string().c_str());
 
     // ── Phase 8: Python post-processing ─────────────────────────────────
-    bool should_run = false;
+    bool should_run = true;
     std::string user_input;
 
     // Loop until we get a valid yes or no
-    while (true) {
-        std::cout << "\nRun Python post-processing analysis? [y/n]: ";
+    // while (true) {
+    //     std::cout << "\nRun Python post-processing analysis? [y/n]: ";
         
-        // If input is piped (e.g., CI/CD) and hits EOF, break out safely
-        if (!std::getline(std::cin, user_input)) {
-            break; 
-        }
+    //     // If input is piped (e.g., CI/CD) and hits EOF, break out safely
+    //     if (!std::getline(std::cin, user_input)) {
+    //         break; 
+    //     }
         
-        std::string answer = to_lower(user_input);
+    //     std::string answer = to_lower(user_input);
         
-        if (answer == "y" || answer == "yes") {
-            should_run = true;
-            break;
-        } else if (answer == "n" || answer == "no") {
-            should_run = false;
-            break;
-        } else {
-            std::cout << "  Invalid input. Please type 'y', 'yes', 'n', or 'no'.\n";
-        }
-    }
+    //     if (answer == "y" || answer == "yes") {
+    //         should_run = true;
+    //         break;
+    //     } else if (answer == "n" || answer == "no") {
+    //         should_run = false;
+    //         break;
+    //     } else {
+    //         std::cout << "  Invalid input. Please type 'y', 'yes', 'n', or 'no'.\n";
+    //     }
+    // }
     if (should_run) {
         std::cout << "Running Python analysis...\n";
-        int rc = run_python_analysis(args->output_dir);
+        int rc = run_python_analysis(args->output_dir, true);
         if (rc != 0) {
             std::cerr << "Warning: postprocess script failed (" << rc << ")\n";
         }
