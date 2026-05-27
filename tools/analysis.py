@@ -834,7 +834,10 @@ class ChartBuilder:
                     status = f"{dt:.2f}s"
                     logger.info(f"           -> {status}")
                 except Exception as e:
-                    logger.error(f"           -> FAILED: {type(e).__name__}: {e}")
+                    logger.error(
+                        f"           -> FAILED: {type(e).__name__}: {e}",
+                        exc_info=True,
+                    )
                     fig = _empty_fig(method_name, f"ERROR: {type(e).__name__}")
                 out[key] = fig
         return out
@@ -853,7 +856,7 @@ class ChartBuilder:
         pre = self.ppl['Baseline'].dropna().values
         post = self.ppl['MeanOvr'].dropna().values
         if len(pre) < Config.MIN_KDE_SAMPLES or len(post) < Config.MIN_KDE_SAMPLES:
-            return _empty_fig("1.1 OVR Distribution: Pre vs Post")
+            return _empty_fig("OVR Distribution: Pre vs Post")
 
         x_grid = np.linspace(min(pre.min(), post.min()) - 3,
                              max(pre.max(), post.max()) + 3, 400)
@@ -897,7 +900,7 @@ class ChartBuilder:
         )
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="1.1 OVR Distribution :: Pre vs Post Simulation",
+            title="OVR Distribution :: Pre vs Post Simulation",
             xaxis_title="OVR", yaxis_title="Probability Density",
             hovermode='x unified',
         )
@@ -912,7 +915,7 @@ class ChartBuilder:
         """
         ppl = self.ppl.dropna(subset=['Baseline', 'MeanOvr'])
         if len(ppl) < 8:
-            return _empty_fig("1.2 Pre→Post OVR Scatter")
+            return _empty_fig("Pre→Post OVR Scatter")
 
         fig = go.Figure()
         for tier, color in AGE_COLORS.items():
@@ -960,7 +963,7 @@ class ChartBuilder:
 
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="1.2 Per-Player Pre → Post OVR",
+            title="Per-Player Pre → Post OVR",
             xaxis_title="Baseline OVR", yaxis_title="Mean Simulated OVR",
             hovermode='closest',
         )
@@ -977,7 +980,7 @@ class ChartBuilder:
         """
         ppl = self.ppl.dropna(subset=['Baseline', 'MeanOvr'])
         if len(ppl) < 25:
-            return _empty_fig("1.1 Cohort Quintile Transition")
+            return _empty_fig("Cohort Quintile Transition")
 
         labels = ['Q1 (low)', 'Q2', 'Q3', 'Q4', 'Q5 (high)']
         q_pre = pd.qcut(ppl['Baseline'].rank(method='first'), 5, labels=labels)
@@ -996,7 +999,7 @@ class ChartBuilder:
         diag = float(np.diag(mat).mean())
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title=(f"1.4 Quintile Transition (Pre → Post) :: "
+            title=(f"Quintile Transition (Pre → Post) :: "
                 f"avg diagonal retention {diag:.0%}"),
             xaxis_title="Post-Sim Quintile",
             yaxis_title="Pre-Sim Quintile",
@@ -1018,7 +1021,7 @@ class ChartBuilder:
         """
         pa = self._ds.per_age
         if pa.empty:
-            return _empty_fig("2.1 Age Curve")
+            return _empty_fig("Age Curve")
 
         fig = go.Figure()
         # CI ribbon
@@ -1041,43 +1044,48 @@ class ChartBuilder:
             name='Mean Δ',
         ))
 
-        # Locate peak: highest age where Mean Δ > 0 before going negative.
         try:
-            sign_changes = np.where(np.diff(np.sign(pa['Mean'].values)))[0]
-            if len(sign_changes) > 0:
-                # Linear interpolation to estimate exact peak age
-                i = sign_changes[0]
-                m1, m2 = pa['Mean'].iloc[i], pa['Mean'].iloc[i + 1]
-                a1, a2 = pa['Age'].iloc[i],  pa['Age'].iloc[i + 1]
+            mean_vals = pa['Mean'].values
+            # Only positive --> negative transitions count as a peak. Take the LAST one
+            # so an early noise wiggle doesn't
+            # masquerade as the peak.
+            pos_to_neg = np.where(
+                (np.sign(mean_vals[:-1]) > 0) & (np.sign(mean_vals[1:]) <= 0)
+            )[0]
+            peak_idx: Optional[int] = None
+            if len(pos_to_neg) > 0:
+                i = int(pos_to_neg[-1])
+                peak_idx = i
+                m1, m2 = mean_vals[i], mean_vals[i + 1]
+                a1, a2 = pa['Age'].iloc[i], pa['Age'].iloc[i + 1]
                 peak_age = a1 + (0 - m1) * (a2 - a1) / (m2 - m1) if m2 != m1 else a1
                 fig.add_vline(
                     x=peak_age, line_dash='dash', line_color='#dc2626', line_width=2,
                     annotation_text=f"Peak ≈ {peak_age:.1f}",
                     annotation_position='top', annotation_font_color='#dc2626',
                 )
-        except (IndexError, ValueError):
-            pass
 
-        # Linear decline slope from peak onward (informational)
-        try:
-            post_peak = pa[pa['Mean'] < 0]
-            if len(post_peak) >= 3:
-                res = scipy_stats.linregress(post_peak['Age'], post_peak['Mean'])
-                fig.add_annotation(
-                    text=(f"<b>Decline slope</b>: {res.slope:+.2f} OVR/yr<br>"
-                          f"<b>R²</b> = {res.rvalue**2:.2f}"),
-                    xref='paper', yref='paper', x=0.98, y=0.02,
-                    showarrow=False, align='right',
-                    font=dict(size=11, family='monospace', color='#0f172a'),
-                    bgcolor='rgba(255,255,255,0.92)', bordercolor='#e2e8f0', borderwidth=1,
-                )
-        except (ValueError, IndexError):
+            # Decline slope: contiguous region after the last detected peak only.
+            if peak_idx is not None:
+                post_peak = pa.iloc[peak_idx + 1:]
+                if len(post_peak) >= 3:
+                    res = scipy_stats.linregress(post_peak['Age'], post_peak['Mean'])
+                    fig.add_annotation(
+                        text=(f"<b>Decline slope</b>: {res.slope:+.2f} OVR/yr<br>"
+                            f"<b>R²</b> = {res.rvalue ** 2:.2f}"),
+                        xref='paper', yref='paper', x=0.98, y=0.02,
+                        showarrow=False, align='right',
+                        font=dict(size=11, family='monospace', color='#0f172a'),
+                        bgcolor='rgba(255,255,255,0.92)',
+                        bordercolor='#e2e8f0', borderwidth=1,
+                    )
+        except (IndexError, ValueError):
             pass
 
         fig.add_hline(y=0, line_width=1.5, line_color="#1e293b")
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="2.1 Age Curve :: Mean OVR Δ per Year of Age (±95% CI)",
+            title="Age Curve :: Mean OVR Δ per Year of Age (±95% CI)",
             xaxis_title="Age", yaxis_title="Mean OVR Delta",
         )
         return fig
@@ -1093,7 +1101,7 @@ class ChartBuilder:
         """
         pa = self._ds.per_age
         if pa.empty:
-            return _empty_fig("2.2 Age Curve Bands")
+            return _empty_fig("Age Curve Bands")
 
         fig = make_subplots(specs=[[{"secondary_y": True}]])
         fig.add_trace(go.Scatter(
@@ -1124,7 +1132,7 @@ class ChartBuilder:
         fig.update_yaxes(title_text="σ(Δ)", secondary_y=True)
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="2.2 Outcome Envelope by Age (P5/Median/P95 + σ on right axis)",
+            title="Outcome Envelope by Age (P5/Median/P95 + σ on right axis)",
             hovermode='x unified',
         )
         return fig
@@ -1137,7 +1145,7 @@ class ChartBuilder:
         you've collapsed two distinct lifecycle phenomena onto one schedule.
         """
         if self.ad.empty:
-            return _empty_fig("2.4 Per-Group Age Curves")
+            return _empty_fig("Per-Group Age Curves")
 
         ad = self.ad.copy()
         ad['Age'] = ad['Age'].astype(int)
@@ -1146,7 +1154,7 @@ class ChartBuilder:
                   for g in ['Physical', 'Shooting', 'Mental', 'Skill']}
         groups = {g: a for g, a in groups.items() if a}
         if not groups:
-            return _empty_fig("2.4 Per-Group Age Curves")
+            return _empty_fig("Per-Group Age Curves")
 
         fig = go.Figure()
         for group, attrs in groups.items():
@@ -1164,7 +1172,7 @@ class ChartBuilder:
         fig.add_hline(y=0, line_width=1, line_color="#1e293b")
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="2.4 Per-Group Attribute Δ by Age",
+            title="Per-Group Attribute Δ by Age",
             xaxis_title="Age", yaxis_title="Mean Attribute Δ (averaged within group)",
             hovermode='x unified',
         )
@@ -1181,11 +1189,11 @@ class ChartBuilder:
         attribute moves randomly).
         """
         if self.ad.empty:
-            return _empty_fig("3.1 Attribute Movement Heatmap")
+            return _empty_fig("Attribute Movement Heatmap")
         ppl = self.ppl
         avail = [c for c in self.cols.varying_attrs if c in self.ad.columns]
         if not avail:
-            return _empty_fig("3.1 Attribute Movement Heatmap")
+            return _empty_fig("Attribute Movement Heatmap")
 
         plot_df = self.ad[avail + ['Age']].copy()
         plot_df = plot_df.join(ppl.set_index('PlayerID')[['Baseline', 'Label']])
@@ -1212,7 +1220,7 @@ class ChartBuilder:
         ))
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title=f"3.1 Per-Player x Per-Attribute Δ (top {len(plot_df)} by baseline)",
+            title=f"Per-Player x Per-Attribute Δ (top {len(plot_df)} by baseline)",
             height=max(600, len(plot_df) * 18),
             yaxis_autorange='reversed', yaxis_showgrid=False, xaxis_showgrid=False,
         )
@@ -1227,10 +1235,10 @@ class ChartBuilder:
         help you segment by group
         """
         if self.ad.empty:
-            return _empty_fig("3.1 Age x Attribute Heatmap")
+            return _empty_fig("Age x Attribute Heatmap")
         avail = [c for c in self.cols.varying_attrs if c in self.ad.columns]
         if not avail:
-            return _empty_fig("3.1 Age x Attribute Heatmap")
+            return _empty_fig("Age x Attribute Heatmap")
 
         ad = self.ad.copy()
         ad['Age'] = ad['Age'].astype(int)
@@ -1243,7 +1251,7 @@ class ChartBuilder:
         counts = ad.groupby('Age').size().reindex(pivot.index).values
         pivot = pivot.loc[counts >= Config.MIN_BIN_COUNT]
         if pivot.empty:
-            return _empty_fig("3.1 Age x Attribute Heatmap")
+            return _empty_fig("Age x Attribute Heatmap")
 
         abs_max = max(float(np.nanpercentile(np.abs(pivot.values), 97)), 0.5)
         fig = go.Figure(data=go.Heatmap(
@@ -1264,7 +1272,7 @@ class ChartBuilder:
                 prev = g
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="3.1 Age x Attribute Mean Δ (group-ordered cols)",
+            title="Age x Attribute Mean Δ (group-ordered cols)",
             xaxis_title="Attribute (light grey = group dividers)",
             yaxis_title="Age",
             height=max(450, len(pivot) * 22),
@@ -1283,10 +1291,10 @@ class ChartBuilder:
         for it specifically.
         """
         if self.ad.empty:
-            return _empty_fig("3.2 Per-Attribute Age Curves")
+            return _empty_fig("Per-Attribute Age Curves")
         avail = [c for c in self.cols.varying_attrs if c in self.ad.columns]
         if not avail:
-            return _empty_fig("3.2 Per-Attribute Age Curves")
+            return _empty_fig("Per-Attribute Age Curves")
 
         ad = self.ad.copy()
         ad['Age'] = ad['Age'].astype(int)
@@ -1323,7 +1331,7 @@ class ChartBuilder:
 
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="3.6 Per-Attribute Mean Δ by Age (panel color = group)",
+            title="Per-Attribute Mean Δ by Age (panel color = group)",
             height=180 * n_rows,
         )
         return fig
@@ -1339,11 +1347,11 @@ class ChartBuilder:
         Read with chart_attr_group_progression for the full picture.
         """
         if self.ad.empty:
-            return _empty_fig("3.3 ΔOVR Contribution Decomposition")
+            return _empty_fig("ΔOVR Contribution Decomposition")
         coef_map = dict(zip(Config.OVR_CALC_ORDER, Config.OVR_COEFFS))
         avail = [c for c in self.cols.varying_attrs if c in self.ad.columns]
         if not avail:
-            return _empty_fig("3.3 ΔOVR Contribution Decomposition")
+            return _empty_fig("ΔOVR Contribution Decomposition")
 
         ad = self.ad.copy()
         ad['AgeTier'] = Dataset.assign_tiers(ad['Age'])
@@ -1364,7 +1372,7 @@ class ChartBuilder:
                 })
         data = pd.DataFrame(rows)
         if data.empty:
-            return _empty_fig("3.3 ΔOVR Contribution Decomposition")
+            return _empty_fig("ΔOVR Contribution Decomposition")
 
         attr_order = (data.groupby('Attribute')['OVRContribution']
                     .apply(lambda s: s.abs().sum())
@@ -1386,7 +1394,7 @@ class ChartBuilder:
         fig.add_hline(y=0, line_width=1, line_color="#1e293b")
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="3.3 ΔOVR Contribution per Attribute (coef x ΔAttr) by Age Tier",
+            title="ΔOVR Contribution per Attribute (coef x ΔAttr) by Age Tier",
             xaxis_title="Attribute (sorted by total absolute OVR contribution)",
             yaxis_title="ΔOVR points contributed",
             barmode='group', bargap=0.2, bargroupgap=0.1,
@@ -1408,11 +1416,11 @@ class ChartBuilder:
         High within-run with low between-player = correlated noise but uncorrelated tuning.
         """
         if self.ad.empty:
-            return _empty_fig("3.4 Attribute Co-Movement")
+            return _empty_fig("Attribute Co-Movement")
             
         available_attributes = [col for col in self.cols.varying_attrs if col in self.ad.columns]
         if len(available_attributes) < 2:
-            return _empty_fig("3.4 Attribute Co-Movement")
+            return _empty_fig("Attribute Co-Movement")
 
         # Sort attributes primarily by their functional group, then alphabetically
         ordered_attributes = sorted(available_attributes, key=lambda attr: (
@@ -1500,7 +1508,7 @@ class ChartBuilder:
             
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="3.4 Attribute Co-Movement :: Between-Player vs Within-Run",
+            title="Attribute Co-Movement :: Between-Player vs Within-Run",
             height=620,
         )
         return fig
@@ -1516,7 +1524,7 @@ class ChartBuilder:
         """
         avail = [c for c in self.cols.varying_attrs if c in self.sim.columns]
         if not avail:
-            return _empty_fig("3.5 Attribute Boundary Saturation")
+            return _empty_fig("Attribute Boundary Saturation")
 
         df = self.sim
         rows = []
@@ -1536,7 +1544,7 @@ class ChartBuilder:
                 })
         data = pd.DataFrame(rows)
         if data.empty:
-            return _empty_fig("3.5 Attribute Boundary Saturation")
+            return _empty_fig("Attribute Boundary Saturation")
 
         fig = make_subplots(
             rows=1, cols=len(AGE_COLORS),
@@ -1569,7 +1577,7 @@ class ChartBuilder:
 
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="3.5 Attribute Boundary Saturation :: % Floor (←) vs % Ceiling (→)",
+            title="Attribute Boundary Saturation :: % Floor (←) vs % Ceiling (→)",
             barmode='overlay',
             height=max(450, len(avail) * 22),
         )
@@ -1587,16 +1595,16 @@ class ChartBuilder:
         Negative bars = that attribute moves opposite to ΔOVR.
         """
         if self.ad.empty:
-            return _empty_fig("3.6 OVR Variance Decomposition")
+            return _empty_fig("OVR Variance Decomposition")
         coef_map = dict(zip(Config.OVR_CALC_ORDER, Config.OVR_COEFFS))
         avail = [c for c in self.cols.varying_attrs if c in self.ad.columns]
         if not avail:
-            return _empty_fig("3.6 OVR Variance Decomposition")
+            return _empty_fig("OVR Variance Decomposition")
 
         coefs = np.array([coef_map[a] for a in avail])
         attr_mat = self.ad[avail].dropna().values
         if len(attr_mat) < 3:
-            return _empty_fig("3.6 OVR Variance Decomposition")
+            return _empty_fig("OVR Variance Decomposition")
         implied = attr_mat @ coefs
         total_var = float(implied.var(ddof=1))
         rows = []
@@ -1636,7 +1644,7 @@ class ChartBuilder:
         )
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="3.6 ΔOVR Variance Decomposition (bars sum to Var(ΔOVR))",
+            title="ΔOVR Variance Decomposition (bars sum to Var(ΔOVR))",
             xaxis_title="Contribution :: c_i x Cov(ΔAttr_i, ΔOVR)",
             yaxis_title="", height=max(450, len(data) * 28),
         )
@@ -1655,7 +1663,7 @@ class ChartBuilder:
         """
         ppl = self.ppl.dropna(subset=['MeanDelta', 'StdDelta'])
         if len(ppl) < 5:
-            return _empty_fig("4.1 Risk-Return")
+            return _empty_fig("Risk-Return")
 
         fig = go.Figure()
         fig.add_trace(go.Scatter(
@@ -1697,7 +1705,7 @@ class ChartBuilder:
 
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="4.1 Risk-Return Map (μΔ vs σΔ, coloured by Baseline OVR)",
+            title="Risk-Return Map (μΔ vs σΔ, coloured by Baseline OVR)",
             xaxis_title="Mean OVR Δ", yaxis_title="Std of OVR Δ",
         )
         return fig
@@ -1754,7 +1762,7 @@ class ChartBuilder:
         fig.add_vline(x=0, line_width=2, line_color="#1e293b")
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="4.2 Outcome Distributions by Age Tier",
+            title="Outcome Distributions by Age Tier",
             xaxis_title="OVR Δ", yaxis_title="Probability Density",
             hovermode='x unified',
         )
@@ -1770,7 +1778,7 @@ class ChartBuilder:
         """
         ppl = self.ppl.dropna(subset=['Baseline', 'PctPositive'])
         if len(ppl) < 15:
-            return _empty_fig("4.3 Improvement Probability")
+            return _empty_fig("Improvement Probability")
 
         fig = go.Figure()
         for tier, color in AGE_COLORS.items():
@@ -1784,7 +1792,7 @@ class ChartBuilder:
                 name=tier,
                 customdata=sub[['Label', 'Age']].values,
                 hovertemplate=("<b>%{customdata[0]}</b><br>Age %{customdata[1]}<br>"
-                               "Base %{x:.0f}  |  P(+)={y:.0%}<extra></extra>"),
+                               "Base %{x:.0f}  |  P(+) %{y:.0%}<extra></extra>"),
             ))
             if len(sub) >= 10:
                 try:
@@ -1803,7 +1811,7 @@ class ChartBuilder:
                       annotation_text='50% threshold')
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="4.3 Probability of Improvement by Baseline OVR",
+            title="Probability of Improvement by Baseline OVR",
             xaxis_title="Baseline OVR", yaxis_title="P(Δ > 0)",
             yaxis_tickformat='.0%',
         )
@@ -1829,7 +1837,7 @@ class ChartBuilder:
             if col in player_data.columns and player_data[col].std() > 0
         ]
         if not valid_inputs or len(player_data) < 20:
-            return _empty_fig("5.1 Controlled Input Effects")
+            return _empty_fig("Controlled Input Effects")
 
         # Set up basic baseline control features
         control_features = ['Age']
@@ -1837,26 +1845,17 @@ class ChartBuilder:
             control_features.append('Baseline')
 
         # Standardize the target variable (Mean Delta)
-        raw_target = player_data['MeanDelta'].values
-        target_std_dev = raw_target.std()
-        standardized_target = (
-            (raw_target - raw_target.mean()) / target_std_dev 
-            if target_std_dev > 0 else 1.0
-        )
+        standardized_target = zscore(player_data['MeanDelta']).values
         
         sample_size = len(player_data)
         random_generator = np.random.default_rng(42)
         n_bootstrap = 600
 
-        def _standardize_vector(vector: np.ndarray) -> np.ndarray:
-            std_dev = vector.std()
-            return (vector - vector.mean()) / std_dev if std_dev > 0 else np.zeros_like(vector)
-
         regression_results = []
         
         for input_feature in valid_inputs:
             model_features = control_features + [input_feature]
-            standardized_columns = [_standardize_vector(player_data[feat].values) for feat in model_features]
+            standardized_columns = [zscore(player_data[feat]).values for feat in model_features]
             
             # Build design matrix with an intercept column
             design_matrix = np.column_stack([np.ones(sample_size)] + standardized_columns)
@@ -1890,7 +1889,7 @@ class ChartBuilder:
             })
 
         if not regression_results:
-            return _empty_fig("5.1 Controlled Input Effects")
+            return _empty_fig("Controlled Input Effects")
             
         results_df = pd.DataFrame(regression_results)
         # Sort features by the magnitude of their standardized effect size (absolute beta)
@@ -1948,7 +1947,7 @@ class ChartBuilder:
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
             title=(
-                f"5.1 Standardized Effect of Each Input on Mean Δ "
+                f"Standardized Effect of Each Input on Mean Δ "
                 f"(controlling for {', '.join(control_features)})"
             ),
             xaxis_title="Standardized β (effect on Mean Δ per 1-SD of input)",
@@ -1969,7 +1968,7 @@ class ChartBuilder:
         candidates = [c for c in self.cols.all_predictors
                     if c in ppl.columns and ppl[c].std() > 0]
         if len(candidates) < 2:
-            return _empty_fig("5.2 Shapley R²")
+            return _empty_fig("Shapley R²")
 
         y = ppl['MeanDelta'].values
         n = len(ppl)
@@ -2028,7 +2027,7 @@ class ChartBuilder:
         )
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="5.2 Shapley-Averaged R² Importance over Mean Δ",
+            title="Shapley-Averaged R² Importance over Mean Δ",
             xaxis_title="Avg marginal R² (stable across orderings)",
             yaxis_title="", showlegend=False,
             height=max(400, len(data) * 30),
@@ -2048,7 +2047,7 @@ class ChartBuilder:
         candidates = [c for c in self.cols.inputs
                     if c in ppl.columns and ppl[c].std() > 0]
         if not candidates:
-            return _empty_fig("5.3 Partial Dependence")
+            return _empty_fig("Partial Dependence")
 
         controls = ['Age']
         if 'Baseline' in ppl.columns and ppl['Baseline'].std() > 0:
@@ -2070,7 +2069,7 @@ class ChartBuilder:
         scored.sort(key=lambda x: x[1], reverse=True)
         top = [s[0] for s in scored[:6]]
         if not top:
-            return _empty_fig("5.3 Partial Dependence")
+            return _empty_fig("Partial Dependence")
 
         cols = min(3, len(top))
         rows = (len(top) + cols - 1) // cols
@@ -2107,7 +2106,7 @@ class ChartBuilder:
 
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title=(f"5.3 Partial Dependence :: Residualized Mean Δ vs Input Quantile "
+            title=(f"Partial Dependence :: Residualized Mean Δ vs Input Quantile "
                 f"(controls: {', '.join(controls)})"),
             height=320 * rows,
         )
@@ -2127,7 +2126,7 @@ class ChartBuilder:
         """
         icc = self._ds.icc
         if icc.empty:
-            return _empty_fig("6.1 ICC")
+            return _empty_fig("ICC")
 
         fig = go.Figure()
         colors = [
@@ -2150,7 +2149,7 @@ class ChartBuilder:
 
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="6.1 Variance Decomposition :: ICC per Attribute",
+            title="Variance Decomposition :: ICC per Attribute",
             xaxis_title="ICC (0 = pure RNG, 1 = fully deterministic)",
             yaxis_title="",
             height=max(400, len(icc) * 26),
@@ -2167,7 +2166,7 @@ class ChartBuilder:
         conv = self._ds.convergence
         pids = conv['top_volatile']
         if not pids:
-            return _empty_fig("6.2 Convergence")
+            return _empty_fig("Convergence")
 
         labels = self.ppl.set_index('PlayerID')['Label']
 
@@ -2214,7 +2213,7 @@ class ChartBuilder:
         )
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="6.2 Convergence Trace :: Running Mean ±MCSE (top-6 most volatile)",
+            title="Convergence Trace :: Running Mean ±MCSE (top-6 most volatile)",
             height=720,
         )
         return fig
@@ -2229,7 +2228,7 @@ class ChartBuilder:
         """
         pivot = self.sim.pivot_table(index='PlayerID', columns='Run', values='Ovr').dropna()
         if pivot.shape[1] < 2 or pivot.shape[0] < 3:
-            return _empty_fig("6.3 Rank Stability")
+            return _empty_fig("Rank Stability")
 
         ranks = pivot.rank(axis=0)
         W = kendalls_w(ranks.values)
@@ -2269,7 +2268,7 @@ class ChartBuilder:
         fig.update_yaxes(title_text="Rank CV", row=1, col=2)
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="6.3 Rank Stability Across Monte Carlo Runs",
+            title="Rank Stability Across Monte Carlo Runs",
             height=500,
         )
         return fig
@@ -2285,7 +2284,7 @@ class ChartBuilder:
         """
         ppl = self.ppl.dropna(subset=['MeanDelta', 'StdDelta'])
         if len(ppl) < 4:
-            return _empty_fig("7.1 Outlier Detection")
+            return _empty_fig("Outlier Detection")
         X = ppl[['MeanDelta', 'StdDelta']].values
         dists = mahalanobis_distance(X)
         p = 1 - scipy_stats.chi2.cdf(dists ** 2, df=2)
@@ -2314,21 +2313,31 @@ class ChartBuilder:
                                "Mahal %{customdata[1]:.2f}  |  p=%{customdata[2]:.4f}<extra></extra>"),
                 name='Outlier (p<0.05)',
             ))
-        # χ² 90%/99% ellipses
-        sx, sy = ppl['MeanDelta'].std(), ppl['StdDelta'].std()
+        # χ² 90%/99% ellipses, oriented by the actual covariance of (μΔ, σΔ).
+        # An axis-aligned ellipse would disagree with the Mahalanobis flagging
+        # whenever μΔ and σΔ are correlated, which they typically are.
+        # https://carstenschelp.github.io/2018/09/14/Plot_Confidence_Ellipse_001.html
+        cov = np.cov(X, rowvar=False)
+        eigvals, eigvecs = np.linalg.eigh(cov)
+        # Guard against tiny negative eigenvalues from float noise on near-singular cov
+        eigvals = np.maximum(eigvals, 0.0)
         cx, cy = ppl['MeanDelta'].mean(), ppl['StdDelta'].mean()
+        theta = np.linspace(0, 2 * np.pi, 120)
+        unit_circle = np.column_stack([np.cos(theta), np.sin(theta)])
+        transform = eigvecs @ np.diag(np.sqrt(eigvals))  # shape (2,2)
+
         for r_val, lbl, c in [(np.sqrt(scipy_stats.chi2.ppf(0.90, 2)), '90%', '#f97316'),
-                              (np.sqrt(scipy_stats.chi2.ppf(0.99, 2)), '99%', '#dc2626')]:
-            theta = np.linspace(0, 2 * np.pi, 120)
+                            (np.sqrt(scipy_stats.chi2.ppf(0.99, 2)), '99%', '#dc2626')]:
+            ellipse = r_val * unit_circle @ transform.T  # (N, 2)
             fig.add_trace(go.Scatter(
-                x=cx + r_val * sx * np.cos(theta),
-                y=cy + r_val * sy * np.sin(theta),
+                x=cx + ellipse[:, 0],
+                y=cy + ellipse[:, 1],
                 mode='lines', line=dict(color=c, width=2, dash='dash'),
                 name=f"χ² {lbl}", hoverinfo='skip',
             ))
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="7.1 Outlier Detection :: Mahalanobis Distance in (μΔ, σΔ) Space",
+            title="Outlier Detection :: Mahalanobis Distance in (μΔ, σΔ) Space",
             xaxis_title="Mean OVR Δ", yaxis_title="Std OVR Δ",
         )
         return fig
@@ -2343,7 +2352,7 @@ class ChartBuilder:
         """
         ppl = self.ppl.dropna(subset=['Baseline', 'StdDelta'])
         if len(ppl) < 10:
-            return _empty_fig("7.2 Funnel Plot")
+            return _empty_fig("Funnel Plot")
         fig = go.Figure()
         fig.add_trace(go.Scatter(
             x=ppl['Baseline'], y=ppl['StdDelta'], mode='markers',
@@ -2384,10 +2393,22 @@ class ChartBuilder:
             pass
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title="7.2 Funnel Plot :: σ(Δ) vs Baseline OVR",
+            title="Funnel Plot :: σ(Δ) vs Baseline OVR",
             xaxis_title="Baseline OVR", yaxis_title="Std of OVR Δ",
         )
         return fig
+    
+def _validate_chart_registry() -> None:
+    missing = [
+        f"{sec['id']}/{name}"
+        for sec in SECTIONS
+        for name in sec['charts']
+        if not callable(getattr(ChartBuilder, name, None))
+    ]
+    if missing:
+        raise RuntimeError(
+            f"SECTIONS references unknown chart methods: {missing}"
+        )
 
 # HTML DASHBOARD
 class HTMLDashboard:
@@ -2519,19 +2540,6 @@ class HTMLDashboard:
         footer {{
             text-align: center; color: var(--muted); font-size: 0.8rem;
             padding: 30px 0 50px;
-        }}
-        footer {{
-            max-width: 1400px;
-            margin: 40px auto 0;
-            padding: 24px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 0.8rem;
-            color: var(--muted);
         }}
         footer a {{
             color: var(--muted);
@@ -2785,6 +2793,8 @@ def generate_analysis(run_dir: Optional[str] = None) -> None:
 
     logger.info("Building charts...")
     charts = ChartBuilder(ds).build_all()
+
+    _validate_chart_registry()
 
     HTMLDashboard(charts, ds).render(base / 'analysis_dashboard.html')
 
