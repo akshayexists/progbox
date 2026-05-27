@@ -91,10 +91,9 @@ class Config:
 
     #  Analysis thresholds (tunable but not engine truths) 
     MIN_KDE_SAMPLES: int = 10
-    MIN_OLS_SAMPLES: int = 8
     MIN_BIN_COUNT: int = 5
     MCSE_THRESHOLD: float = 0.5         # OVR pts, target convergence
-    MAX_HEATMAP_ROWS: int = 80
+    MAX_HEATMAP_ROWS: int = 40
     PHYSICAL_ATTRS = {'Spd', 'Str', 'Jmp', 'End'}
     SHOOTING_ATTRS = {'Ins', 'Dnk', 'FT', '2Pt', '3Pt'}
     MENTAL_ATTRS   = {'oIQ', 'dIQ'}
@@ -146,10 +145,12 @@ def hex_to_rgba(hex_color: str, alpha: float) -> str:
 
 
 def _empty_fig(title: str, reason: str = "INSUFFICIENT DATA") -> go.Figure:
-    """Placeholder figure used when data is too thin for a real chart."""
-    return go.Figure().update_layout(
-        title=f"{title} :: {reason}", template=_PLOTLY_TEMPLATE,
+    fig = go.Figure()
+    fig.update_layout(
+        title=f"{title} · {reason}", template=_PLOTLY_TEMPLATE,
     )
+    fig._is_placeholder = True  # explicit flag
+    return fig
 
 
 def _attr_group(attr: str) -> str:
@@ -171,55 +172,89 @@ def zscore(s: pd.Series) -> pd.Series:
         return pd.Series(0.0, index=s.index, dtype=float)
     return (s - s.mean()) / std
 
-def bootstrap_ci(data: np.ndarray, stat: Callable = np.mean,
-                 n_boot: int = 3000, ci: float = 0.95
-                 ) -> Tuple[float, float, float]:
-    """Standard bootstrap CI for INDEPENDENT observations.
+def bootstrap_ci(data: np.ndarray,
+                 statistic_fn: Callable = np.mean,
+                 n_bootstrap: int = 3000,
+                 confidence_level: float = 0.95,
+                 seed: int = 0,
+                ) -> Tuple[float, float, float]:
+    """Calculates a standard bootstrap confidence interval for a given statistic."""
+    sample_size = len(data)
+    
+    # Handle edge cases for empty or single-element inputs
+    if sample_size < 2:
+        fallback_value = float(statistic_fn(data)) if sample_size else 0.0
+        return fallback_value, fallback_value, fallback_value
 
-    Use cluster_bootstrap_ci when observations cluster within players;
-    use this for per-player aggregates and other already-independent
-    samples.
-    """
-    n = len(data)
-    if n < 2:
-        v = float(stat(data)) if n else 0.0
-        return v, v, v
-    point = float(stat(data))
-    rng = np.random.default_rng(0)
-    idx = rng.integers(0, n, size=(n_boot, n))
-    boots = np.array([stat(data[i]) for i in idx])
-    a = (1 - ci) / 2
-    return (point,
-            float(np.percentile(boots, 100 * a)),
-            float(np.percentile(boots, 100 * (1 - a))))
+    point_estimate = float(statistic_fn(data))
+    
+    # Generate random indices for resampling with replacement
+    random_generator = np.random.default_rng(seed)
+    resample_indices = random_generator.integers(0, sample_size, size=(n_bootstrap, sample_size))
+
+    # Calculate the statistic for each bootstrap sample
+    if statistic_fn is np.mean:
+        bootstrap_estimates = data[resample_indices].mean(axis=1)  # Vectorized fast path
+    else:
+        bootstrap_estimates = np.array([statistic_fn(data[idx]) for idx in resample_indices])
+
+    # Calculate percentiles based on the confidence level
+    alpha_tail = (1 - confidence_level) / 2
+    lower_percentile = 100 * alpha_tail
+    upper_percentile = 100 * (1 - alpha_tail)
+
+    return (
+        point_estimate,
+        float(np.percentile(bootstrap_estimates, lower_percentile)),
+        float(np.percentile(bootstrap_estimates, upper_percentile)),
+    )
+
 
 def cluster_bootstrap_ci(
-    df: pd.DataFrame,
-    value_col: str,
-    cluster_col: str = 'PlayerID',
-    stat: Callable = np.mean,
-    n_boot: int = 1500,
-    ci: float = 0.95,
-) -> Tuple[float, float, float]:
-    """Cluster bootstrap CI. Resamples PLAYERS (with all their runs),
-    not individual rows. fixes pseudo-replication when each player
-    contributes many runs.
-    """
-    clusters = df[cluster_col].unique()
-    n_clusters = len(clusters)
+                         df: pd.DataFrame,
+                         value_col: str,
+                         cluster_col: str = 'PlayerID',
+                         statistic_fn: Callable = np.mean,
+                         n_bootstrap: int = 1500,
+                         confidence_level: float = 0.95,
+                         seed: int = 0,
+                        ) -> Tuple[float, float, float]:
+    """Calculates a cluster bootstrap confidence interval to account for within-cluster correlation."""
+    unique_clusters = df[cluster_col].unique()
+    n_clusters = len(unique_clusters)
+    
+    # Handle edge cases for fewer than 2 clusters
     if n_clusters < 2:
-        v = float(stat(df[value_col].values)) if len(df) else 0.0
-        return v, v, v
+        fallback_value = float(statistic_fn(df[value_col].values)) if len(df) else 0.0
+        return fallback_value, fallback_value, fallback_value
 
-    point = float(stat(df[value_col].values))
-    rng = np.random.default_rng(0)
-    grouped = {c: df.loc[df[cluster_col] == c, value_col].values for c in clusters}
-    boots = np.empty(n_boot)
-    for i in range(n_boot):
-        sampled = rng.choice(clusters, size=n_clusters, replace=True)
-        boots[i] = stat(np.concatenate([grouped[c] for c in sampled]))
-    a = (1 - ci) / 2
-    return point, float(np.percentile(boots, 100 * a)), float(np.percentile(boots, 100 * (1 - a)))
+    point_estimate = float(statistic_fn(df[value_col].values))
+    random_generator = np.random.default_rng(seed)
+    
+    # Group values by cluster using groupby (more efficient than looping .loc)
+    cluster_groups = {
+        cluster: group[value_col].values 
+        for cluster, group in df.groupby(cluster_col)
+    }
+    
+    bootstrap_estimates = np.empty(n_bootstrap)
+    
+    # Perform cluster-level resampling with replacement
+    for i in range(n_bootstrap):
+        sampled_clusters = random_generator.choice(unique_clusters, size=n_clusters, replace=True)
+        resampled_data = np.concatenate([cluster_groups[cluster] for cluster in sampled_clusters])
+        bootstrap_estimates[i] = statistic_fn(resampled_data)
+
+    # Calculate percentiles based on the confidence level
+    alpha_tail = (1 - confidence_level) / 2
+    lower_percentile = 100 * alpha_tail
+    upper_percentile = 100 * (1 - alpha_tail)
+
+    return (
+        point_estimate,
+        float(np.percentile(bootstrap_estimates, lower_percentile)),
+        float(np.percentile(bootstrap_estimates, upper_percentile)),
+    )
 
 def cohens_d(g1: np.ndarray, g2: np.ndarray) -> float:
     """Hedges-corrected Cohen's d. Zero when undefined."""
@@ -233,12 +268,12 @@ def cohens_d(g1: np.ndarray, g2: np.ndarray) -> float:
     d = (np.mean(g1) - np.mean(g2)) / sp
     return d * (1 - 3 / (4 * (n1 + n2) - 9))
 
-
-def ols_fit(X: np.ndarray, y: np.ndarray
-            ) -> Tuple[np.ndarray, np.ndarray, float]:
+def ols_fit(X: np.ndarray, y: np.ndarray, compute_se: bool = True
+            ) -> Tuple[np.ndarray, Optional[np.ndarray], float]:
     """Stable QR-based OLS. Returns (beta, se, r_squared).
 
-    Raises ValueError on insufficient df; LinAlgError on rank deficiency.
+    Set compute_se=False to skip the SE computation (saves an O(p³)
+    matrix inverse per call).
     """
     n, p = X.shape
     if n <= p:
@@ -246,9 +281,11 @@ def ols_fit(X: np.ndarray, y: np.ndarray
     Q, R = np.linalg.qr(X)
     beta = np.linalg.solve(R, Q.T @ y)
     resid = y - X @ beta
-    rss = np.sum(resid ** 2)
-    tss = np.sum((y - y.mean()) ** 2)
+    rss = float(np.sum(resid ** 2))
+    tss = float(np.sum((y - y.mean()) ** 2))
     r2 = 1.0 - rss / tss if tss > 0 else 0.0
+    if not compute_se:
+        return beta, None, r2
     sigma2 = rss / (n - p)
     R_inv = np.linalg.solve(R, np.eye(p))
     var_beta = sigma2 * (R_inv @ R_inv.T)
@@ -260,9 +297,8 @@ def partial_corr(x: np.ndarray, y: np.ndarray, Z: np.ndarray
                  ) -> Tuple[float, float]:
     """Partial Pearson r of x,y controlling for columns of Z.
     Returns (r, p). Z can be empty (returns plain Pearson)."""
-    from scipy.stats import pearsonr
     if Z.size == 0 or Z.shape[1] == 0:
-        return pearsonr(x, y)
+        return scipy_stats.pearsonr(x, y)
     try:
         A = np.column_stack([np.ones(len(Z)), Z])
         Q, R = np.linalg.qr(A)
@@ -270,10 +306,9 @@ def partial_corr(x: np.ndarray, y: np.ndarray, Z: np.ndarray
         by = np.linalg.solve(R, Q.T @ y)
         rx = x - A @ bx
         ry = y - A @ by
-        return pearsonr(rx, ry)
+        return scipy_stats.pearsonr(rx, ry)
     except np.linalg.LinAlgError:
         return 0.0, 1.0
-
 
 def mahalanobis_distance(X: np.ndarray) -> np.ndarray:
     """Mahalanobis distance from each row to the multivariate centroid."""
@@ -284,22 +319,6 @@ def mahalanobis_distance(X: np.ndarray) -> np.ndarray:
         inv = np.linalg.pinv(cov)
     d = X - X.mean(axis=0)
     return np.sqrt(np.einsum('ij,jk,ik->i', d, inv, d))
-
-
-def benjamini_hochberg(pvals: np.ndarray, alpha: float = 0.05) -> np.ndarray:
-    """BH FDR correction. Returns boolean mask of significant tests."""
-    n = len(pvals)
-    if n == 0:
-        return np.array([], dtype=bool)
-    order = np.argsort(pvals)
-    sorted_p = pvals[order]
-    threshold = alpha * np.arange(1, n + 1) / n
-    sig = np.zeros(n, dtype=bool)
-    below = np.where(sorted_p <= threshold)[0]
-    if len(below) > 0:
-        sig[order[:below[-1] + 1]] = True
-    return sig
-
 
 def kendalls_w(rank_matrix: np.ndarray) -> float:
     """Kendall's W coefficient of concordance across judges (= runs)."""
@@ -457,56 +476,92 @@ class Dataset:
             return pd.Series(['Middle'] * len(ages), index=ages.index)
 
     #  per-player summary 
-
     @property
     def per_player(self) -> pd.DataFrame:
-        """One row per player with aggregate OVR statistics + carried inputs."""
+        """Computes a comprehensive per-player summary DataFrame from the underlying simulation data.
+        
+        Includes aggregations, quantile metrics, risk-adjusted performance scores (Sharpe, 
+        Certainty Equivalent), and cohort-adjusted performance (Age-Tier Z-Scores).
+        """
         if self._per_player is not None:
             return self._per_player
 
-        agg = {
-            'Name':        ('Name',     'first'),
-            'Team':        ('Team',     'first'),
-            'Age':         ('Age',      'first'),
-            'Baseline':    ('Baseline', 'first'),
-            'MeanDelta':   ('Delta',    'mean'),
-            'StdDelta':    ('Delta',    'std'),
-            'P05_Delta':   ('Delta',    lambda s: s.quantile(0.05)),
-            'P25_Delta':   ('Delta',    lambda s: s.quantile(0.25)),
-            'P50_Delta':   ('Delta',    'median'),
-            'P75_Delta':   ('Delta',    lambda s: s.quantile(0.75)),
-            'P95_Delta':   ('Delta',    lambda s: s.quantile(0.95)),
-            'MinDelta':    ('Delta',    'min'),
-            'MaxDelta':    ('Delta',    'max'),
-            'PctPositive': ('Delta',    lambda s: float((s > 0).mean())),
-            'MeanOvr':     ('Ovr',      'mean'),
-            'StdOvr':      ('Ovr',      'std'),
+        player_groupby = self.sim.groupby('PlayerID', sort=True)
+
+        aggregation_mapping = {
+            'Name':             ('Name',     'first'),
+            'Team':             ('Team',     'first'),
+            'Age':              ('Age',      'first'),
+            'Baseline':         ('Baseline', 'first'),
+            'MeanDelta':        ('Delta',    'mean'),
+            'StdDelta':         ('Delta',    'std'),
+            'P50_Delta':        ('Delta',    'median'),
+            'MinDelta':         ('Delta',    'min'),
+            'MaxDelta':         ('Delta',    'max'),
+            'MeanOvr':          ('Ovr',      'mean'),
+            'StdOvr':           ('Ovr',      'std'),
         }
-        # Carry every model input as a first-value (constant per player)
-        for col in self.cols.inputs:
-            if col not in agg:
-                agg[col] = (col, 'first')
+        
+        # Include additional simulation configuration inputs if not already mapped
+        for input_column in self.cols.inputs:
+            if input_column not in aggregation_mapping:
+                aggregation_mapping[input_column] = (input_column, 'first')
 
-        df = self.sim.groupby('PlayerID', sort=True).agg(**agg).reset_index()
-        df['AgeTier']  = self.assign_tiers(df['Age'])
-        df['Label']    = df.apply(lambda r: f"{r['Name']} ({r['Team'] if pd.notna(r['Team']) else 'FA'})", axis=1)
-        df['IQR']      = df['P75_Delta'] - df['P25_Delta']
-        df['Range90']  = df['P95_Delta'] - df['P05_Delta']
-        df['Sharpe']   = np.where(df['StdDelta'] > 0,
-                                  df['MeanDelta'] / df['StdDelta'], 0.0)
-        # Certainty-equivalent (CARA, A=1): μ − ½σ²
-        df['CertEquiv'] = df['MeanDelta'] - 0.5 * df['StdDelta'] ** 2
+        summary_df = player_groupby.agg(**aggregation_mapping).reset_index()
 
-        # Age-tier-adjusted z (how a player does vs their cohort)
-        tier_stats = df.groupby('AgeTier', observed=True)['MeanDelta'].agg(
-            ['mean', 'std']).rename(columns={'mean': '_tm', 'std': '_ts'})
-        df = df.merge(tier_stats, left_on='AgeTier', right_index=True, how='left')
-        df['AgeAdjZ'] = np.where(df['_ts'] > 0,
-                                 (df['MeanDelta'] - df['_tm']) / df['_ts'], 0.0)
-        df = df.drop(columns=['_tm', '_ts'])
+        # 2. Quantiles via vectorized calculations on the grouped Series
+        delta_groupby_series = player_groupby['Delta']
+        
+        target_quantiles = [
+            (0.05, 'P05_Delta'), 
+            (0.25, 'P25_Delta'),
+            (0.75, 'P75_Delta'), 
+            (0.95, 'P95_Delta')
+        ]
+        for quantile_value, column_label in target_quantiles:
+            summary_df[column_label] = delta_groupby_series.quantile(quantile_value).values
 
-        self._per_player = df
-        return df
+        # Vectorized mean of boolean mask to replace slow row-by-row .apply()
+        summary_df['PctPositive'] = delta_groupby_series.apply(lambda x: (x > 0).mean()).values
+        summary_df['AgeTier'] = self.assign_tiers(summary_df['Age'])
+        
+        # Vectorized string concatenation to replace row-by-row df.apply(axis=1)
+        team_or_free_agent = summary_df['Team'].fillna('FA')
+        summary_df['Label'] = summary_df['Name'] + " (" + team_or_free_agent + ")"
+
+        # Spread Metrics
+        summary_df['IQR'] = summary_df['P75_Delta'] - summary_df['P25_Delta']
+        summary_df['Range90'] = summary_df['P95_Delta'] - summary_df['P05_Delta']
+        
+        # Risk-Adjusted Return Metrics
+        summary_df['Sharpe'] = np.where(
+            summary_df['StdDelta'] > 0,
+            summary_df['MeanDelta'] / summary_df['StdDelta'], 
+            0.0
+        )
+        # Certainty-Equivalent (CARA utility function, Risk Aversion Parameter A=1): μ − ½σ²
+        summary_df['CertEquiv'] = summary_df['MeanDelta'] - 0.5 * (summary_df['StdDelta'] ** 2)
+
+        # 4. Age-Tier-Adjusted Performance Z-Scores (Performance relative to cohort)
+        age_tier_stats = (
+            summary_df.groupby('AgeTier', observed=True)['MeanDelta']
+            .agg(['mean', 'std'])
+            .rename(columns={'mean': 'cohort_mean', 'std': 'cohort_std'})
+        )
+        
+        summary_df = summary_df.merge(age_tier_stats, left_on='AgeTier', right_index=True, how='left')
+        
+        summary_df['AgeAdjZ'] = np.where(
+            summary_df['cohort_std'] > 0,
+            (summary_df['MeanDelta'] - summary_df['cohort_mean']) / summary_df['cohort_std'], 
+            0.0
+        )
+        
+        # Drop temporary calculation columns
+        summary_df = summary_df.drop(columns=['cohort_mean', 'cohort_std'])
+
+        self._per_player = summary_df
+        return summary_df
 
     #  per-age summary 
     @property
@@ -521,7 +576,7 @@ class Dataset:
             sub_clean = sub[['PlayerID', 'Delta']].dropna()
             if len(sub_clean) < Config.MIN_BIN_COUNT:
                 continue
-            mean, lo, hi = cluster_bootstrap_ci(sub_clean, 'Delta', n_boot=1500)
+            mean, lo, hi = cluster_bootstrap_ci(sub_clean, 'Delta', n_bootstrap=1500, seed=int(age) * 31)
             d = sub_clean['Delta'].values
             rows.append({
                 'Age': int(age),
@@ -670,7 +725,6 @@ SECTIONS: List[Dict] = [
         'charts': [
             'chart_age_curve',
             'chart_age_curve_bands',
-            'chart_variance_by_age',
             'chart_age_group_curves',
         ],
     },
@@ -703,7 +757,6 @@ SECTIONS: List[Dict] = [
             'chart_risk_return',
             'chart_outcome_distributions',
             'chart_improve_probability',
-            'chart_outcome_range_fan',
         ],
     },
     {
@@ -711,7 +764,7 @@ SECTIONS: List[Dict] = [
         'intro': "Evaluate whether model inputs (PER, DWS, EWA, ...) steer outcomes "
                  "Controlled effects (holding Age and Baseline constant) "
                  "are the headline metrics. Shapley R² provides stable importance rankings, "
-                 "while top-driver scatters and residualized partial dependence reveal "
+                 "residualized partial dependence reveals "
                  "the functional shape (linear, threshold, or non-monotonic) of each effect.",
         'charts': [
             'chart_controlled_input_effects',
@@ -736,13 +789,10 @@ SECTIONS: List[Dict] = [
         'id': 'diagnostics', 'title': '§7 · Diagnostics',
         'intro': "Identify where script assumptions break. Outliers flag individuals with "
                  "highly improbable joint (μΔ, σΔ) signatures. The funnel plot reveals "
-                 "if variance collapses near an OVR ceiling."
-                 "Effect sizes confirm if age tiers actually "
-                 "behave distinctly from one another.",
+                 "if variance collapses near an OVR ceiling.",
         'charts': [
             'chart_outlier_detection',
             'chart_funnel',
-            'chart_effect_sizes',
         ],
     },
 ]
@@ -1079,42 +1129,6 @@ class ChartBuilder:
         )
         return fig
 
-    def chart_variance_by_age(self) -> go.Figure:
-        """Per-age σ(Δ): when in the lifecycle does the script become noisy?
-
-        TUNING TAKEAWAY: If σ peaks at the same age as the mean, the
-        script's growth and randomness are coupled. If σ stays elevated
-        at old ages where the mean is sharply negative, decline is noisy, 
-        often a sign of mid-age-slowdown logic firing inconsistently.
-        """
-        pa = self._ds.per_age
-        if pa.empty:
-            return _empty_fig("2.3 Variance by Age")
-
-        fig = make_subplots(specs=[[{"secondary_y": True}]])
-        fig.add_trace(go.Bar(
-            x=pa['Age'], y=pa['Std'], name='σ(Δ)',
-            marker_color='#f97316', marker_line_width=0, opacity=0.6,
-            hovertemplate="Age %{x}<br>σ: %{y:.2f}<extra></extra>",
-        ), secondary_y=False)
-        fig.add_trace(go.Scatter(
-            x=pa['Age'], y=pa['Mean'], mode='lines+markers', name='Mean Δ',
-            line=dict(color='#2563eb', width=3),
-            marker=dict(size=7, color='#2563eb'),
-            hovertemplate="Age %{x}<br>Mean: %{y:+.2f}<extra></extra>",
-        ), secondary_y=True)
-        fig.add_hline(y=0, line_width=1.5, line_color="#1e293b", secondary_y=True)
-
-        fig.update_xaxes(title_text="Age")
-        fig.update_yaxes(title_text="Std of Δ", secondary_y=False)
-        fig.update_yaxes(title_text="Mean Δ",   secondary_y=True)
-        fig.update_layout(
-            template=_PLOTLY_TEMPLATE,
-            title="2.3 Variance vs Signal by Age (σ bars, μ line)",
-            hovermode='x unified',
-        )
-        return fig
-
     def chart_age_group_curves(self) -> go.Figure:
         """Age curves per attribute group (Physical / Shooting / Mental / Skill).
 
@@ -1380,62 +1394,110 @@ class ChartBuilder:
         return fig
 
     def chart_attr_comovement(self) -> go.Figure:
-        """TWO Spearman correlation matrices of attribute Δs:
-        (a) BETWEEN-PLAYER --> per-player mean deltas: do players who
-            gain on X also gain on Y across the population?
-        (b) WITHIN-RUN     --> avg over players of per-player run-wise 
-            corr: when this player's X is rolling high in a given run, 
-            is Y rolling high too?
+        """Calculates and visualizes two Spearman correlation matrices of attribute deltas:
+        
+        (a) BETWEEN-PLAYER -> per-player mean deltas: do players who gain on X also 
+                            gain on Y across the population?
+        (b) WITHIN-RUN     -> avg over players of per-player run-wise corr: when this 
+                            player's X is rolling high in a given run, is Y rolling 
+                            high too?
 
-        TUNING TAKEAWAY: Between-player corr exposes systematic co-movement
-        from tuning (e.g. an age effect lifting multiple attrs together).
-        Within-run corr exposes RNG correlation (e.g. one seed per
-        (player, run) driving multiple attrs in lockstep). High within-run
-        with low between-player = correlated noise but uncorrelated tuning.
+        TUNING TAKEAWAY: Between-player corr exposes systematic co-movement from tuning 
+        (e.g., an age effect lifting multiple attrs together). Within-run corr exposes 
+        RNG correlation (e.g., one seed per player/run driving multiple attrs in lockstep). 
+        High within-run with low between-player = correlated noise but uncorrelated tuning.
         """
         if self.ad.empty:
             return _empty_fig("3.4 Attribute Co-Movement")
-        avail = [c for c in self.cols.varying_attrs if c in self.ad.columns]
-        if len(avail) < 2:
+            
+        available_attributes = [col for col in self.cols.varying_attrs if col in self.ad.columns]
+        if len(available_attributes) < 2:
             return _empty_fig("3.4 Attribute Co-Movement")
 
-        ordered = sorted(avail, key=lambda a: (
-            ['Physical', 'Shooting', 'Mental', 'Skill', 'Other'].index(_attr_group(a)),
-            a,
+        # Sort attributes primarily by their functional group, then alphabetically
+        ordered_attributes = sorted(available_attributes, key=lambda attr: (
+            ['Physical', 'Shooting', 'Mental', 'Skill', 'Other'].index(_attr_group(attr)),
+            attr,
         ))
-        between = self.ad[ordered].corr(method='spearman').values
+        
+        # 1. Compute Between-Player Correlations
+        between_player_corr = self.ad[ordered_attributes].corr(method='spearman').values
 
-        n_attrs = len(ordered)
-        accum = np.zeros((n_attrs, n_attrs))
-        counts = np.zeros((n_attrs, n_attrs))
-        for _, g in self.sim.groupby('PlayerID'):
-            sub = g[[a for a in ordered if a in g.columns]].dropna()
-            if len(sub) < 5:
+        # 2. Compute Within-Run Correlations (averaged across players)
+        sim_attributes = [attr for attr in ordered_attributes if attr in self.sim.columns]
+        n_ordered = len(ordered_attributes)
+        
+        # Pre-allocate matrices to accumulate correlation values and valid counts
+        correlation_accumulator = np.zeros((n_ordered, n_ordered))
+        valid_sample_counts = np.zeros((n_ordered, n_ordered))
+        
+        # Map each simulation attribute to its exact index position in the final matrix
+        ordered_index_mapping = [ordered_attributes.index(attr) for attr in sim_attributes]
+        simulation_data = self.sim[['PlayerID'] + sim_attributes]
+
+        for player_id, player_group in simulation_data.groupby('PlayerID'):
+            clean_player_data = player_group[sim_attributes].dropna()
+            if len(clean_player_data) < 5:
                 continue
-            c = sub.corr(method='spearman').reindex(
-                index=ordered, columns=ordered).values
-            mask = ~np.isnan(c)
-            accum[mask] += c[mask]
-            counts[mask] += 1
-        within = np.where(counts > 0, accum / np.maximum(counts, 1), np.nan)
+                
+            # Calculate the raw Spearman correlation matrix for this single player
+            player_corr = clean_player_data.corr(method='spearman').values
+            
+            # Vectorized mapping: Create an empty canvas matching the final layout size
+            mapped_player_corr = np.full((n_ordered, n_ordered), np.nan)
+            
+            # Use advanced indexing to project the calculated matrix into the correct positions
+            mapped_player_corr[np.ix_(ordered_index_mapping, ordered_index_mapping)] = player_corr
+            
+            # Accumulate valid numbers
+            valid_mask = ~np.isnan(mapped_player_corr)
+            correlation_accumulator[valid_mask] += mapped_player_corr[valid_mask]
+            valid_sample_counts[valid_mask] += 1
 
-        fig = make_subplots(rows=1, cols=2, subplot_titles=(
-            "<b>(a) Between-player</b>",
-            "<b>(b) Within-run (avg over players)</b>"),
-            horizontal_spacing=0.08)
-        for j, z in enumerate([between, within]):
-            fig.add_trace(go.Heatmap(
-                z=z, x=ordered, y=ordered,
-                colorscale=DIVERGING_CMAP, zmid=0, zmin=-1, zmax=1,
-                hovertemplate=f"%{{y}} x %{{x}}<br>ρ = %{{z:+.3f}}<extra></extra>",
-                xgap=3, ygap=3,
-                text=np.round(z, 2), texttemplate="%{text}",
-                textfont=dict(size=9),
-                showscale=(j == 1),
-                colorbar=(dict(title="Spearman ρ", thickness=15)
-                        if j == 1 else None),
-            ), row=1, col=j + 1)
-            fig.update_yaxes(autorange='reversed', row=1, col=j + 1)
+        # Safe division to prevent runtime warnings on zero-count elements
+        within_run_corr = np.where(
+            valid_sample_counts > 0, 
+            correlation_accumulator / valid_sample_counts, 
+            np.nan
+        )
+
+        # 3. Build Plotly Visualizations
+        fig = make_subplots(
+            rows=1, cols=2, 
+            subplot_titles=(
+                "<b>(a) Between-player</b>",
+                "<b>(b) Within-run (avg over players)</b>"
+            ),
+            horizontal_spacing=0.08
+        )
+        
+        matrices_to_plot = [between_player_corr, within_run_corr]
+        for idx, correlation_matrix in enumerate(matrices_to_plot):
+            is_second_subplot = (idx == 1)
+            
+            fig.add_trace(
+                go.Heatmap(
+                    z=correlation_matrix, 
+                    x=ordered_attributes, 
+                    y=ordered_attributes,
+                    colorscale=DIVERGING_CMAP, 
+                    zmid=0, zmin=-1, zmax=1,
+                    hovertemplate="%{y} x %{x}<br>ρ = %{z:+.3f}<extra></extra>",
+                    xgap=3, ygap=3,
+                    text=np.round(correlation_matrix, 2), 
+                    texttemplate="%{text}",
+                    textfont=dict(size=9),
+                    showscale=is_second_subplot,
+                    colorbar=(
+                        dict(title="Spearman ρ", thickness=15) 
+                        if is_second_subplot else None
+                    ),
+                ), 
+                row=1, col=idx + 1
+            )
+            # Invert y-axis so the matrix reads top-to-bottom naturally
+            fig.update_yaxes(autorange='reversed', row=1, col=idx + 1)
+            
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
             title="3.4 Attribute Co-Movement :: Between-Player vs Within-Run",
@@ -1747,152 +1809,151 @@ class ChartBuilder:
         )
         return fig
 
-    def chart_outcome_range_fan(self) -> go.Figure:
-        """Per-player P5-P95 fan, sorted by mean Δ. The 'horsetail plot'.
-
-        TUNING TAKEAWAY: Wide horizontal bars = high-uncertainty players;
-        narrow bars = low-uncertainty. A run of red bars below zero on
-        the right side (the supposed gainers) means even your stars
-        sometimes regress.
-        """
-        ppl = self.ppl.dropna(subset=['MeanDelta', 'P05_Delta', 'P95_Delta'])
-        if len(ppl) < 5:
-            return _empty_fig("4.4 Outcome Range Fan")
-        plot = ppl.sort_values('MeanDelta').tail(60).copy()  # top 60 by mean
-
-        fig = go.Figure()
-        for _, row in plot.iterrows():
-            fig.add_trace(go.Scatter(
-                x=[row['P05_Delta'], row['P95_Delta']],
-                y=[row['Label'], row['Label']],
-                mode='lines', line=dict(color='#cbd5e1', width=2),
-                showlegend=False, hoverinfo='skip',
-            ))
-        fig.add_trace(go.Scatter(
-            x=plot['MeanDelta'], y=plot['Label'],
-            mode='markers',
-            marker=dict(
-                color=plot['MeanDelta'], colorscale='RdYlGn', size=8,
-                cmid=0, line=dict(width=1, color='white'),
-                colorbar=dict(title='Mean Δ', thickness=15, len=0.7),
-            ),
-            customdata=plot[['Age', 'Baseline', 'StdDelta', 'PctPositive']].values,
-            hovertemplate=("<b>%{y}</b><br>"
-                           "Age %{customdata[0]}  |  Base %{customdata[1]:.0f}<br>"
-                           "Mean Δ %{x:+.1f}  ·  σ %{customdata[2]:.1f}<br>"
-                           "P(+) %{customdata[3]:.0%}<extra></extra>"),
-            name='Mean Δ',
-        ))
-        fig.add_vline(x=0, line_width=2, line_color="#1e293b")
-        fig.update_layout(
-            template=_PLOTLY_TEMPLATE,
-            title="4.4 Per-Player Outcome Range (P5–P95, sorted by μ -> top 60)",
-            xaxis_title="OVR Δ", 
-            yaxis_title="",
-            # Give the labels a bit more breathing room (60 * 18 = 1080px)
-            height=max(800, len(plot) * 18), 
-            
-            # --- ADD THE Y-AXIS CONFIGURATION HERE ---
-            yaxis=dict(
-                type='category',
-                categoryorder='array',
-                categoryarray=plot['Label'].tolist(),
-                automargin=True,  # Prevents long player names from getting clipped off-screen
-                tickfont=dict(size=7) # Shrink font slightly if they still overlap
-            )
-        )
-        return fig
 
     # ════════════════════════════════════════════════════════════════════
     # §5  INPUT SENSITIVITY
     # ════════════════════════════════════════════════════════════════════
-
     def chart_controlled_input_effects(self) -> go.Figure:
         """Standardized OLS coefficient for each input on Mean Δ,
         controlling for Age + Baseline, with bootstrap 95% CIs.
 
         TUNING TAKEAWAY: Shows which inputs *uniquely* drive outcomes after 
-        netting out age and baseline. An input whose CI straddles zero has no 
-        detectable independent effect
+        adding age and baseline controls. An input whose confidence interval 
+        strandles zero has no detectable independent effect.
         """
-        ppl = self.ppl
-        inputs = [c for c in self.cols.inputs
-                if c in ppl.columns and ppl[c].std() > 0]
-        if not inputs or len(ppl) < 20:
+        player_data = self.ppl
+        
+        # Filter for varying configuration inputs present in the dataset
+        valid_inputs = [
+            col for col in self.cols.inputs
+            if col in player_data.columns and player_data[col].std() > 0
+        ]
+        if not valid_inputs or len(player_data) < 20:
             return _empty_fig("5.1 Controlled Input Effects")
 
-        controls = ['Age']
-        if 'Baseline' in ppl.columns and ppl['Baseline'].std() > 0:
-            controls.append('Baseline')
+        # Set up basic baseline control features
+        control_features = ['Age']
+        if 'Baseline' in player_data.columns and player_data['Baseline'].std() > 0:
+            control_features.append('Baseline')
 
-        y_raw = ppl['MeanDelta'].values
-        y = (y_raw - y_raw.mean()) / (y_raw.std() if y_raw.std() > 0 else 1.0)
-        n = len(ppl)
-        rng = np.random.default_rng(42)
-        n_boot = 600
+        # Standardize the target variable (Mean Delta)
+        raw_target = player_data['MeanDelta'].values
+        target_std_dev = raw_target.std()
+        standardized_target = (
+            (raw_target - raw_target.mean()) / target_std_dev 
+            if target_std_dev > 0 else 1.0
+        )
+        
+        sample_size = len(player_data)
+        random_generator = np.random.default_rng(42)
+        n_bootstrap = 600
 
-        def _stdz(v: np.ndarray) -> np.ndarray:
-            s = v.std()
-            return (v - v.mean()) / s if s > 0 else np.zeros_like(v)
+        def _standardize_vector(vector: np.ndarray) -> np.ndarray:
+            std_dev = vector.std()
+            return (vector - vector.mean()) / std_dev if std_dev > 0 else np.zeros_like(vector)
 
-        rows = []
-        for inp in inputs:
-            feats = controls + [inp]
-            cols = [_stdz(ppl[f].values) for f in feats]
-            X = np.column_stack([np.ones(n)] + cols)
+        regression_results = []
+        
+        for input_feature in valid_inputs:
+            model_features = control_features + [input_feature]
+            standardized_columns = [_standardize_vector(player_data[feat].values) for feat in model_features]
+            
+            # Build design matrix with an intercept column
+            design_matrix = np.column_stack([np.ones(sample_size)] + standardized_columns)
+            
             try:
-                beta, _, r2 = ols_fit(X, y)
+                coefficients, _, r_squared = ols_fit(design_matrix, standardized_target)
             except (ValueError, np.linalg.LinAlgError):
                 continue
-            boots = []
-            for _ in range(n_boot):
-                idx = rng.integers(0, n, n)
+                
+            bootstrap_coefficients = []
+            for _ in range(n_bootstrap):
+                resample_indices = random_generator.integers(0, sample_size, sample_size)
                 try:
-                    b, _, _ = ols_fit(X[idx], y[idx])
-                    boots.append(b[-1])
+                    # Fit model on the bootstrapped resample selection
+                    boot_coefficients, _, _ = ols_fit(design_matrix[resample_indices], standardized_target[resample_indices])
+                    # Append the coefficient corresponding to the target input_feature (last index)
+                    bootstrap_coefficients.append(boot_coefficients[-1])
                 except (ValueError, np.linalg.LinAlgError):
                     continue
-            if len(boots) < 50:
+                    
+            if len(bootstrap_coefficients) < 50:
                 continue
-            lo, hi = np.percentile(boots, [2.5, 97.5])
-            rows.append({'Input': inp, 'Beta': float(beta[-1]),
-                        'CI_lo': float(lo), 'CI_hi': float(hi), 'R2': r2})
+                
+            lower_bound, upper_bound = np.percentile(bootstrap_coefficients, [2.5, 97.5])
+            regression_results.append({
+                'Input': input_feature, 
+                'Beta': float(coefficients[-1]),
+                'CI_lower': float(lower_bound), 
+                'CI_upper': float(upper_bound), 
+                'R2': r_squared
+            })
 
-        if not rows:
+        if not regression_results:
             return _empty_fig("5.1 Controlled Input Effects")
-        df = pd.DataFrame(rows).reindex(
-            pd.DataFrame(rows)['Beta'].abs().sort_values().index)
+            
+        results_df = pd.DataFrame(regression_results)
+        # Sort features by the magnitude of their standardized effect size (absolute beta)
+        results_df = results_df.reindex(results_df['Beta'].abs().sort_values().index)
 
         fig = go.Figure()
-        for _, r in df.iterrows():
-            sig = (r['CI_lo'] > 0) or (r['CI_hi'] < 0)
-            color = ('#16a34a' if sig and r['Beta'] > 0 else
-                    '#dc2626' if sig and r['Beta'] < 0 else '#94a3b8')
+        
+        # Visual color design configuration
+        COLOR_POSITIVE_SIGNIFICANT = '#16a34a'  # Green
+        COLOR_NEGATIVE_SIGNIFICANT = '#dc2626'  # Red
+        COLOR_INSIGNIFICANT = '#94a3b8'         # Slate gray
+        
+        for _, row in results_df.iterrows():
+            # Check if the confidence interval entirely excludes/straddles zero
+            is_statistically_significant = (row['CI_lower'] > 0) or (row['CI_upper'] < 0)
+            
+            if is_statistically_significant:
+                line_color = COLOR_POSITIVE_SIGNIFICANT if row['Beta'] > 0 else COLOR_NEGATIVE_SIGNIFICANT
+            else:
+                line_color = COLOR_INSIGNIFICANT
+                
+            # Draw error bar horizontal line segment
             fig.add_trace(go.Scatter(
-                x=[r['CI_lo'], r['CI_hi']], y=[r['Input'], r['Input']],
-                mode='lines', line=dict(color=color, width=3),
-                showlegend=False, hoverinfo='skip',
+                x=[row['CI_lower'], row['CI_upper']], 
+                y=[row['Input'], row['Input']],
+                mode='lines', 
+                line=dict(color=line_color, width=3),
+                showlegend=False, 
+                hoverinfo='skip',
             ))
+            
+            # Draw target central point marker
             fig.add_trace(go.Scatter(
-                x=[r['Beta']], y=[r['Input']], mode='markers',
-                marker=dict(color=color, size=12,
-                            line=dict(width=2, color='white')),
-                customdata=[[r['CI_lo'], r['CI_hi'], r['R2']]],
-                hovertemplate=("<b>%{y}</b><br>"
-                            "Std β = %{x:+.3f}<br>"
-                            "95% CI = [%{customdata[0]:+.3f}, "
-                            "%{customdata[1]:+.3f}]<br>"
-                            "Full-model R² = %{customdata[2]:.3f}<extra></extra>"),
+                x=[row['Beta']], 
+                y=[row['Input']], 
+                mode='markers',
+                marker=dict(
+                    color=line_color, 
+                    size=12,
+                    line=dict(width=2, color='white')
+                ),
+                customdata=[[row['CI_lower'], row['CI_upper'], row['R2']]],
+                hovertemplate=(
+                    "<b>%{y}</b><br>"
+                    "Std β = %{x:+.3f}<br>"
+                    "95% CI = [%{customdata[0]:+.3f}, %{customdata[1]:+.3f}]<br>"
+                    "Full-model R² = %{customdata[2]:.3f}<extra></extra>"
+                ),
                 showlegend=False,
             ))
+            
+        # Vertical anchor line at 0 indicating null hypothesis boundary
         fig.add_vline(x=0, line_width=1.5, line_color="#1e293b")
+        
         fig.update_layout(
             template=_PLOTLY_TEMPLATE,
-            title=(f"5.1 Standardized Effect of Each Input on Mean Δ "
-                f"(controlling for {', '.join(controls)})"),
+            title=(
+                f"5.1 Standardized Effect of Each Input on Mean Δ "
+                f"(controlling for {', '.join(control_features)})"
+            ),
             xaxis_title="Standardized β (effect on Mean Δ per 1-SD of input)",
             yaxis_title="",
-            height=max(400, len(df) * 30),
+            height=max(400, len(results_df) * 30),
         )
         return fig
 
@@ -1921,7 +1982,7 @@ class ChartBuilder:
             X = np.column_stack(
                 [np.ones(n)] + [zscore(ppl[f]).values for f in features])
             try:
-                _, _, r2 = ols_fit(X, y)
+                _, _, r2 = ols_fit(X, y, compute_se=False)
                 r2 = max(0.0, r2)
             except (ValueError, np.linalg.LinAlgError):
                 r2 = 0.0
@@ -1973,6 +2034,7 @@ class ChartBuilder:
             height=max(400, len(data) * 30),
         )
         return fig
+    
     def chart_partial_dependence(self) -> go.Figure:
         """Partial dependence on the Age- and Baseline-residualized Mean Δ.
 
@@ -2107,9 +2169,7 @@ class ChartBuilder:
         if not pids:
             return _empty_fig("6.2 Convergence")
 
-        labels = (self.sim.groupby('PlayerID')
-                  .apply(lambda g: f"{g['Name'].iloc[0]} ({g['Team'].iloc[0] if pd.notna(g['Team'].iloc[0]) else 'FA'})")
-                  )
+        labels = self.ppl.set_index('PlayerID')['Label']
 
         fig = make_subplots(
             rows=2, cols=3,
@@ -2328,71 +2388,6 @@ class ChartBuilder:
             xaxis_title="Baseline OVR", yaxis_title="Std of OVR Δ",
         )
         return fig
-
-    def chart_effect_sizes(self) -> go.Figure:
-        """Forest plot of pairwise age-tier effect sizes (Cohen's d) with KS tests.
-
-        TUNING TAKEAWAY: |d| > 0.8 between adjacent tiers is a strong
-        cohort separation. |d| < 0.2 means the tiers behave nearly
-        identically. This is possibly fine, possibly a sign that your age
-        bracketing isn't producing meaningful differentiation.
-        """
-        df = self.sim
-        tiers = [t for t in AGE_COLORS if t in df['AgeTier'].astype(str).values]
-        rows = []
-        for i, t1 in enumerate(tiers):
-            for t2 in tiers[i + 1:]:
-                g1 = df[df['AgeTier'] == t1]['Delta'].dropna().values
-                g2 = df[df['AgeTier'] == t2]['Delta'].dropna().values
-                if len(g1) < 10 or len(g2) < 10:
-                    continue
-                d = cohens_d(g1, g2)
-                _, p_mw = scipy_stats.mannwhitneyu(g1, g2, alternative='two-sided')
-                ks, p_ks = scipy_stats.ks_2samp(g1, g2)
-                rows.append({
-                    'Comp': f"{t1} vs {t2}", 'd': d,
-                    'KS': ks, 'KS_p': p_ks, 'MW_p': p_mw,
-                    'MeanDiff': g1.mean() - g2.mean(),
-                })
-        if not rows:
-            return _empty_fig("7.3 Effect Sizes")
-        es = pd.DataFrame(rows)
-
-        fig = go.Figure()
-        for i, row in es.iterrows():
-            d = row['d']
-            color = ('#16a34a' if abs(d) >= 0.8 else
-                     '#f97316' if abs(d) >= 0.5 else
-                     '#94a3b8')
-            fig.add_trace(go.Scatter(
-                x=[d], y=[row['Comp']], mode='markers',
-                marker=dict(color=color, size=14, line=dict(width=2, color='white')),
-                customdata=[[row['KS'], row['KS_p'], row['MW_p'], row['MeanDiff']]],
-                hovertemplate=("<b>%{y}</b><br>"
-                               "Cohen's d %{x:+.2f}<br>"
-                               "Mean diff %{customdata[3]:+.2f}<br>"
-                               "KS %{customdata[0]:.3f} (p=%{customdata[1]:.4f})<br>"
-                               "MW p=%{customdata[2]:.4f}<extra></extra>"),
-                showlegend=False,
-            ))
-        # Reference bands
-        for v, lbl, lc in [(0.2, 'Small', '#94a3b8'),
-                           (0.5, 'Medium', '#f97316'),
-                           (0.8, 'Large', '#16a34a')]:
-            fig.add_vline(x=v, line_dash='dot', line_color=lc,
-                          annotation_text=lbl, annotation_position='top right')
-            fig.add_vline(x=-v, line_dash='dot', line_color=lc, opacity=0.5)
-        fig.add_vline(x=0, line_width=1.5, line_color="#1e293b")
-
-        fig.update_layout(
-            template=_PLOTLY_TEMPLATE,
-            title="7.3 Effect Sizes :: Pairwise Age-Tier Differences",
-            xaxis_title="Cohen's d (signed)", yaxis_title="",
-            height=max(350, len(es) * 70 + 100),
-        )
-        return fig
-
-
 
 # HTML DASHBOARD
 class HTMLDashboard:
@@ -2689,7 +2684,7 @@ class ExcelWorkbook:
                 vals = sub[attr].dropna()
                 if not len(vals):
                     continue
-                _, lo, hi = bootstrap_ci(vals.values, n_boot=1500)
+                _, lo, hi = bootstrap_ci(vals.values, n_bootstrap=1500, seed=hash((tier, attr)) & 0x7FFFFFFF)
                 rows.append({
                     'AgeTier': tier, 'Attribute': attr,
                     'Group': _attr_group(attr), 'N': len(vals),
