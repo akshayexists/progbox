@@ -51,7 +51,6 @@ auto to_lower = [](std::string str) {
                    [](unsigned char c){ return std::tolower(c); });
     return str;
 };
-
 /// @brief Parsed command-line arguments for the simulator.
 struct CliArgs {
     std::string export_path;       ///< Path to player export JSON.
@@ -68,9 +67,9 @@ struct CliArgs {
 /// @param prog_name The name of the executable (typically argv[0]).
 void print_usage(const char* prog_name) {
     printf(R"(
-╔══════════════════════════════════════════════════════════════╗
-║                    ProgBox Simulator                        ║
-╚══════════════════════════════════════════════════════════════╝
++--------------------------------------------------------------+
+|                      ProgBox Simulator                       |
++--------------------------------------------------------------+
 
 Usage: %s <export.json> <teaminfo.json> <output_dir> [options]
 
@@ -211,15 +210,9 @@ const std::unordered_map<std::string, std::string> FAILSAFE = {
 /// @brief Generates a CalVer-style build identifier from the current time.
 /// @return A string in the format "YYYYMMDDHHMMSS" (e.g., "20241115143022").
 std::string make_calver_id() {
-    using namespace std::chrono;
-
-    std::chrono::system_clock::time_point now = system_clock::now();
-    time_t t = system_clock::to_time_t(now);
-    std::tm tm = *std::localtime(&t);
-
-    std::ostringstream oss;
-    oss << std::put_time(&tm, "%Y%m%d%H%M%S");
-    return oss.str();
+    auto now = std::chrono::system_clock::now();
+    auto local_time = std::chrono::current_zone()->to_local(now);
+    return std::format("{:%Y%m%d%H%M%S}", local_time);
 }
 
 /// @brief Executes the Python post-processing analysis script.
@@ -251,16 +244,13 @@ void write_metadata(
 ) {
     using json = nlohmann::json;
 
-    std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
-    time_t t = std::chrono::system_clock::to_time_t(now);
-    std::tm tm = *std::localtime(&t);
-
-    std::ostringstream iso_time;
-    iso_time << std::put_time(&tm, "%Y-%m-%dT%H:%M:%S");
+    auto now = std::chrono::system_clock::now();
+    auto local_time = std::chrono::current_zone()->to_local(now);
+    std::string iso_time = std::format("{:%Y-%m-%dT%H:%M:%S}", local_time);
 
     json meta = {
         {"build_id", build_id},
-        {"timestamp", iso_time.str()},
+        {"timestamp", iso_time},
         {"progression", {
             {"id", version_id},
             {"name", display_name}
@@ -279,7 +269,9 @@ void write_metadata(
     };
 
     std::ofstream f(out_dir / "metadata.json");
-    f << meta.dump(4);
+    if (f.is_open()) {
+        f << meta.dump(4);
+    }
 }
 
 // ============================================================================
@@ -427,9 +419,9 @@ int main(int argc, char** argv) {
     }
 
     printf(R"(
-╔══════════════════════════════════════════════════════════════╗
-║                          ProgBox                             ║
-╚══════════════════════════════════════════════════════════════╝
++--------------------------------------------------------------+
+|                      ProgBox Simulator                       |
++--------------------------------------------------------------+
 
   Version   : %s
   Runs      : %d
