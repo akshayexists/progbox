@@ -64,6 +64,7 @@ class V0Progression final : public IProgressionStrategy {
 public:
     ProgressionResult progress_player(
         const PlayerState& player,
+        const PlayerStats& stats,
         std::mt19937& rng,
         int64_t /*run_seed*/
     ) const override;
@@ -226,6 +227,7 @@ private:
 // ============================================================================
 inline ProgressionResult V0Progression::progress_player(
     const PlayerState& player,
+    const PlayerStats& stats,
     std::mt19937& rng,
     int64_t /*run_seed*/
 ) const {

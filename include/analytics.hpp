@@ -20,6 +20,7 @@ namespace progbox {
     class Analytics {
         const std::vector<PlayerMeta>& meta_;
         const std::vector<PlayerState>& base_states_;
+        const std::vector<PlayerStats>& base_stats_;
         const std::vector<RunResult>& results_;
         size_t n_players_;
         size_t n_runs_;
@@ -35,17 +36,52 @@ namespace progbox {
             return data[index];
         }
 
+        // ── Shared season-stats CSV block ────────────────────────────────────
+        // The header writer and the row writer MUST stay in the same order.
+        // Keep these two functions adjacent so they cannot silently drift.
+        // Covers every PlayerStats field EXCEPT per/dws/ewa, which retain their
+        // own dedicated columns in the callers for backward compatibility.
+
+        /// @brief Appends the season-stats column names to a CSV header.
+        static void write_stats_header(std::ofstream& f) {
+            f << ",OWS,OBPM,DBPM,VORP,ORtg,DRtg,PM100,OnOff100"
+                 ",ASTp,BLKp,DRBp,ORBp,STLp,TRBp,USGp"
+                 ",MPG,FG,FGA,TP,TPA,FT,FTA"
+                 ",FGatRim,FGAatRim,FGlowPost,FGAlowPost,FGmid,FGAmid"
+                 ",ORB,DRB,AST,TOV,STL,BLK,BA,PF,PTS,DD,TD"
+                 ",GP,GS,Avail";
+        }
+
+        /// @brief Appends one player's season-stats values, matching the header order.
+        static void write_stats_row(std::ofstream& f, const PlayerStats& s) {
+            f << std::format(
+                ",{:.4f},{:.4f},{:.4f},{:.4f},{:.2f},{:.2f},{:.4f},{:.4f}"
+                ",{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f},{:.4f}"
+                ",{:.3f},{:.3f},{:.3f},{:.3f},{:.3f},{:.3f},{:.3f}"
+                ",{:.3f},{:.3f},{:.3f},{:.3f},{:.3f},{:.3f}"
+                ",{:.3f},{:.3f},{:.3f},{:.3f},{:.3f},{:.3f},{:.3f},{:.3f},{:.3f},{:.3f},{:.3f}"
+                ",{:.0f},{:.0f},{:.4f}",
+                s.ows, s.obpm, s.dbpm, s.vorp, s.ortg, s.drtg, s.pm100, s.onOff100,
+                s.astp, s.blkp, s.drbp, s.orbp, s.stlp, s.trbp, s.usgp,
+                s.min, s.fg, s.fga, s.tp, s.tpa, s.ft, s.fta,
+                s.fgAtRim, s.fgaAtRim, s.fgLowPost, s.fgaLowPost, s.fgMidRange, s.fgaMidRange,
+                s.orb, s.drb, s.ast, s.tov, s.stl, s.blk, s.ba, s.pf, s.pts, s.dd, s.td,
+                s.gp, s.gs, s.availability);
+        }
+
     public:
         /// @brief Constructs the analytics processor.
         /// @param meta Vector of player metadata (names, teams).
-        /// @param base_states Vector of initial player states before progression.
+        /// @param base_states Vector of initial (mutable) player states before progression.
+        /// @param base_stats Vector of immutable season profiles (parallel to base_states).
         /// @param results Vector of simulation results from SimEngine::run().
         Analytics(
             const std::vector<PlayerMeta>& meta,
             const std::vector<PlayerState>& base_states,
+            const std::vector<PlayerStats>& base_stats,
             const std::vector<RunResult>& results
-        ) : meta_(meta), base_states_(base_states), results_(results),
-        n_players_(meta.size()), n_runs_(results.size()) {}
+        ) : meta_(meta), base_states_(base_states), base_stats_(base_stats),
+        results_(results), n_players_(meta.size()), n_runs_(results.size()) {}
 
         // ─────────────────────────────────────────────────────────────────────────
         //  Raw CSV
@@ -63,19 +99,23 @@ namespace progbox {
             for (const char* attr : ALL_ATTRS) {
                 f << std::format(",{}", attr);
             }
+            write_stats_header(f);
             f << "\n";
 
             // ── Rows ──
             for (size_t p = 0; p < n_players_; ++p) {
                 const auto& m = meta_[p];
                 const auto& s = base_states_[p];
+                const auto& st = base_stats_[p];
 
                 f << std::format("{},{},{},{},{:.4f},{:.4f},{:.4f},{:.1f}",
-                                 p, m.name, m.team, static_cast<int>(s.age), s.per, s.dws, s.ewa, s.baseline_ovr);
+                                 p, m.name, m.team, static_cast<int>(s.age),
+                                 st.per, st.dws, st.ewa, s.baseline_ovr);
 
                 for (size_t a = 0; a < ALL_ATTRS.size(); ++a) {
                     f << std::format(",{:.1f}", s.attrs[a]);
                 }
+                write_stats_row(f, st);
                 f << "\n";
             }
         }
@@ -95,12 +135,14 @@ namespace progbox {
             for (const char* attr : ALL_ATTRS) {
                 f << std::format(",{}", attr);
             }
+            write_stats_header(f);
             f << "\n";
 
             // ── Rows ──
             for (size_t r = 0; r < n_runs_; ++r) {
                 int64_t seed = results_[r].run_seed;
                 for (size_t p = 0; p < n_players_; ++p) {
+                    const auto& st = base_stats_[p];
                     double base = base_states_[p].baseline_ovr;
                     double ovr  = results_[r].final_ovrs[p];
                     double delta = ovr - base;
@@ -111,11 +153,12 @@ namespace progbox {
                                      r, seed, meta_[p].name, meta_[p].team, age, p,
                                      base, ovr, delta, pct,
                                      (ovr > base) ? "True" : "False",
-                                     base_states_[p].per, base_states_[p].dws, base_states_[p].ewa);
+                                     st.per, st.dws, st.ewa);
 
                     for (size_t a = 0; a < 15; ++a) {
                         f << std::format(",{:.1f}", results_[r].progressed_attrs[p][a]);
                     }
+                    write_stats_row(f, st);
                     f << "\n";
 
                     progress.tick();
@@ -137,7 +180,9 @@ namespace progbox {
 
             ProgressIndicator progress(static_cast<int>(n_players_), "Summary");
 
-            f << "Name,Team,Age,Baseline,MeanOvr,MeanDelta,StdDelta,MinOvr,MaxOvr,Q10,Q25,Q75,Q90,PctPositive\n";
+            f << "Name,Team,Age,Baseline,MeanOvr,MeanDelta,StdDelta,MinOvr,MaxOvr,Q10,Q25,Q75,Q90,PctPositive";
+            write_stats_header(f);
+            f << "\n";
 
             for (size_t p = 0; p < n_players_; ++p) {
                 double base = base_states_[p].baseline_ovr;
@@ -151,7 +196,9 @@ namespace progbox {
                 double mean_ovr   = base + mean_delta;
 
                 double sq_sum = std::inner_product(deltas.begin(), deltas.end(), deltas.begin(), 0.0);
-                double std_delta = std::sqrt(sq_sum / n_runs_ - mean_delta * mean_delta);
+                // Clamp to guard against tiny negative variance from FP round-off.
+                double variance = std::max(0.0, sq_sum / n_runs_ - mean_delta * mean_delta);
+                double std_delta = std::sqrt(variance);
 
                 double min_delta = *std::min_element(deltas.begin(), deltas.end());
                 double max_delta = *std::max_element(deltas.begin(), deltas.end());
@@ -166,10 +213,12 @@ namespace progbox {
 
                 int age = static_cast<int>(base_states_[p].age);
 
-                f << std::format("{},{},{},{:.1f},{:.1f},{:.3f},{:.3f},{:.1f},{:.1f},{:.1f},{:.1f},{:.1f},{:.1f},{:.3f}\n",
+                f << std::format("{},{},{},{:.1f},{:.1f},{:.3f},{:.3f},{:.1f},{:.1f},{:.1f},{:.1f},{:.1f},{:.1f},{:.3f}",
                                  meta_[p].name, meta_[p].team, age, base, mean_ovr, mean_delta, std_delta,
                                  base + min_delta, base + max_delta,
                                  base + q10, base + q25, base + q75, base + q90, pct_pos);
+                write_stats_row(f, base_stats_[p]);
+                f << "\n";
 
                 progress.tick();
             }

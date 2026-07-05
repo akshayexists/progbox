@@ -1,5 +1,6 @@
 /// @file main.cpp
-/// @brief Orchestration layer with automatic progression script version discovery.
+/// @brief Orchestration layer with automatic progression script version
+/// discovery.
 /// @author @akshayexists
 ///
 /// This is the main entry point for the ProgBox Simulator. It handles CLI
@@ -16,30 +17,29 @@
 ///   7. Export analytics (raw CSV, summary CSV, god-prog JSON)
 ///   8. Run optional Python post-processing script
 
-#include <iostream>
-#include <fstream>
-#include <filesystem>
-#include <cstdio>
-#include <string>
-#include <memory>
-#include <optional>
-#include <chrono>
-#include <iomanip>
-#include <sstream>
-#include <random>
 #include <algorithm>
 #include <cctype>
+#include <chrono>
+#include <cstdio>
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <memory>
+#include <optional>
+#include <random>
+#include <sstream>
+#include <string>
+#include <vector>
 
-#include "progression_registry.hpp"
-#include "sim_engine.hpp"
 #include "analytics.hpp"
 #include "json.hpp"
 #include "ovr_math.hpp"
-
+#include "progression_registry.hpp"
+#include "sim_engine.hpp"
 
 namespace fs = std::filesystem;
 using json = nlohmann::json;
-
 
 // ============================================================================
 // CLI
@@ -47,23 +47,24 @@ using json = nlohmann::json;
 
 // Helper function to convert string to lowercase for easy comparison
 auto to_lower = [](std::string str) {
-    std::transform(str.begin(), str.end(), str.begin(), 
-                   [](unsigned char c){ return std::tolower(c); });
+    std::transform(str.begin(), str.end(), str.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
     return str;
 };
 /// @brief Parsed command-line arguments for the simulator.
 struct CliArgs {
-    std::string export_path;       ///< Path to player export JSON.
-    std::string teaminfo_path;     ///< Path to team info JSON.
-    fs::path output_dir;           ///< Base output directory (build ID appended).
-    std::string version;           ///< Progression strategy ID (e.g., "v321").
-    int runs = 1000;               ///< Number of Monte Carlo simulation runs.
-    int year = 2012;               ///< Season year for age calculation.
-    int workers = 0;               ///< Worker threads (0 = auto-detect).
-    int seed = 69;                 ///< RNG seed (0 = random).
+    std::string export_path;    ///< Path to player export JSON.
+    std::string teaminfo_path;  ///< Path to team info JSON.
+    fs::path output_dir;        ///< Base output directory (build ID appended).
+    std::string version;        ///< Progression strategy ID (e.g., "v321").
+    int runs = 1000;            ///< Number of Monte Carlo simulation runs.
+    int year = 2012;            ///< Season year for age calculation.
+    int workers = 0;            ///< Worker threads (0 = auto-detect).
+    int seed = 69;              ///< RNG seed (0 = random).
 };
 
-/// @brief Prints usage information and available progression versions to stdout.
+/// @brief Prints usage information and available progression versions to
+/// stdout.
 /// @param prog_name The name of the executable (typically argv[0]).
 void print_usage(const char* prog_name) {
     printf(R"(
@@ -75,7 +76,7 @@ Usage: %s <export.json> <teaminfo.json> <output_dir> [options]
 
 Required:
   export.json      Player export JSON
-  teaminfo.json    Team info JSON  
+  teaminfo.json    Team info JSON
   output_dir       Output directory
 
 Options:
@@ -88,8 +89,9 @@ Options:
 
 Available Versions:
 %s
-)", prog_name, progbox::ProgressionRegistry::default_id().c_str(),
-   progbox::ProgressionRegistry::formatted_list().c_str());
+)",
+           prog_name, progbox::ProgressionRegistry::default_id().c_str(),
+           progbox::ProgressionRegistry::formatted_list().c_str());
 }
 
 /// @brief Parses command-line arguments into a CliArgs struct.
@@ -107,34 +109,49 @@ std::optional<CliArgs> parse_args(int argc, char** argv) {
         if (arg == "-h" || arg == "--help") {
             print_usage(argv[0]);
             std::exit(0);
-        }
-        else if ((arg == "-v" || arg == "--version") && i + 1 < argc) {
+        } else if ((arg == "-v" || arg == "--version") && i + 1 < argc) {
             args.version = argv[++i];
-        }
-        else if ((arg == "-r" || arg == "--runs") && i + 1 < argc) {
-            try { args.runs = std::stoi(argv[++i]); }
-            catch (...) { printf("Error: invalid runs\n"); return std::nullopt; }
-        }
-        else if ((arg == "-y" || arg == "--year") && i + 1 < argc) {
-            try { args.year = std::stoi(argv[++i]); }
-            catch (...) { printf("Error: invalid year\n"); return std::nullopt; }
-        }
-        else if ((arg == "-w" || arg == "--workers") && i + 1 < argc) {
-            try { args.workers = std::stoi(argv[++i]); }
-            catch (...) { printf("Error: invalid workers\n"); return std::nullopt; }
-        }
-        else if ((arg == "-s" || arg == "--seed") && i + 1 < argc) {
-            try { args.seed = std::stoi(argv[++i]); }
-            catch (...) { printf("Error: invalid seed\n"); return std::nullopt; }
-        }
-        else if (arg[0] != '-') {
-            if (positional == 0) args.export_path = arg;
-            else if (positional == 1) args.teaminfo_path = arg;
-            else if (positional == 2) args.output_dir = arg;
-            else { printf("Error: unexpected argument\n"); return std::nullopt; }
+        } else if ((arg == "-r" || arg == "--runs") && i + 1 < argc) {
+            try {
+                args.runs = std::stoi(argv[++i]);
+            } catch (...) {
+                printf("Error: invalid runs\n");
+                return std::nullopt;
+            }
+        } else if ((arg == "-y" || arg == "--year") && i + 1 < argc) {
+            try {
+                args.year = std::stoi(argv[++i]);
+            } catch (...) {
+                printf("Error: invalid year\n");
+                return std::nullopt;
+            }
+        } else if ((arg == "-w" || arg == "--workers") && i + 1 < argc) {
+            try {
+                args.workers = std::stoi(argv[++i]);
+            } catch (...) {
+                printf("Error: invalid workers\n");
+                return std::nullopt;
+            }
+        } else if ((arg == "-s" || arg == "--seed") && i + 1 < argc) {
+            try {
+                args.seed = std::stoi(argv[++i]);
+            } catch (...) {
+                printf("Error: invalid seed\n");
+                return std::nullopt;
+            }
+        } else if (arg[0] != '-') {
+            if (positional == 0)
+                args.export_path = arg;
+            else if (positional == 1)
+                args.teaminfo_path = arg;
+            else if (positional == 2)
+                args.output_dir = arg;
+            else {
+                printf("Error: unexpected argument\n");
+                return std::nullopt;
+            }
             ++positional;
-        }
-        else {
+        } else {
             printf("Error: unknown option '%s'\n", arg.c_str());
             return std::nullopt;
         }
@@ -150,19 +167,19 @@ std::optional<CliArgs> parse_args(int argc, char** argv) {
     return args;
 }
 
-
 // ============================================================================
 // JSON Helpers
 // ============================================================================
 
 /// @brief Safely extracts a numeric value from a JSON node.
 /// @details Handles null, numeric, and string representations. Strings are
-///          parsed via stoi/stod/stob as appropriate. Returns default on failure.
+///          parsed via stoi/stod/stob as appropriate. Returns default on
+///          failure.
 /// @tparam T The output type (int, double, or bool).
 /// @param j The JSON node to extract from.
 /// @param default_val Fallback value if extraction fails.
 /// @return The extracted value, or default_val on any error.
-template<typename T>
+template <typename T>
 T safe_json_number(const nlohmann::json& j, T default_val = T{}) {
     if (j.is_null()) return default_val;
     if (j.is_number()) return j.get<T>();
@@ -190,18 +207,19 @@ T safe_json_number(const nlohmann::json& j, T default_val = T{}) {
 /// @param key The key to look up.
 /// @param default_val Fallback value if key is missing or extraction fails.
 /// @return The extracted value, or default_val on any error.
-template<typename T>
-T safe_json_get(const nlohmann::json& j, const std::string& key, T default_val = T{}) {
+template <typename T>
+T safe_json_get(const nlohmann::json& j, const std::string& key,
+                T default_val = T{}) {
     if (!j.contains(key)) return default_val;
     return safe_json_number<T>(j[key], default_val);
 }
 
-/// @brief Mapping of common abbreviation mismatches to canonical attribute names.
+/// @brief Mapping of common abbreviation mismatches to canonical attribute
+/// names.
 /// @details Handles cases where the source JSON uses shorthand keys like
 ///          "end" instead of "endu", or "str" instead of "stre".
 const std::unordered_map<std::string, std::string> FAILSAFE = {
-    {"end", "endu"}, {"2pt", "fg"}, {"3pt", "tp"}, {"str", "stre"}
-};
+    {"end", "endu"}, {"2pt", "fg"}, {"3pt", "tp"}, {"str", "stre"}};
 
 // ============================================================================
 // Misc post-build helpers
@@ -219,8 +237,14 @@ std::string make_calver_id() {
 /// @param out_dir Directory containing simulation output files.
 /// @return The exit code from the Python script (0 = success).
 int run_python_analysis(const std::filesystem::path& out_dir, bool raw) {
-    std::string cmd;
-    cmd = "python3 tools/analysis.py \"" + out_dir.string() + "\"";
+    // Determine the correct python command based on the OS
+    #if defined(_WIN32) || defined(_WIN64)
+        std::string python_exe = "python";
+    #else
+        std::string python_exe = "python3";
+    #endif
+        std::string cmd = python_exe + " tools/analysis.py \"" + out_dir.string() + "\"";
+
     printf("Running analysis: %s\n", cmd.c_str());
     return std::system(cmd.c_str());
 }
@@ -233,40 +257,28 @@ int run_python_analysis(const std::filesystem::path& out_dir, bool raw) {
 /// @param args Parsed CLI arguments.
 /// @param player_count Number of players loaded after filtering.
 /// @param seed RNG seed used for the simulation.
-void write_metadata(
-    const std::filesystem::path& out_dir,
-    const std::string& build_id,
-    const std::string& version_id,
-    const std::string& display_name,
-    const CliArgs& args,
-    size_t player_count,
-    int seed
-) {
+void write_metadata(const std::filesystem::path& out_dir,
+                    const std::string& build_id, const std::string& version_id,
+                    const std::string& display_name, const CliArgs& args,
+                    size_t player_count, int seed) {
     using json = nlohmann::json;
 
     auto now = std::chrono::system_clock::now();
     auto local_time = std::chrono::current_zone()->to_local(now);
     std::string iso_time = std::format("{:%Y-%m-%dT%H:%M:%S}", local_time);
 
-    json meta = {
-        {"build_id", build_id},
-        {"timestamp", iso_time},
-        {"progression", {
-            {"id", version_id},
-            {"name", display_name}
-        }},
-        {"simulation", {
-            {"runs", args.runs},
-            {"workers", args.workers},
-            {"year", args.year},
-            {"seed", seed}
-        }},
-        {"inputs", {
-            {"export_path", args.export_path},
-            {"teaminfo_path", args.teaminfo_path}
-        }},
-        {"player_count", player_count}
-    };
+    json meta = {{"build_id", build_id},
+                 {"timestamp", iso_time},
+                 {"progression", {{"id", version_id}, {"name", display_name}}},
+                 {"simulation",
+                  {{"runs", args.runs},
+                   {"workers", args.workers},
+                   {"year", args.year},
+                   {"seed", seed}}},
+                 {"inputs",
+                  {{"export_path", args.export_path},
+                   {"teaminfo_path", args.teaminfo_path}}},
+                 {"player_count", player_count}};
 
     std::ofstream f(out_dir / "metadata.json");
     if (f.is_open()) {
@@ -293,14 +305,14 @@ void write_metadata(
 /// @param teaminfo_path Path to the team info lookup JSON file.
 /// @param year The season year (used to calculate player age).
 /// @param[out] out_meta Populated with player name and team.
-/// @param[out] out_states Populated with player stats, ratings, and baseline OVR.
-void load_players(
-    const std::string& export_path,
-    const std::string& teaminfo_path,
-    int year,
-    std::vector<progbox::PlayerMeta>& out_meta,
-    std::vector<progbox::PlayerState>& out_states
-) {
+/// @param[out] out_states Populated with mutable player state and baseline OVR.
+/// @param[out] out_stats Populated with the immutable season statistical
+///             profile (parallel to out_states).
+void load_players(const std::string& export_path,
+                  const std::string& teaminfo_path, int year,
+                  std::vector<progbox::PlayerMeta>& out_meta,
+                  std::vector<progbox::PlayerState>& out_states,
+                  std::vector<progbox::PlayerStats>& out_stats) {
     std::ifstream ef(export_path);
     if (!ef.is_open()) {
         printf("Error: Cannot open export file: %s\n", export_path.c_str());
@@ -323,14 +335,13 @@ void load_players(
         bool is_playoffs = safe_json_get<bool>(last_stat, "playoffs", false);
 
         /// @note Assumes at least 2 stat entries if last is playoff data.
-        ///       This could crash if the stats array has exactly 1 playoff entry.
-        nlohmann::json_abi_v3_12_0::json& stat = is_playoffs ? p["stats"][p["stats"].size() - 2] : last_stat;
+        ///       This could crash if the stats array has exactly 1 playoff
+        ///       entry.
+        nlohmann::json_abi_v3_12_0::json& stat =
+            is_playoffs ? p["stats"][p["stats"].size() - 2] : last_stat;
 
         double per = safe_json_get<double>(stat, "per", 0.0);
         if (per == 0.0) continue;
-
-        double dws = safe_json_get<double>(stat, "dws", 0.0);
-        double ewa = safe_json_get<double>(stat, "ewa", 0.0);
 
         std::string tid_str = std::to_string(tid);
         std::string team = team_lookup.value(tid_str, "Unknown");
@@ -338,6 +349,66 @@ void load_players(
         int birth_year = safe_json_get<int>(p["born"], "year", year - 25);
         int age = year - birth_year;
         if (age < 25) continue;
+
+        // ── Build immutable season profile ──────────────────────────────
+        // rd(): raw value as float.  pg(): per-game (raw / gp).
+        auto rd = [&](const char* k) {
+            return static_cast<float>(safe_json_get<double>(stat, k, 0.0));
+        };
+        const float gp = rd("gp");
+        auto pg = [&](const char* k) { return gp > 0.f ? rd(k) / gp : 0.f; };
+
+        progbox::PlayerStats pstats{};
+        pstats.per = per;  // double, verbatim
+        // advanced rates (already league-relative)
+        pstats.ewa = rd("ewa");
+        pstats.ows = rd("ows");
+        pstats.dws = rd("dws");
+        pstats.obpm = rd("obpm");
+        pstats.dbpm = rd("dbpm");
+        pstats.vorp = rd("vorp");
+        pstats.ortg = rd("ortg");
+        pstats.drtg = rd("drtg");
+        pstats.pm100 = rd("pm100");
+        pstats.onOff100 = rd("onOff100");
+        pstats.astp = rd("astp");
+        pstats.blkp = rd("blkp");
+        pstats.drbp = rd("drbp");
+        pstats.orbp = rd("orbp");
+        pstats.stlp = rd("stlp");
+        pstats.trbp = rd("trbp");
+        pstats.usgp = rd("usgp");
+        // volume, per game
+        pstats.fg = pg("fg");
+        pstats.fga = pg("fga");
+        pstats.tp = pg("tp");
+        pstats.tpa = pg("tpa");
+        pstats.ft = pg("ft");
+        pstats.fta = pg("fta");
+        pstats.fgAtRim = pg("fgAtRim");
+        pstats.fgaAtRim = pg("fgaAtRim");
+        pstats.fgLowPost = pg("fgLowPost");
+        pstats.fgaLowPost = pg("fgaLowPost");
+        pstats.fgMidRange = pg("fgMidRange");
+        pstats.fgaMidRange = pg("fgaMidRange");
+        pstats.orb = pg("orb");
+        pstats.drb = pg("drb");
+        pstats.ast = pg("ast");
+        pstats.tov = pg("tov");
+        pstats.stl = pg("stl");
+        pstats.blk = pg("blk");
+        pstats.ba = pg("ba");
+        pstats.pf = pg("pf");
+        pstats.pts = pg("pts");
+        pstats.dd = pg("dd");
+        pstats.td = pg("td");
+        // context / weighting
+        pstats.gp = gp;
+        pstats.gs = rd("gs");
+        pstats.min = gp > 0.f ? rd("min") / gp : 0.f;  // minutes per game
+        const float min_avail = rd("minAvailable");
+        pstats.availability =
+            min_avail > 0.f ? std::min(1.0f, rd("min") / min_avail) : 0.f;
 
         nlohmann::json_abi_v3_12_0::json& last_rating = p["ratings"].back();
         std::unordered_map<std::string, int> ratings;
@@ -350,27 +421,31 @@ void load_players(
         /// @brief Lambda to look up a rating attribute with FAILSAFE remapping.
         auto get_attr = [&](const std::string& attr_name) {
             std::string lower_attr = attr_name;
-            std::transform(lower_attr.begin(), lower_attr.end(), lower_attr.begin(), ::tolower);
-            if (FAILSAFE.count(lower_attr)) lower_attr = FAILSAFE.at(lower_attr);
+            std::transform(lower_attr.begin(), lower_attr.end(),
+                           lower_attr.begin(), ::tolower);
+            if (FAILSAFE.count(lower_attr))
+                lower_attr = FAILSAFE.at(lower_attr);
             return ratings.count(lower_attr) ? ratings[lower_attr] : 0;
         };
 
         progbox::PlayerMeta meta;
-        meta.name = p["firstName"].get<std::string>() + " " + p["lastName"].get<std::string>();
+        meta.name = p["firstName"].get<std::string>() + " " +
+                    p["lastName"].get<std::string>();
         meta.team = team;
 
         progbox::PlayerState state;
         state.age = static_cast<double>(age);
-        state.per = per;
-        state.dws = dws;
-        state.ewa = ewa;
 
         for (size_t i = 0; i < progbox::ALL_ATTRS.size(); ++i) {
-            state.attrs[i] = static_cast<double>(get_attr(std::string(progbox::ALL_ATTRS[i])));
+            state.attrs[i] = static_cast<double>(
+                get_attr(std::string(progbox::ALL_ATTRS[i])));
         }
-        state.baseline_ovr = static_cast<double>(progbox::calcovr_from_array(state.attrs));
+        state.baseline_ovr =
+            static_cast<double>(progbox::calcovr_from_array(state.attrs));
 
+        // Push together to keep the three vectors index-parallel.
         out_meta.push_back(std::move(meta));
+        out_stats.push_back(pstats);
         out_states.push_back(state);
     }
 }
@@ -401,14 +476,17 @@ int main(int argc, char** argv) {
     std::filesystem::create_directories(args->output_dir);
 
     // ── Phase 3: Resolve progression strategy ───────────────────────────
-    std::unique_ptr<progbox::IProgressionStrategy> progression = progbox::ProgressionRegistry::create(args->version);
+    std::unique_ptr<progbox::IProgressionStrategy> progression =
+        progbox::ProgressionRegistry::create(args->version);
     if (!progression) {
         printf("Error: Unknown version '%s'\n", args->version.c_str());
-        printf("Available: %s\n", progbox::ProgressionRegistry::id_list().c_str());
+        printf("Available: %s\n",
+               progbox::ProgressionRegistry::id_list().c_str());
         return 1;
     }
 
-    const struct progbox::ProgressionEntry* entry = progbox::ProgressionRegistry::find(args->version);
+    const struct progbox::ProgressionEntry* entry =
+        progbox::ProgressionRegistry::find(args->version);
     std::string display_name = entry ? entry->display_name : args->version;
 
     // ── Resolve seed: 0 means generate random ───────────────────────────
@@ -430,26 +508,22 @@ int main(int argc, char** argv) {
   Seed      : %d
   Output    : %s
 
-)", display_name.c_str(), args->runs, args->workers, args->year, seed,
-   args->output_dir.string().c_str());
+)",
+           display_name.c_str(), args->runs, args->workers, args->year, seed,
+           args->output_dir.string().c_str());
 
     // ── Phase 4: Load players ───────────────────────────────────────────
     printf("Loading players...\n");
     std::vector<progbox::PlayerMeta> player_meta;
     std::vector<progbox::PlayerState> player_states;
-    load_players(args->export_path, args->teaminfo_path, args->year, player_meta, player_states);
+    std::vector<progbox::PlayerStats> player_stats;
+    load_players(args->export_path, args->teaminfo_path, args->year,
+                 player_meta, player_states, player_stats);
     printf("Loaded %zu players.\n", player_meta.size());
 
     // ── Phase 5: Write metadata ─────────────────────────────────────────
-    write_metadata(
-        args->output_dir,
-        build_id,
-        args->version,
-        display_name,
-        *args,
-        player_meta.size(),
-        seed
-    );
+    write_metadata(args->output_dir, build_id, args->version, display_name,
+                   *args, player_meta.size(), seed);
 
     if (player_meta.empty()) {
         printf("No players found. Check export file and year.\n");
@@ -459,7 +533,8 @@ int main(int argc, char** argv) {
     // ── Phase 6: Run simulation ─────────────────────────────────────────
     printf("Simulating...\n");
     progbox::SimEngine engine(*progression, args->workers);
-    std::vector<progbox::RunResult> raw_results = engine.run(player_meta, player_states, args->runs, seed);
+    std::vector<progbox::RunResult> raw_results =
+        engine.run(player_meta, player_states, player_stats, args->runs, seed);
 
     /// @note Validate simulation output before proceeding to analytics.
     if (raw_results.empty()) {
@@ -469,7 +544,7 @@ int main(int argc, char** argv) {
 
     // ── Phase 7: Compute and export analytics ───────────────────────────
     printf("Computing analytics...\n");
-    progbox::Analytics analytics(player_meta, player_states, raw_results);
+    progbox::Analytics analytics(player_meta, player_states, player_stats, raw_results);
     analytics.export_all(args->output_dir / "raw");
 
     size_t god_count = 0;
@@ -483,7 +558,9 @@ int main(int argc, char** argv) {
   God Progs: %zu
   Output   : %s
 ═══════════════════════════════════════════════════════════════
-)", player_meta.size(), args->runs, seed, god_count, args->output_dir.string().c_str());
+)",
+           player_meta.size(), args->runs, seed, god_count,
+           args->output_dir.string().c_str());
 
     // ── Phase 8: Python post-processing ─────────────────────────────────
     bool should_run = true;
@@ -492,14 +569,14 @@ int main(int argc, char** argv) {
     // Loop until we get a valid yes or no
     // while (true) {
     //     std::cout << "\nRun Python post-processing analysis? [y/n]: ";
-        
+
     //     // If input is piped (e.g., CI/CD) and hits EOF, break out safely
     //     if (!std::getline(std::cin, user_input)) {
-    //         break; 
+    //         break;
     //     }
-        
+
     //     std::string answer = to_lower(user_input);
-        
+
     //     if (answer == "y" || answer == "yes") {
     //         should_run = true;
     //         break;
@@ -507,7 +584,8 @@ int main(int argc, char** argv) {
     //         should_run = false;
     //         break;
     //     } else {
-    //         std::cout << "  Invalid input. Please type 'y', 'yes', 'n', or 'no'.\n";
+    //         std::cout << "  Invalid input. Please type 'y', 'yes', 'n', or
+    //         'no'.\n";
     //     }
     // }
     if (should_run) {
