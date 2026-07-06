@@ -1080,11 +1080,9 @@ SECTIONS: List[Dict] = [
         "id": "player-explorer",
         "title": "§8 · Player Explorer",
         "intro": "Any single player's full outcome, on demand. Pick a player "
-        "(type to search) to see the distribution of their OVR Δ over "
+        "(type to search and hit enter) to see the distribution of their OVR Δ over "
         "all runs, with their mean, P5/P95, and the league mean for "
-        "reference. All players are precomputed into one compact "
-        "payload and drawn client-side, so this stays a single file "
-        "with no 294-figure blowup.",
+        "reference. ",
         "charts": ["player_explorer"],
     },
 ]
