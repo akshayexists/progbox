@@ -40,7 +40,6 @@
 
 namespace fs = std::filesystem;
 using json = nlohmann::json;
-
 // ============================================================================
 // CLI
 // ============================================================================
@@ -57,8 +56,8 @@ struct CliArgs {
     std::string teaminfo_path;  ///< Path to team info JSON.
     fs::path output_dir;        ///< Base output directory (build ID appended).
     std::string version;        ///< Progression strategy ID (e.g., "v321").
-    int runs = 1000;            ///< Number of Monte Carlo simulation runs.
-    int year = 2012;            ///< Season year for age calculation.
+    int runs = 500;            ///< Number of Monte Carlo simulation runs.
+    int year = 2021;            ///< Season year for age calculation.
     int workers = 0;            ///< Worker threads (0 = auto-detect).
     int seed = 69;              ///< RNG seed (0 = random).
 };
@@ -325,7 +324,22 @@ void load_players(const std::string& export_path,
         printf("Error: Cannot open teaminfo file: %s\n", teaminfo_path.c_str());
         return;
     }
+
     json team_lookup = json::parse(tf);
+
+    int year_ = 0;
+    if (data.contains("awards") && !data["awards"].empty()) {
+        try {
+            year_ = safe_json_get<int>(data["awards"].back(), "season", 0) + 1;
+            if (year_<year) printf("OVERRIDING YEAR TO LATEST IN EXPORT: %i\n", year_);
+        } catch (const std::exception& e) {
+            printf("Could not gauge year from export.");
+        }
+    }
+
+    if (year_ && year > year_) {
+        year = year_;
+    }
 
     for (auto& p : data["players"]) {
         int tid = safe_json_get<int>(p, "tid", -2);

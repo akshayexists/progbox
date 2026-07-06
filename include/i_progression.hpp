@@ -52,5 +52,12 @@ public:
     /// @brief Get human-readable version identifier.
     /// @return Version string like "v3.2.1" or "v4.1".
     [[nodiscard]] virtual std::string version() const noexcept = 0;
+
+    /// @brief Optional one-time hook to precompute pool-wide context before runs.
+    /// @details Called exactly once by SimEngine before the parallel run loop,
+    ///          with the full player pool. Strategies needing cross-player
+    ///          statistics (e.g. z-scoring) override this; default is a no-op.
+    ///          Must leave the strategy safe for concurrent const progress_player.
+    virtual void prepare([[maybe_unused]] const std::vector<PlayerStats>& pool) {}
 };
 } // namespace progbox

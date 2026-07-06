@@ -22,7 +22,7 @@ namespace progbox {
 
 class SimEngine {
 private:
-    const IProgressionStrategy& strategy_;
+    IProgressionStrategy& strategy_;
     size_t num_workers_;
 
     /// @brief A lightweight, fixed-size thread pool for parallel task execution.
@@ -97,7 +97,7 @@ public:
     /// @brief Constructs the simulation engine.
     /// @param strategy The progression strategy to apply to each player.
     /// @param workers The number of threads to use (defaults to hardware concurrency).
-    SimEngine(const IProgressionStrategy& strategy,
+    SimEngine(IProgressionStrategy& strategy,
               size_t workers = std::thread::hardware_concurrency())
         : strategy_(strategy), num_workers_(workers > 0 ? workers : 1) {}
 
@@ -122,7 +122,7 @@ public:
         for (int i = 0; i < runs; ++i) {
             run_seeds[i] = seed_dist(master_rng);
         }
-
+        strategy_.prepare(base_stats);
         thread_pool pool(num_workers_);
         ProgressIndicator progress(runs, "simulations");
 
