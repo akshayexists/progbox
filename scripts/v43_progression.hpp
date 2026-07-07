@@ -22,16 +22,14 @@
 ///        2. LOCAL FACTOR (L) = Linear age character + curated z-scored nudge
 ///        per attribute.
 ///           * Pool z-scores are RELIABILITY-WEIGHTED (sample / (sample + K))
-///             so noisy, low-minute estimates cannot artificially inflate the pool
-///             standard deviation.
+///             so noisy, low-minute estimates cannot artificially inflate the
+///             pool standard deviation.
 ///
 ///        3. VARIANCE & SHOCK (noise):
 ///           * Per-Attribute Jitter
 ///           * Common Per-Player Shock
 ///
 ///        4. SOFT CEILING & LIMITS:
-///           * Soft ceiling lifted from 78 -> 79 so primes can materialize
-///           slightly higher.
 ///           * Taper remains strictly one-sided on POSITIVE deltas; attributes
 ///           still move
 ///             independently near the cap to prevent net-OVR clamping from
@@ -159,20 +157,25 @@ class V43Progression final : public IProgressionStrategy {
         Config() {
             // Negative = declines with age; positive = holds/rises with age.
             ageShapeSlope[Hgt] = 0.00;  // immutable
-            ageShapeSlope[Spd] = -0.16;
-            ageShapeSlope[Jmp] = -0.16;
-            ageShapeSlope[Dnk] = -0.11;
+
+            // --- ACCELERATED ATHLETICISM DECLINE ---
+            ageShapeSlope[Spd] = -0.26;  // Increased from -0.16
+            ageShapeSlope[Jmp] = -0.26;  // Increased from -0.16
+            ageShapeSlope[Dnk] = -0.18;  // Increased from -0.11
+
             ageShapeSlope[End] = -0.11;
             ageShapeSlope[Reb] = -0.08;
             ageShapeSlope[Str] = -0.06;
             ageShapeSlope[Drb] = -0.05;
             ageShapeSlope[Ins] = -0.02;
-            ageShapeSlope[TwoPt] = 0.00;
-            ageShapeSlope[Pss] = +0.02;
-            ageShapeSlope[ThreePt] = +0.02;
-            ageShapeSlope[FT] = +0.04;
-            ageShapeSlope[dIQ] = +0.06;
-            ageShapeSlope[oIQ] = +0.07;
+            ageShapeSlope[TwoPt] = 0.07;
+            ageShapeSlope[Pss] = +0.06;
+            ageShapeSlope[ThreePt] = +0.08;
+            ageShapeSlope[FT] = +0.05;
+
+            // --- AGE INDEPENDENT IQ, positive when aged ---
+            ageShapeSlope[dIQ] = +0.01;  // Changed from +0.06
+            ageShapeSlope[oIQ] = +0.01;  // Changed from +0.07
         }
     };
 
@@ -285,11 +288,12 @@ class V43Progression final : public IProgressionStrategy {
         const double P = production_P(stats);
 
         std::uniform_real_distribution<double> unit(-1.0, 1.0);
-        const double nmult = noise_mult(stats.min);
+        const double nmult = noise_mult(stats.min, age);
         // Common per-player shock: correlated across attributes
         const double commonShock = unit(rng) * cfg_.commonNoise * nmult;
-        const double G =
-            (global_signal(out.age, P) + commonShock) * cfg_.globalScale;
+        const double Gage = global_signal(out.age, P) * cfg_.globalScale;
+        // const double G =
+        //     (global_signal(out.age, P) + commonShock) * cfg_.globalScale;
 
         const StatZ z = zscores(stats);
         const double gf = gain_factor(ovr);
@@ -304,10 +308,9 @@ class V43Progression final : public IProgressionStrategy {
                                             -cfg_.nudgeCap, cfg_.nudgeCap);
             const double L = ageShape + nudge;
             const double noise = unit(rng) * namp;
-
-            double delta = G + L + noise;
-            if (delta > 0.0)
-                delta *= gf;  // resist gains near ceiling; decline free
+            const double base = (a == oIQ || a == dIQ) ? 0.0 : Gage;
+            double delta = base + commonShock + L + noise;
+            if (delta > 0.0) delta *= gf;
 
             out.attrs[a] = std::clamp(out.attrs[a] + delta, 0.0, 100.0);
         }
@@ -434,7 +437,7 @@ class V43Progression final : public IProgressionStrategy {
                           0.0, 1.0);
     }
 
-    double noise_mult(double mpg) const {
+    double noise_mult(double mpg, double age = 0) const {
         const double m = std::max(cfg_.noiseFloor, mpg);
         return std::min(std::sqrt(cfg_.noiseRefMpg / m), cfg_.noiseMultCap);
     }
