@@ -1080,9 +1080,10 @@ SECTIONS: List[Dict] = [
         "id": "player-explorer",
         "title": "§8 · Player Explorer",
         "intro": "Any single player's full outcome, on demand. Pick a player "
-        "(type to search and hit enter) to see the distribution of their OVR Δ over "
-        "all runs, with their mean, P5/P95, and the league mean for "
-        "reference. ",
+        "(type to search) to see the distribution of their OVR Δ over "
+        "all runs. Presents the  mean, P5/P95, and the league mean for "
+        "reference. On the right, you can inspect the OVR-weighted attribute movement that "
+        "produced it.",
         "charts": ["player_explorer"],
     },
 ]
@@ -3304,7 +3305,11 @@ class ChartBuilder:
         single player's Δ distribution and OVR-weighted attribute movement.
 
         Efficiency: rather than emit 294 figures, we precompute a compact
-        record per player.
+        record per player. A per-player ΔOVR distribution (a PMF over its own
+        support, or adaptive bins for continuous Δ), the coef-weighted
+        attribute deltas, and summary scalars, and let the browser draw the
+        selected player with the already-inlined Plotly. Total payload is a few
+        hundred KB, independent of run count.
         """
         sim = self.sim
         ppl = self.ppl
@@ -3314,16 +3319,11 @@ class ChartBuilder:
                 "Player explorer unavailable (no data).</p></div>"
             )
 
-        # Shared histogram edges over the robust global Δ range.
-        d_all = sim["Delta"].dropna().values
-        lo, hi = np.percentile(d_all, [0.5, 99.5])
-        if hi <= lo:
-            lo, hi = float(d_all.min()), float(d_all.max() + 1e-6)
-        edges = np.linspace(lo, hi, 41)
-        centers = ((edges[:-1] + edges[1:]) / 2).round(3)
-
         # Per-player Δ arrays in one groupby (avoids 294 filters).
-        delta_by_player = {pid: g.values for pid, g in sim.groupby("PlayerID")["Delta"]}
+        delta_by_player = {
+            pid: np.asarray(g.values, dtype=float)
+            for pid, g in sim.groupby("PlayerID")["Delta"]
+        }
 
         # Coef-weighted attribute movement from the per-player attr deltas.
         coef_map = dict(zip(Config.OVR_CALC_ORDER, Config.OVR_COEFFS))
@@ -3334,6 +3334,34 @@ class ChartBuilder:
 
         league_mean = float(ppl["MeanDelta"].mean())
 
+        def player_distribution(dv: np.ndarray):
+            """ΔOVR distribution over the player's OWN support.
+
+            Integer-valued ΔOVR — the real-export case, since OVR is an int so
+            Δ = Ovr − Baseline is an integer — becomes a true probability mass
+            function with one bar per integer value. Continuous Δ (e.g. rounded
+            fixtures) falls back to adaptive bins over the player's own range.
+            Returns (centers, probs, mode)."""
+            is_int = np.allclose(dv, np.round(dv), atol=1e-6)
+            lo_i, hi_i = int(np.floor(dv.min())), int(np.ceil(dv.max()))
+            if is_int and (hi_i - lo_i) <= 60:
+                centers = np.arange(lo_i, hi_i + 1).astype(float)
+                counts = np.bincount(
+                    np.round(dv).astype(int) - lo_i, minlength=len(centers)
+                ).astype(float)
+                mode = "pmf"
+            else:
+                dlo, dhi = np.percentile(dv, [1.0, 99.0])
+                if dhi <= dlo:
+                    dlo, dhi = float(dv.min()), float(dv.max() + 1e-6)
+                edges = np.linspace(dlo, dhi, 29)
+                counts, _ = np.histogram(dv, bins=edges)
+                centers = (edges[:-1] + edges[1:]) / 2
+                counts = counts.astype(float)
+                mode = "hist"
+            probs = counts / max(counts.sum(), 1.0)
+            return centers, probs, mode
+
         players = []
         # Sort by |MeanDelta| desc so the default selection is interesting.
         ppl_sorted = ppl.reindex(
@@ -3341,10 +3369,10 @@ class ChartBuilder:
         )
         for _, row in ppl_sorted.iterrows():
             pid = row["PlayerID"]
-            dvals = delta_by_player.get(pid)
-            if dvals is None or len(dvals) == 0:
+            dv = delta_by_player.get(pid)
+            if dv is None or len(dv) == 0:
                 continue
-            counts, _ = np.histogram(dvals, bins=edges)
+            centers, probs, mode = player_distribution(dv)
             rec = {
                 "id": int(pid) if str(pid).isdigit() else str(pid),
                 "label": str(row.get("Label", pid)),
@@ -3357,10 +3385,17 @@ class ChartBuilder:
                 if pd.notnull(row["StdDelta"])
                 else 0.0,
                 "p05": round(float(row["P05_Delta"]), 2),
+                "p25": round(float(row["P25_Delta"]), 2),
                 "p50": round(float(row["P50_Delta"]), 2),
+                "p75": round(float(row["P75_Delta"]), 2),
                 "p95": round(float(row["P95_Delta"]), 2),
-                "pct": round(float(row["PctPositive"]), 3),
-                "hist": counts.astype(int).tolist(),
+                "pUp": round(float((dv > 0).mean()), 3),
+                "pDn": round(float((dv < 0).mean()), 3),
+                "pBig": round(float((dv >= 5.0).mean()), 4),
+                "mx": round(float(dv.max()), 1),
+                "dx": [round(float(c), 2) for c in centers],
+                "dp": [round(float(pv), 4) for pv in probs],
+                "mode": mode,
             }
             if avail_attrs and pid in ad.index:
                 contrib = {
@@ -3377,7 +3412,6 @@ class ChartBuilder:
         }
 
         payload = {
-            "centers": centers.tolist(),
             "leagueMean": round(league_mean, 3),
             "groupColors": group_colors,
             "players": players,
@@ -3428,37 +3462,67 @@ _EXPLORER_JS = """
 
   function draw(p) {
     if (!p) return;
+    var pUp = Math.round(p.pUp * 100), pDn = Math.round(p.pDn * 100);
     stats.textContent = "age " + p.age + " · base " + p.base +
-      " · μΔ " + (p.mean >= 0 ? "+" : "") + p.mean +
-      " · σ " + p.std + " · P(+) " + Math.round(p.pct * 100) + "%";
+      " · median Δ " + (p.p50 >= 0 ? "+" : "") + p.p50 +
+      " · 90% [" + p.p05 + ", " + p.p95 + "]";
 
-    // Distribution
+    // Outcome distribution: probability mass over the player's OWN support,
+    // gains/losses colour-split. Bars sum to 100% of runs.
+    var pct = p.dp.map(function (v) { return v * 100; });
+    var colors = p.dx.map(function (x) {
+      return x > 1e-9 ? "#16a34a" : (x < -1e-9 ? "#dc2626" : "#94a3b8");
+    });
+    var width = (p.mode === "pmf") ? 0.82
+              : (p.dx.length > 1 ? (p.dx[1] - p.dx[0]) * 0.98 : 0.5);
+    var ymax = Math.max.apply(null, pct) || 1;
+    var rulerY = 0.9;   // paper-y, sits in the headroom above the bars
+
     var distTrace = {
-      type: "bar", x: D.centers, y: p.hist,
-      marker: {color: "#2563eb", opacity: 0.85},
-      hovertemplate: "Δ %{x:.2f}<br>%{y} runs<extra></extra>"
+      type: "bar", x: p.dx, y: pct, width: width,
+      marker: {color: colors, opacity: 0.9, line: {color: "#fff", width: 0.5}},
+      hovertemplate: "Δ %{x}<br>%{y:.1f}% of runs<extra></extra>"
     };
+
     var shapes = [
-      {type: "line", x0: p.mean, x1: p.mean, yref: "paper", y0: 0, y1: 1,
-       line: {color: "#dc2626", width: 2, dash: "dash"}},
-      {type: "line", x0: p.p05, x1: p.p05, yref: "paper", y0: 0, y1: 1,
-       line: {color: "#f97316", width: 1.5, dash: "dot"}},
-      {type: "line", x0: p.p95, x1: p.p95, yref: "paper", y0: 0, y1: 1,
-       line: {color: "#f97316", width: 1.5, dash: "dot"}},
-      {type: "line", x0: D.leagueMean, x1: D.leagueMean, yref: "paper", y0: 0, y1: 1,
-       line: {color: "#94a3b8", width: 1.5, dash: "dashdot"}}
+      // baseline Δ = 0
+      {type: "line", x0: 0, x1: 0, yref: "paper", y0: 0, y1: 1,
+       line: {color: "#0f172a", width: 2}},
+      // player mean
+      {type: "line", x0: p.mean, x1: p.mean, yref: "paper", y0: 0, y1: 0.8,
+       line: {color: "#2563eb", width: 2, dash: "dash"}},
+      // league mean reference
+      {type: "line", x0: D.leagueMean, x1: D.leagueMean, yref: "paper", y0: 0, y1: 0.8,
+       line: {color: "#94a3b8", width: 1.5, dash: "dot"}},
+      // percentile ruler: P5–P95 thin, P25–P75 thick, median tick
+      {type: "line", x0: p.p05, x1: p.p95, yref: "paper", y0: rulerY, y1: rulerY,
+       line: {color: "#64748b", width: 2}},
+      {type: "line", x0: p.p25, x1: p.p75, yref: "paper", y0: rulerY, y1: rulerY,
+       line: {color: "#334155", width: 7}},
+      {type: "line", x0: p.p50, x1: p.p50, yref: "paper", y0: rulerY - 0.045, y1: rulerY + 0.045,
+       line: {color: "#0f172a", width: 2}}
     ];
+
+    var bigTxt = p.pBig >= 0.001
+      ? ("<br>P(jump ≥ +5): " + (p.pBig * 100).toFixed(1) + "%") : "";
     var distLayout = {
-      title: {text: "OVR Δ distribution across runs", font: {size: 15}},
+      title: {text: "OVR Δ outcome distribution (share of runs)", font: {size: 15}},
       font: TEMPLATE_FONT, paper_bgcolor: "#fff", plot_bgcolor: "#f8fafc",
-      margin: {l: 55, r: 20, t: 50, b: 45}, shapes: shapes,
-      xaxis: {title: "OVR Δ", gridcolor: "#e2e8f0", zerolinecolor: "#94a3b8"},
-      yaxis: {title: "runs", gridcolor: "#e2e8f0"},
+      margin: {l: 55, r: 20, t: 50, b: 45}, shapes: shapes, bargap: 0.06,
+      xaxis: {title: "OVR Δ", gridcolor: "#e2e8f0", zeroline: false},
+      yaxis: {title: "% of runs", gridcolor: "#e2e8f0", range: [0, ymax * 1.3]},
       annotations: [
-        {x: p.mean, yref: "paper", y: 1.02, text: "μ", showarrow: false,
-         font: {color: "#dc2626", size: 12}},
-        {x: D.leagueMean, yref: "paper", y: 1.02, text: "league μ",
-         showarrow: false, font: {color: "#94a3b8", size: 10}}
+        {x: p.mean, yref: "paper", y: 0.82, text: "mean", showarrow: false,
+         font: {color: "#2563eb", size: 10}},
+        {x: p.p50, yref: "paper", y: rulerY + 0.07, text: "P25–75 · median",
+         showarrow: false, font: {color: "#334155", size: 10}},
+        {xref: "paper", yref: "paper", x: 0.98, y: 0.98, xanchor: "right",
+         align: "right", showarrow: false,
+         bgcolor: "rgba(255,255,255,0.92)", bordercolor: "#e2e8f0", borderwidth: 1,
+         font: {size: 11, color: "#0f172a", family: "monospace"},
+         text: "improve " + pUp + "%  ·  decline " + pDn + "%" +
+               "<br>median " + (p.p50 >= 0 ? "+" : "") + p.p50 +
+               "  ·  90% [" + p.p05 + ", " + p.p95 + "]" + bigTxt}
       ]
     };
     Plotly.newPlot("explorer-dist", [distTrace], distLayout,
